@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from "../../components/header/header.component";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -9,7 +10,9 @@ import { HeaderComponent } from "../../components/header/header.component";
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
-ngOnInit(): void {
+  constructor (private router : Router) {}
+
+  ngOnInit(): void {
     this.setupSmoothScroll();
   }
 
@@ -39,5 +42,10 @@ ngOnInit(): void {
   openCertificate(): void {
     const pdfPath = 'pdf/UI-UXCertificado.pdf';
     window.open(pdfPath, '_blank');
+  }
+
+  sendToGoodPracticesFront(event: Event) {
+    event.preventDefault();
+    this.router.navigate(['buenas/practicas/de/front'])
   }
 }
