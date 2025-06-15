@@ -1,0 +1,93 @@
+.code-editor-container {
+  font-family: 'Consolas', 'Courier New', monospace;
+  background: #1e1e1e;
+  color: #d4d4d4;
+  width: 600px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.editor-header {
+  background: #3c3c3c;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #252526;
+}
+
+.window-controls {
+  display: flex;
+  gap: 6px;
+  margin-right: 12px;
+}
+
+.control {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.close { background: #ff5f56; }
+.minimize { background: #ffbd2e; }
+.maximize { background: #27c93f; }
+
+.file-name {
+  color: #a0a0a0;
+  font-size: 12px;
+}
+
+.editor-body {
+  display: flex;
+  position: relative;
+  padding: 12px 0;
+  background: #1e1e1e;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.editor-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.editor-body::-webkit-scrollbar-thumb {
+  background: #4e4e4e;
+  border-radius: 4px;
+}
+
+.line-numbers {
+  padding: 0 12px;
+  text-align: right;
+  color: #858585;
+  user-select: none;
+  line-height: 1.5;
+  min-width: 40px;
+}
+
+.line-number {
+  padding-right: 8px;
+}
+
+.code-block {
+  margin: 0;
+  flex: 1;
+  overflow: visible;
+  white-space: pre;
+  tab-size: 2;
+  line-height: 1.5;
+  padding-right: 20px;
+}
+
+.html .tag { color: #569CD6; }
+.html .tag-name { color: #569CD6; }
+.html .attr-name { color: #9CDCFE; }
+.html .attr-value { color: #CE9178; }
+.html .punctuation { color: #808080; }
+.html .comment { color: #6A9955; }
+
+.css .selector { color: #D7BA7D; }
+.css .property { color: #9CDCFE; }
+.css .keyword { color: #569CD6; }
+.css .value { color: #CE9178; }
+.css .punctuation { color: #d4d4d4; }
+.css .comment { color: #6A9955; }

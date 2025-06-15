@@ -50,4 +50,9 @@ export class HomeComponent implements OnInit {
     event.preventDefault();
     this.router.navigate(['buenas/practicas/de/front'])
   }
+
+  sendToWhenToUseFramewors(event: Event) {
+    event.preventDefault();
+    this.router.navigate(['cuando/usar/react/y/cuando/angular'])
+  }
 }

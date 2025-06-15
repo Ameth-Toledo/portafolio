@@ -1,0 +1,19 @@
+<div class="code-editor-container">
+  <div class="editor-header">
+    <div class="window-controls">
+      <span class="control close"></span>
+      <span class="control minimize"></span>
+      <span class="control maximize"></span>
+    </div>
+    <span class="file-name">{{ lenguaje }}</span>
+  </div>
+  
+  <div class="editor-body {{language}}">
+    <div class="line-numbers">
+      @for (line of getLines(); track $index) {
+        <div class="line-number">{{ $index + 1 }}</div>
+      }
+    </div>
+    <pre class="code-block"><code class="code-content" [innerHTML]="highlightedCode"></code></pre>
+  </div>
+</div>

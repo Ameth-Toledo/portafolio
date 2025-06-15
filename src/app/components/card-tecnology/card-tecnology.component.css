@@ -1,0 +1,18 @@
+.card-tecnology {
+  background-color: transparent;
+  border: 3px solid #666;
+  border-radius: 30px;
+  width: 200px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto; /* Esto centra la tarjeta horizontalmente */
+}
+
+.title-tecnology {
+  color: #666;
+  text-align: center;
+  margin: 0;
+  padding: 0 10px;
+}
