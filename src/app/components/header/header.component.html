@@ -5,11 +5,11 @@
     </div>
     <nav class="navegacion-principal">
         <ul class="menu">
-            <li class="item-menu"><a href="#" class="enlace-menu">Home</a></li>
-            <li class="item-menu"><a href="#" class="enlace-menu">Proyects</a></li>
-            <li class="item-menu"><a href="#" class="enlace-menu">About</a></li>
-            <li class="item-menu"><a href="#" class="enlace-menu">Blog</a></li>
-            <li class="item-menu"><a href="#" class="enlace-menu">Contact Me</a></li>
+            <li class="item-menu"><a (click)="scrollTo('home')" class="enlace-menu">Home</a></li>
+            <li class="item-menu"><a (click)="scrollTo('work')" class="enlace-menu">Proyects</a></li>
+            <li class="item-menu"><a (click)="scrollTo('abouth-me')" class="enlace-menu">About</a></li>
+            <li class="item-menu"><a (click)="scrollTo('blog')" class="enlace-menu">Blog</a></li>
+            <li class="item-menu"><a (click)="scrollTo('contact')" class="enlace-menu">Contact Me</a></li>
         </ul>
     </nav>
     <a href="pdf/CV-AmethToledo.pdf" target="_blank" class="boton-cv">Download CV</a>

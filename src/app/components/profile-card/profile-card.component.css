@@ -1,0 +1,124 @@
+/* Contenedor principal */
+.profile-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Carta contenedora */
+.profile-card {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Círculo punteado giratorio */
+.dashed-circle {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 2px dashed rgba(100, 100, 255, 0.3);
+  border-radius: 50%;
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Items de tecnología */
+.tech-item {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  animation: rotate 20s linear infinite reverse;
+}
+
+.tech-icon {
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 50px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  animation: counter-rotate 20s linear infinite;
+}
+
+@keyframes counter-rotate {
+  from { transform: translateX(-50%) rotate(0deg); }
+  to { transform: translateX(-50%) rotate(360deg); }
+}
+
+.tech-icon img {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+}
+
+/* Icono central de usuario */
+.user-center {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.user-center svg {
+  width: 50%;
+  height: 50%;
+}
+
+/* Posicionamiento exacto de los iconos */
+.tech-item:nth-child(1) { animation-delay: 0s; }
+.tech-item:nth-child(2) { animation-delay: -2.85s; }
+.tech-item:nth-child(3) { animation-delay: -5.7s; }
+.tech-item:nth-child(4) { animation-delay: -8.55s; }
+.tech-item:nth-child(5) { animation-delay: -11.4s; }
+.tech-item:nth-child(6) { animation-delay: -14.25s; }
+.tech-item:nth-child(7) { animation-delay: -17.1s; }
+
+/* Efecto hover */
+.tech-icon:hover {
+  transform: translateX(-50%) scale(1.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  z-index: 15;
+}
+
+/* Versión móvil */
+@media (max-width: 600px) {
+  .profile-card {
+    width: 250px;
+    height: 250px;
+  }
+  
+  .tech-icon {
+    width: 42px;
+    height: 42px;
+    top: -20px;
+  }
+  
+  .user-center {
+    width: 85px;
+    height: 85px;
+  }
+}

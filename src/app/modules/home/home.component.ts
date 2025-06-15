@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from "../../components/header/header.component";
 import { Router } from '@angular/router';
+import { CardContactComponent } from "../../components/card-contact/card-contact.component";
+import { ProfileCardComponent } from "../../components/profile-card/profile-card.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [HeaderComponent],
+  imports: [HeaderComponent, CardContactComponent, ProfileCardComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
