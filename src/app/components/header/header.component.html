@@ -1,16 +1,23 @@
 <header class="encabezado">
-    <div class="marca">
-        <div class="simbolo"></div>
-        <span class="texto-marca">Ameth Toledo</span>
-    </div>
-    <nav class="navegacion-principal">
-        <ul class="menu">
-            <li class="item-menu"><a (click)="scrollTo('home')" class="enlace-menu">Home</a></li>
-            <li class="item-menu"><a (click)="scrollTo('work')" class="enlace-menu">Proyects</a></li>
-            <li class="item-menu"><a (click)="scrollTo('abouth-me')" class="enlace-menu">About</a></li>
-            <li class="item-menu"><a (click)="scrollTo('blog')" class="enlace-menu">Blog</a></li>
-            <li class="item-menu"><a (click)="scrollTo('contact')" class="enlace-menu">Contact Me</a></li>
-        </ul>
-    </nav>
-    <a href="pdf/CV-AmethToledo.pdf" target="_blank" class="boton-cv">Download CV</a>
+  <div class="marca">
+    <div class="simbolo"></div>
+    <span class="texto-marca">Ameth Toledo</span>
+  </div>
+
+  <button class="hamburguesa" (click)="toggleMenu()" aria-label="Menú">☰</button>
+
+  <nav class="navegacion-principal" [ngClass]="{ 'activo': menuAbierto }">
+    <ul class="menu">
+      <li class="item-menu"><a (click)="scrollTo('home'); cerrarMenu()" class="enlace-menu">Home</a></li>
+      <li class="item-menu"><a (click)="scrollTo('work'); cerrarMenu()" class="enlace-menu">Proyectos</a></li>
+      <li class="item-menu"><a (click)="scrollTo('abouth-me'); cerrarMenu()" class="enlace-menu">Sobre mi</a></li>
+      <li class="item-menu"><a (click)="scrollTo('blog'); cerrarMenu()" class="enlace-menu">Blog</a></li>
+      <li class="item-menu"><a (click)="scrollTo('contact'); cerrarMenu()" class="enlace-menu">Contacto</a></li>
+      <li class="item-menu boton-cv-movil">
+        <a href="pdf/CV-AmethToledo.pdf" target="_blank" class="boton-cv">Download CV</a>
+      </li>
+    </ul>
+  </nav>
+
+  <a href="pdf/CV-AmethToledo.pdf" target="_blank" class="boton-cv boton-cv-escritorio">Download CV</a>
 </header>

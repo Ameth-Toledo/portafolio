@@ -1,0 +1,173 @@
+
+.abouth-me {
+    padding: 80px 40px;
+    background-color: #ffffff;
+    min-height: auto;
+}
+
+.abouth-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 100px;
+}
+
+.abouth-left {
+    flex: 1;
+    max-width: 600px;
+}
+
+.title-section {
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.abouth-title {
+    font-size: 72px;
+    font-weight: 800;
+    color: #000000;
+    line-height: 1.1;
+    margin: 0;
+}
+
+.decorador {
+    position: absolute;
+    top: -20px;
+    right: -150px;
+    width: 150px;
+    height: auto;
+    z-index: 1;
+}
+
+.content-section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.abouth-description {
+    font-size: 16px;
+    color: #666666;
+    line-height: 1.6;
+    margin: 0;
+    font-weight: 400;
+}
+
+.abouth-passion {
+    font-size: 16px;
+    color: #666666;
+    line-height: 1.6;
+    margin: 0;
+    font-weight: 400;
+}
+
+.about-skills {
+    max-width: 1600px;
+    margin: 50px auto 0;
+    padding: 60px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    position: relative; 
+    z-index: 1;
+}
+
+.skill-button {
+    background-color: #3D9EF7;
+    color: white;
+    padding: 15px 50px;
+    border: none;
+    border-radius: 25px;
+    font-size: 18px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    min-width: 200px;
+    justify-content: center;
+}
+
+.skill-button:hover {
+    background-color: #2a8ae0;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.icon-skill {
+    filter: drop-shadow(0 0 10px rgba(0, 0, 0, .8));
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.skill-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+}
+
+.abouth-right {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 190px; 
+    position: absolute; 
+}
+
+.profile-wrapper {
+    position: relative;
+    width: 400px;
+    height: 400px;
+}
+
+.profile-circle {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00D4AA, #00C896);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.profile-photo {
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 6px solid rgba(255, 255, 255, 0.2);
+}
+
+.profile-badge {
+    position: absolute;
+    bottom: 20px;
+    right: -20px;
+    background: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    min-width: 120px;
+}
+
+.badge-title {
+    display: block;
+    font-size: 11px;
+    color: #888;
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+.badge-subtitle {
+    display: block;
+    font-size: 13px;
+    color: #333;
+    font-weight: 700;
+}

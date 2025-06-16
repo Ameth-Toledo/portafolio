@@ -5,15 +5,16 @@
       <span class="control minimize"></span>
       <span class="control maximize"></span>
     </div>
-    <span class="file-name">{{ lenguaje }}</span>
+    <span class="file-name">{{ filename }}</span>
+    <img src="{{ tecnologyImg }}" alt="tecnologia" class="tecnology">
   </div>
   
-  <div class="editor-body {{language}}">
+  <div class="editor-body">
     <div class="line-numbers">
-      @for (line of getLines(); track $index) {
-        <div class="line-number">{{ $index + 1 }}</div>
+      @for (line of lineNumbers; track line) {
+        <div class="line-number">{{ line }}</div>
       }
     </div>
-    <pre class="code-block"><code class="code-content" [innerHTML]="highlightedCode"></code></pre>
+    <pre class="code-block"><code class="language-{{language}}" [innerHTML]="displayedCode"></code></pre>
   </div>
 </div>

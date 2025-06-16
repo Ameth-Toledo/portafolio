@@ -1,0 +1,131 @@
+.work-section {
+    background: #1a1a1a;
+    padding: 100px 60px;
+}
+
+.work-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.work-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 120px;
+    margin-bottom: 80px;
+}
+
+.work-title {
+    font-size: 72px;
+    font-weight: 800;
+    color: white;
+    line-height: 1.1;
+    flex: 1;
+}
+
+.work-subtitle {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.work-description {
+    font-size: 18px;
+    color: #999;
+    line-height: 1.6;
+    max-width: 420px;
+    flex: 1;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 35px;
+}
+
+.project-card {
+    background: white;
+    border-radius: 25px;
+    overflow: hidden;
+    transition: transform 0.4s ease;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.project-card:hover {
+    transform: translateY(-12px);
+}
+
+.project-image {
+    height: 220px;
+    position: relative;
+    overflow: hidden;
+    display: flex;           
+    align-items: center;     
+    justify-content: center; 
+    background: white;       
+}
+
+.project-card:nth-child(1) .project-image {
+    background: linear-gradient(135deg, #ff8a80 0%, #ff5722 100%);
+}
+
+.project-card:nth-child(2) .project-image {
+    background: linear-gradient(135deg, #f8bbd9 0%, #e91e63 100%);
+}
+
+.project-card:nth-child(3) .project-image {
+    background: linear-gradient(135deg, #00d4aa 0%, #00796b 100%);
+}
+
+.project-card:nth-child(4) .project-image {
+    background: linear-gradient(135deg, #ffcc02 0%, #ff9800 100%);
+}
+
+.project-card:nth-child(5) .project-image {
+    background: linear-gradient(135deg, #82b1ff 0%, #2196f3 100%);
+}
+
+.project-card:nth-child(6) .project-image {
+    background: linear-gradient(135deg, #ce93d8 0%, #9c27b0 100%);
+}
+
+.project-content {
+    padding: 28px;
+}
+
+.project-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 12px;
+}
+
+.project-desc-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.project-desc {
+    font-size: 15px;
+    color: #666;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.tech-icon {
+    width: 34px;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.tech-icon:hover {
+    transform: scale(1.1);
+}
+
+.work-image {
+    width: 380px;
+    object-fit: contain;
+    border-radius: 20px;
+}

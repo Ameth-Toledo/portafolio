@@ -1,0 +1,73 @@
+.contact-section {
+    padding: 80px 40px;
+    background-color: #ffffff;
+    min-height: auto;
+}
+
+.contact-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 100px;
+}
+
+.contact-left {
+    flex: 1;
+    max-width: 600px;
+}
+
+.profile-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 400px;
+    transform: translateY(-50px); 
+}
+
+.contact-title-section {
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.contact-title {
+    font-size: 72px;
+    font-weight: 800;
+    color: #000000;
+    line-height: 1.1;
+    margin: 0;
+}
+
+.contact-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.contact-description {
+    font-size: 16px;
+    color: #666666;
+    line-height: 1.6;
+    margin: 0;
+    font-weight: 400;
+}
+
+.contact-passion {
+    font-size: 16px;
+    color: #666666;
+    line-height: 1.6;
+    margin: 0;
+    font-weight: 400;
+}
+
+.contact-cards-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 50px auto 0;
+    padding: 0 20px;
+}

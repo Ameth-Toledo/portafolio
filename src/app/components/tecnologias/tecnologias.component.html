@@ -1,0 +1,14 @@
+<div class="tag-list">
+  <div class="fade fade-left"></div>
+  <div class="fade fade-right"></div>
+
+  <div class="inner tag-left">
+    <ng-container *ngFor="let i of [1,2]">
+      <app-tech-card
+        *ngFor="let tech of tecnologias"
+        [iconPath]="tech.iconPath"
+        [techName]="tech.techName"
+      ></app-tech-card>
+    </ng-container>
+  </div>
+</div>

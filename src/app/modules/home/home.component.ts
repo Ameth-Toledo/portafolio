@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from "../../components/header/header.component";
 import { Router } from '@angular/router';
-import { CardContactComponent } from "../../components/card-contact/card-contact.component";
-import { ProfileCardComponent } from "../../components/profile-card/profile-card.component";
+import { HeroComponent } from "../../components/hero/hero.component";
+import { WorkSectionComponent } from "../../components/work-section/work-section.component";
+import { AbouthMeComponent } from "../../components/abouth-me/abouth-me.component";
+import { BlogComponent } from "../../components/blog/blog.component";
+import { ContactComponent } from "../../components/contact/contact.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [HeaderComponent, CardContactComponent, ProfileCardComponent],
+  imports: [HeaderComponent, HeroComponent, WorkSectionComponent, AbouthMeComponent, BlogComponent, ContactComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -30,29 +33,5 @@ export class HomeComponent implements OnInit {
         }
       });
     });
-  }
-
-  scrollTo(target: string): void {
-    const element = document.querySelector(target);
-    if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth'
-      });
-    }
-  }
-
-  openCertificate(): void {
-    const pdfPath = 'pdf/UI-UXCertificado.pdf';
-    window.open(pdfPath, '_blank');
-  }
-
-  sendToGoodPracticesFront(event: Event) {
-    event.preventDefault();
-    this.router.navigate(['buenas/practicas/de/front'])
-  }
-
-  sendToWhenToUseFramewors(event: Event) {
-    event.preventDefault();
-    this.router.navigate(['cuando/usar/react/y/cuando/angular'])
-  }
+  }  
 }

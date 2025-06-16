@@ -1,0 +1,43 @@
+.tag-list {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  margin: 3rem 0;
+  background-color: #fff;
+  height: 130px; /* Ajusta al alto de tus tarjetas */
+}
+
+.inner {
+  display: flex;
+  gap: 2rem;
+  width: max-content;
+  animation: move-left 40s linear infinite;
+}
+
+@keyframes move-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.fade {
+  position: absolute;
+  top: 0;
+  width: 150px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.fade-left {
+  left: 0;
+  background: linear-gradient(to right, #fff 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.fade-right {
+  right: 0;
+  background: linear-gradient(to left, #fff 0%, rgba(255, 255, 255, 0) 100%);
+}

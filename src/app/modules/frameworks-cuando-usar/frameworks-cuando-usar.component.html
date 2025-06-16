@@ -16,7 +16,7 @@
         </div>
       </button>
 
-      <h1 class="title-front">Cuando usar Angular y cuando usar React 💪🔥</h1>
+    <h1 class="title-front">Cuando usar Angular y cuando usar React 💪🔥</h1>
     </div>
 
     <p class="frontend-description">
@@ -37,19 +37,156 @@
 </section>
 
 <div class="code-examples-container">
-  <h1 class="tip">Buenas prácticas de estilos en HTML y Frameworks </h1>
+  <h1 class="tip">Frameworks para proyectos chicos, medianos y grandes</h1>
   <p class="subtitle-buenas-practicas-frontend">
-    Durante mucho tiempo solía aplicar estilos de forma global, por ejemplo:
-    utilizaba etiquetas como <code>&lt;h1&gt;Hola mundo&lt;/h1&gt;</code> y luego en el archivo CSS escribía reglas generales como
-    <code>h1 {{ '{' }} color: #666; {{ '}' }}</code>.
-    Sin embargo, al trabajar con frameworks como React, descubrí que este enfoque afectaba a múltiples vistas de forma no deseada,
-    ya que el CSS se aplicaba globalmente. Como buena práctica, aprendí que cada etiqueta HTML debe contar con su propia clase CSS
-    específica, para mantener los estilos encapsulados y evitar conflictos entre componentes.
+    En proyectos pequeños o medianos, donde no se requiere una estructura muy compleja ni un manejo extenso del estado, solemos utilizar <strong>React</strong>. Es ideal por su flexibilidad, su curva de aprendizaje accesible y su gran ecosistema. 
+    <br><br>
+    En cambio, para aplicaciones grandes y escalables, que requieren una arquitectura más robusta, una gestión avanzada de rutas, formularios, inyección de dependencias y módulos bien organizados, preferimos usar <strong>Angular</strong>. Este framework proporciona una solución más completa y estructurada desde el inicio.
+    <br><br>
+    Y asi es para cada uno de los frameworks modernos, como tip para hacer paginas web estaticas no recomendaria tanto hacerlo vanila con html, css y javascript por que seria un poco mas costoso, lo que recomiendo para paginas estaticas seria <strong>Astro</strong> es un framework muy liviano para webs estaticas, ya que solo compilara 
+    el codigo que el usuario nesesita.
   </p>
 
-  <div class="card-row">
-    <app-card-editor-code [code]="htmlCode" language="html" lenguaje="index.html"></app-card-editor-code>
-    <app-card-editor-code [code]="cssCode" language="css" lenguaje="style.css"></app-card-editor-code>
+  <div class="framework-comparison-container">
+  <h2 class="framework-comparison-title">Tabla comparativa de frameworks frontend</h2>
+  
+    <table class="framework-comparison-table">
+      <thead class="framework-table-header">
+        <tr class="framework-table-header-row">
+          <th class="framework-table-header-cell framework-table-col-framework">Framework</th>
+          <th class="framework-table-header-cell framework-table-col-when">Cuándo usarlo</th>
+          <th class="framework-table-header-cell framework-table-col-advantages">Ventajas clave</th>
+          <th class="framework-table-header-cell framework-table-col-complexity">Complejidad</th>
+        </tr>
+      </thead>
+      <tbody class="framework-table-body">
+        <!-- Angular -->
+        <tr class="framework-table-row">
+          <td class="framework-table-cell framework-name-cell">
+            <img src="icons/angular.svg" alt="Angular" class="framework-icon">
+            <span class="framework-name-text">Angular</span>
+          </td>
+          <td class="framework-table-cell">
+            <ul class="framework-feature-list">
+              <li class="framework-feature-item">Aplicaciones empresariales complejas</li>
+              <li class="framework-feature-item">Proyectos grandes con equipos numerosos</li>
+              <li class="framework-feature-item">Cuando necesitas estructura y convención</li>
+              <li class="framework-feature-item">Aplicaciones con mucha lógica de negocio</li>
+            </ul>
+          </td>
+          <td class="framework-table-cell">
+            <ul class="framework-advantages-list">
+              <li class="framework-advantage-item">Ecosistema completo (routing, forms, HTTP, etc.)</li>
+              <li class="framework-advantage-item">TypeScript por defecto</li>
+              <li class="framework-advantage-item">Arquitectura bien definida</li>
+              <li class="framework-advantage-item">Ideal para equipos grandes</li>
+            </ul>
+          </td>
+          <td class="framework-table-cell framework-complexity-cell">Alta</td>
+        </tr>
+        
+        <!-- React -->
+        <tr class="framework-table-row">
+          <td class="framework-table-cell framework-name-cell">
+            <img src="icons/react.svg" alt="React" class="framework-icon">
+            <span class="framework-name-text">React</span>
+          </td>
+          <td class="framework-table-cell">
+            <ul class="framework-feature-list">
+              <li class="framework-feature-item">Interfaces interactivas y dinámicas</li>
+              <li class="framework-feature-item">Proyectos medianos o que evolucionarán</li>
+              <li class="framework-feature-item">Cuando necesitas flexibilidad</li>
+              <li class="framework-feature-item">Aplicaciones con muchos componentes reutilizables</li>
+            </ul>
+          </td>
+          <td class="framework-table-cell">
+            <ul class="framework-advantages-list">
+              <li class="framework-advantage-item">Gran ecosistema y comunidad</li>
+              <li class="framework-advantage-item">Flexibilidad en arquitectura</li>
+              <li class="framework-advantage-item">Virtual DOM para buen rendimiento</li>
+              <li class="framework-advantage-item">Fácil integración con otras librerías</li>
+            </ul>
+          </td>
+          <td class="framework-table-cell framework-complexity-cell">Media-Alta</td>
+        </tr>
+        
+        <!-- Vue -->
+        <tr class="framework-table-row">
+          <td class="framework-table-cell framework-name-cell">
+            <img src="icons/vue.svg" alt="Vue" class="framework-icon">
+            <span class="framework-name-text">Vue</span>
+          </td>
+          <td class="framework-table-cell">
+            <ul class="framework-feature-list">
+              <li class="framework-feature-item">Proyectos progresivos (pequeños a grandes)</li>
+              <li class="framework-feature-item">Cuando buscas equilibrio entre estructura y flexibilidad</li>
+              <li class="framework-feature-item">Aplicaciones SPA medianas</li>
+              <li class="framework-feature-item">Equipos que valoran simplicidad</li>
+            </ul>
+          </td>
+          <td class="framework-table-cell">
+            <ul class="framework-advantages-list">
+              <li class="framework-advantage-item">Curva de aprendizaje suave</li>
+              <li class="framework-advantage-item">Documentación excelente</li>
+              <li class="framework-advantage-item">Rendimiento optimizado</li>
+              <li class="framework-advantage-item">Opción progresiva (puedes usar solo lo necesario)</li>
+            </ul>
+          </td>
+          <td class="framework-table-cell framework-complexity-cell">Media</td>
+        </tr>
+        
+        <!-- Svelte -->
+        <tr class="framework-table-row">
+          <td class="framework-table-cell framework-name-cell">
+            <img src="icons/svelte.svg" alt="Svelte" class="framework-icon">
+            <span class="framework-name-text">Svelte</span>
+          </td>
+          <td class="framework-table-cell">
+            <ul class="framework-feature-list">
+              <li class="framework-feature-item">Aplicaciones pequeñas a medianas</li>
+              <li class="framework-feature-item">Cuando el rendimiento es crítico</li>
+              <li class="framework-feature-item">Proyectos con poca lógica compleja de estado</li>
+              <li class="framework-feature-item">Cuando quieres menos código boilerplate</li>
+            </ul>
+          </td>
+          <td class="framework-table-cell">
+            <ul class="framework-advantages-list">
+              <li class="framework-advantage-item">No hay Virtual DOM (compila a JS vanilla)</li>
+              <li class="framework-advantage-item">Sintaxis simple y legible</li>
+              <li class="framework-advantage-item">Menos código que escribir</li>
+              <li class="framework-advantage-item">Excelente rendimiento</li>
+            </ul>
+          </td>
+          <td class="framework-table-cell framework-complexity-cell">Baja-Media</td>
+        </tr>
+        
+        <!-- Astro -->
+        <tr class="framework-table-row">
+          <td class="framework-table-cell framework-name-cell">
+            <img src="icons/astro.svg" alt="Astro" class="framework-icon">
+            <span class="framework-name-text">Astro</span>
+          </td>
+          <td class="framework-table-cell">
+            <ul class="framework-feature-list">
+              <li class="framework-feature-item">Sitios estáticos y marketing sites</li>
+              <li class="framework-feature-item">Contenido centrado en SEO</li>
+              <li class="framework-feature-item">Cuando quieres usar múltiples frameworks</li>
+              <li class="framework-feature-item">Proyectos donde el rendimiento es prioritario</li>
+            </ul>
+          </td>
+          <td class="framework-table-cell">
+            <ul class="framework-advantages-list">
+              <li class="framework-advantage-item">Renderizado estático por defecto</li>
+              <li class="framework-advantage-item">Islas de interactividad</li>
+              <li class="framework-advantage-item">Puede usar componentes de otros frameworks</li>
+              <li class="framework-advantage-item">Excelente puntuación en Lighthouse</li>
+            </ul>
+          </td>
+          <td class="framework-table-cell framework-complexity-cell">Media</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-
 </div>
+
+<app-tecnologias></app-tecnologias>

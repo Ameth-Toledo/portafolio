@@ -3,16 +3,25 @@
   background: #1e1e1e;
   color: #d4d4d4;
   width: 600px;
+  min-height: 400px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  margin: 1rem 0;
 }
 
 .editor-header {
-  background: #3c3c3c;
-  padding: 8px 12px;
   display: flex;
   align-items: center;
+  padding: 8px 12px;
+  background: #3c3c3c;
   border-bottom: 1px solid #252526;
+}
+
+.editor-header .tecnology {
+  margin-left: auto;
+  width: 32px; 
+  height: auto;
 }
 
 .window-controls {
@@ -37,13 +46,14 @@
   font-size: 12px;
 }
 
+/* Cuerpo del editor - Ajustes clave */
 .editor-body {
   display: flex;
   position: relative;
-  padding: 12px 0;
   background: #1e1e1e;
   max-height: 400px;
   overflow-y: auto;
+  padding: 0; /* Eliminamos todo padding vertical */
 }
 
 .editor-body::-webkit-scrollbar {
@@ -55,8 +65,11 @@
   border-radius: 4px;
 }
 
+/* Números de línea - Ajustes precisos */
 .line-numbers {
-  padding: 0 12px;
+  display: flex;
+  flex-direction: column;
+  padding: 4px 12px; /* Solo padding pequeño arriba/abajo */
   text-align: right;
   color: #858585;
   user-select: none;
@@ -68,6 +81,7 @@
   padding-right: 8px;
 }
 
+/* Bloque de código - Ajustes críticos */
 .code-block {
   margin: 0;
   flex: 1;
@@ -75,19 +89,30 @@
   white-space: pre;
   tab-size: 2;
   line-height: 1.5;
-  padding-right: 20px;
+  padding: 4px 20px 4px 0; /* Padding mínimo y consistente */
 }
 
-.html .tag { color: #569CD6; }
-.html .tag-name { color: #569CD6; }
-.html .attr-name { color: #9CDCFE; }
-.html .attr-value { color: #CE9178; }
-.html .punctuation { color: #808080; }
-.html .comment { color: #6A9955; }
+.code-block code {
+  display: block;
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
 
-.css .selector { color: #D7BA7D; }
-.css .property { color: #9CDCFE; }
-.css .keyword { color: #569CD6; }
-.css .value { color: #CE9178; }
-.css .punctuation { color: #d4d4d4; }
-.css .comment { color: #6A9955; }
+/* Estilos de sintaxis */
+.hljs-tag, .hljs-name {
+  color: #569CD6;
+}
+
+.hljs-attr {
+  color: #9CDCFE;
+}
+
+.hljs-string {
+  color: #CE9178;
+}
+
+.hljs-comment {
+  color: #6A9955;
+  font-style: italic;
+}

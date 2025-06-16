@@ -37,7 +37,7 @@
 </section>
 
 <div class="code-examples-container">
-  <h1 class="tip">Buenas prácticas de estilos en HTML y Frameworks </h1>
+  <h1 class="tip">Buenas prácticas de estilos en html y Frameworks </h1>
   <p class="subtitle-buenas-practicas-frontend">
     Durante mucho tiempo solía aplicar estilos de forma global, por ejemplo:
     utilizaba etiquetas como <code>&lt;h1&gt;Hola mundo&lt;/h1&gt;</code> y luego en el archivo CSS escribía reglas generales como
@@ -48,8 +48,41 @@
   </p>
 
   <div class="card-row">
-    <app-card-editor-code [code]="htmlCode" language="html" lenguaje="index.html"></app-card-editor-code>
-    <app-card-editor-code [code]="cssCode" language="css" lenguaje="style.css"></app-card-editor-code>
+    <app-card-editor-code 
+      [code]="htmlCode" 
+      tecnologyImg="icons/html.svg"
+      filename="index.html">
+    </app-card-editor-code>
+    
+    <app-card-editor-code 
+      [code]="cssCode"
+      tecnologyImg="icons/css.svg" 
+      filename="style.css">
+    </app-card-editor-code>
+  </div>
+
+  <h1 class="tip">Reutilización de componentes en frontend</h1>
+  <p class="subtitle-buenas-practicas-frontend">
+    En mis primeros proyectos solía repetir mucho código HTML y CSS, lo cual dificultaba el mantenimiento. Con el tiempo aprendí que una 
+    buena práctica en frontend es dividir la interfaz en componentes reutilizables. Por ejemplo, si tengo varios botones con el mismo diseño, 
+    creo un componente que reciba props para cambiar el texto o el estilo. Esto no solo mejora la legibilidad, sino que también permite escalar 
+    el proyecto de forma ordenada y eficiente.
+  </p>
+
+  <div class="card-row">
+    <app-card-editor-code
+      [code]="reactCode"
+      tecnologyImg="icons/react.svg"
+      filename="ReusableButton.jsx"> 
+    </app-card-editor-code>
+
+    <app-card-editor-code
+      [code]="cssCodeReact"
+      tecnologyImg="icons/css.svg"
+      filename="ReusableButton.css"> 
+    </app-card-editor-code>
   </div>
 
 </div>
+
+<app-tecnologias></app-tecnologias>

@@ -1,6 +1,11 @@
-<a [href]="url" target="_blank" rel="noopener" class="checkbox-container">
+<div class="checkbox-container" (click)="handleCardClick($event)">
   <label class="checkbox-label">
-    <input type="checkbox" class="checkbox-input" />
+    <input 
+      type="checkbox" 
+      class="checkbox-input" 
+      [checked]="selected"
+      (click)="toggleSelection($event)"
+    />
     <span class="checkbox-box">
       <span class="checkbox-icon">
         <ng-content></ng-content>
@@ -8,4 +13,4 @@
       <span class="checkbox-text">{{ name }}</span>
     </span>
   </label>
-</a>
+</div>

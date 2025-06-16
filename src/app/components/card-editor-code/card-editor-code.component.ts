@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HighlightService } from '../../services/highlight/highlight.service';
 
 @Component({
   selector: 'app-card-editor-code',
@@ -8,54 +9,39 @@ import { CommonModule } from '@angular/common';
   templateUrl: './card-editor-code.component.html',
   styleUrl: './card-editor-code.component.css'
 })
-export class CardEditorCodeComponent {
+export class CardEditorCodeComponent  implements OnChanges {
   @Input() code: string = '';
-  @Input() language: 'html' | 'css' = 'html';
-  @Input() lenguaje: string = '';
+  @Input() language: string = 'html';
+  @Input() filename: string = '';
+  @Input() tecnologyImg: string = '';
+  
+  displayedCode: string = '';
+  lineNumbers: number[] = [];
 
-  get highlightedCode(): string {
-    return this.highlightSyntax(this.code, this.language);
-  }
+  constructor(private highlightService: HighlightService) {}
 
-  getLines(): number[] {
-    const lineCount = this.code.split('\n').length;
-    return Array(lineCount).fill(0);
-  }
-
-  private highlightSyntax(code: string, language: 'html' | 'css'): string {
-    if (language === 'html') {
-      return this.highlightHTML(code);
-    } else {
-      return this.highlightCSS(code);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['code'] || changes['language']) {
+      this.updateDisplay();
     }
   }
 
-  private highlightHTML(html: string): string {
-    return html
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/&lt;!DOCTYPE\s+html&gt;/g, '<span class="tag">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span>')
-      .replace(/&lt;(\/?)([a-zA-Z0-9-]+)([^&]*)&gt;/g, (match, slash, tagName, rest) => {
-        return `<span class="tag">&lt;${slash}<span class="tag-name">${tagName}</span>${this.highlightHTMLAttributes(rest)}&gt;</span>`;
-      })
-      .replace(/&lt;!--([\s\S]*?)--&gt;/g, '<span class="comment">&lt;!--$1--&gt;</span>');
+  private updateDisplay(): void {
+    this.displayedCode = this.highlightService.highlightCode(this.code, this.language);
+    this.calculateLineNumbers(this.code);
   }
 
-  private highlightHTMLAttributes(attrs: string): string {
-    return attrs.replace(/([a-zA-Z0-9-]+)=("([^"]*)"|'([^']*)')/g, 
-      '<span class="attribute"> $1</span>=<span class="value">$2</span>');
-  }
+  private calculateLineNumbers(rawCode: string): void {
+    if (!rawCode) {
+      this.lineNumbers = [];
+      return;
+    }
 
-  private highlightCSS(css: string): string {
-    return css
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/\/(\*[\s\S]*?\*)\//g, '<span class="comment">/*$1*/</span>')
-      .replace(/([^{};\s][^{};]*)(?=\s*{)/g, '<span class="selector">$1</span>')
-      .replace(/([a-zA-Z-]+)\s*:/g, '<span class="property">$1</span>:')
-      .replace(/:\s*([^;}]+)/g, ': <span class="value">$1</span>')
-      .replace(/!important/g, '<span class="keyword">!important</span>');
+    const cleanedCode = rawCode
+      .replace(/\s+$/, '')  // Elimina espacios al final
+      .replace(/\n+$/, ''); // Elimina saltos de línea al final
+
+    const lines = cleanedCode.split('\n');
+    this.lineNumbers = Array.from({length: lines.length}, (_, i) => i + 1);
   }
 }

@@ -1,17 +1,29 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CardTecnologyComponent } from "../../components/card-tecnology/card-tecnology.component";
-import { CardEditorCodeComponent } from "../../components/card-editor-code/card-editor-code.component";
+import { AnimationService } from '../../services/animation/animation.service';
+import { TecnologiasComponent } from "../../components/tecnologias/tecnologias.component";
 
 @Component({
   selector: 'app-frameworks-cuando-usar',
   standalone: true,
-  imports: [CardTecnologyComponent, CardEditorCodeComponent],
+  imports: [CardTecnologyComponent, TecnologiasComponent],
   templateUrl: './frameworks-cuando-usar.component.html',
   styleUrl: './frameworks-cuando-usar.component.css'
 })
 export class FrameworksCuandoUsarComponent {
-  constructor (private router : Router) {}
+constructor (
+    private router : Router,
+    private animationService: AnimationService
+  ) {}
+
+  ngOnInit() {
+    setTimeout(() => {
+      this.animationService.initAnimations();
+    }, 50);
+  }
+
+  ngOnDestroy(): void {}
 
   sendToHome(event: Event) {
     event.preventDefault();

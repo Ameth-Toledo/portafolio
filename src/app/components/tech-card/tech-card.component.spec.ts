@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditorCodeComponent } from './editor-code.component';
+import { TechCardComponent } from './tech-card.component';
 
-describe('EditorCodeComponent', () => {
-  let component: EditorCodeComponent;
-  let fixture: ComponentFixture<EditorCodeComponent>;
+describe('TechCardComponent', () => {
+  let component: TechCardComponent;
+  let fixture: ComponentFixture<TechCardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EditorCodeComponent]
+      imports: [TechCardComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(EditorCodeComponent);
+    fixture = TestBed.createComponent(TechCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
