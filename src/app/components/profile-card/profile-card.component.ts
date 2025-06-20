@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 })
 export class ProfileCardComponent {
   technologies = [
-    { name: 'React', icon: 'react.svg' },
+    { name: 'Angular', icon: 'angular.svg' },
     { name: 'Figma', icon: 'figma.svg' },
     { name: 'Tailwind', icon: 'tailwind.svg' },
     { name: 'AWS', icon: 'aws.svg' },

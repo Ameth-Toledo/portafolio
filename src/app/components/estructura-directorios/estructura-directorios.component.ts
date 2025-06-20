@@ -20,14 +20,19 @@ export class EstructuraDirectoriosComponent {
 
   getIcon(item: FileItem): string {
     const fileExtension = this.getFileExtension(item.name);
-    
+    const fileName = item.name.toLowerCase();
+
     if (item.type === 'folder') {
       return item.expanded 
         ? 'fas fa-folder-open' 
         : 'fas fa-folder';
     }
-    
-    // Iconos para diferentes tipos de archivos
+
+    if (fileName === '.env') return 'fas fa-cog';
+    if (fileName === '.gitignore') return 'fab fa-git-alt';
+    if (fileName === 'readme.md') return 'fas fa-book-open';
+    if (fileName === 'go.mod' || fileName === 'go.sum') return 'fab fa-golang';
+
     switch(fileExtension) {
       case 'go': return 'fab fa-golang';
       case 'js': return 'fab fa-js-square';

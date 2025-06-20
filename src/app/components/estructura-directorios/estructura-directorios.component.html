@@ -14,10 +14,12 @@
           <span class="name">{{ item.name }}</span>
         </div>
         @if (item.type === 'folder' && item.expanded && item.children) {
-          <app-estructura-directorios 
-            [structure]="item.children"
-            [rootName]="''"
-          ></app-estructura-directorios>
+          <div class="nested-folder">
+            <app-estructura-directorios 
+              [structure]="item.children"
+              [rootName]="''"
+            ></app-estructura-directorios>
+          </div>
         }
       </li>
     }

@@ -120,43 +120,91 @@ func (h *UserHandler) GetUser(c *gin.Context) {
       expanded: true,
       children: [
         {
-          name: 'app',
+          name: 'core',
           type: 'folder',
           expanded: false,
           children: [
-            { name: 'main.go', type: 'file' },
-            { name: 'router.go', type: 'file' }
+            { name: 'db_mysql.go', type: 'file' }
           ]
         },
         {
-          name: 'domain',
+          name: 'users',
           type: 'folder',
           expanded: false,
           children: [
-            { name: 'user.go', type: 'file' },
-            { name: 'product.go', type: 'file' }
+            { name: 'application', 
+              type: 'folder', 
+              expanded: false, 
+              children: [
+                { name: 'CreateUser_UseCase.go', type: 'file' },
+                { name: 'DeleteUser_UseCase.go', type: 'file' },
+                { name: 'GetUsers_UseCase.go', type: 'file' },
+                { name: 'GetUserById_UseCase.go', type: 'file' },
+                { name: 'UpdateUser_UseCase.go', type: 'file' },
+            ]
+          },
+            { name: 'domain', 
+              type: 'folder',
+              expanded: false,
+              children: [
+                { name: 'entities', 
+                  type: 'folder',
+                  expanded: false, 
+                  children: [
+                { name: 'User.go', type: 'file' }
+            ]
+            },
+                { name: 'User_Repository.go', type: 'file' },
+              ]
+            },
+            { name: 'infrastructure', 
+              type: 'folder',
+              expanded: false,
+              children: [
+                { name: 'controllers', 
+                  type: 'folder',
+                  expanded: false,
+                  children: [
+                    { name: 'CreateUser_Controller.go', type: 'file' },
+                    { name: 'DeleteUser_Controller.go', type: 'file' },
+                    { name: 'GetUsers_Controller.go', type: 'file' },
+                    { name: 'GetUsersById_Controller.go', type: 'file' },
+                    { name: 'UpdateUser_Controller.go', type: 'file' },
+                  ] 
+                },
+                { name: 'database', 
+                  type: 'folder',
+                  expanded: false,
+                  children: [
+                    { name: 'MySQL.go', type: 'file' }
+                  ] 
+                },
+                { name: 'routes', 
+                  type: 'folder',
+                  expanded: false,
+                  children: [
+                    { name: 'User_Routes.go', type: 'file' }
+                  ] 
+                },
+                { name: 'dependencies.go', type: 'file' },
+              ] 
+            }
           ]
         },
         {
-          name: 'infrastructure',
+          name: 'products',
           type: 'folder',
           expanded: false,
           children: [
-            { name: 'database.go', type: 'file' },
-            { name: 'cache.go', type: 'file' }
+            { name: 'application', type: 'folder' },
+            { name: 'domain', type: 'folder' },
+            { name: 'infrastructure', type: 'folder' }
           ]
         }
       ]
     },
-    {
-      name: 'config',
-      type: 'folder',
-      expanded: false,
-      children: [
-        { name: 'config.yaml', type: 'file' },
-        { name: 'env.example', type: 'file' }
-      ]
-    },
+    { name: '.env', type: 'file' },
+    { name: '.gitignore', type: 'file' },
     { name: 'go.mod', type: 'file' },
     { name: 'go.sum', type: 'file' },
     { name: 'README.md', type: 'file' }

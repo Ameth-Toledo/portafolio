@@ -1,12 +1,16 @@
 .file-explorer {
   font-family: 'Consolas', 'Courier New', monospace;
-  margin-left: 20px;
   background-color: #1e1e1e;
   color: #d4d4d4;
   padding: 10px;
   border-radius: 5px;
-  width: fit-content;
-  min-width: 250px;
+  width: 500px; /* Ancho fijo */
+  min-height: 50px; /* Altura mínima */
+  height: auto; /* Altura flexible */
+  overflow-x: hidden; /* No scroll horizontal */
+  overflow-y: visible; /* Expansión vertical libre */
+  box-sizing: border-box;
+  margin-left: 20px;
 }
 
 .file-explorer h3 {
@@ -20,7 +24,7 @@
 
 .tree {
   list-style-type: none;
-  padding-left: 15px;
+  padding-left: 1px;
   margin: 0;
 }
 
@@ -31,6 +35,9 @@
   align-items: center;
   border-radius: 3px;
   font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .item:hover {
@@ -46,8 +53,17 @@
   width: 16px;
   text-align: center;
   color: #c5c5c5;
+  flex-shrink: 0;
 }
 
 .name {
   user-select: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nested-folder {
+  width: calc(100% - 15px); /* Ajuste para alineación */
+  margin-left: 5px; /* Sangría para anidación */
+  overflow: hidden;
 }

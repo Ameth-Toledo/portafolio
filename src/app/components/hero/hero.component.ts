@@ -68,7 +68,7 @@ constructor(
   }
 
   openCertificate(): void {
-    const pdfPath: string = 'assets/pdf/UI-UXCertificado.pdf';
+    const pdfPath: string = 'pdf/UI-UXCertificado.pdf';
     window.open(pdfPath, '_blank');
   }
 }
