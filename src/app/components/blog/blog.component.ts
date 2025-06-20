@@ -25,4 +25,9 @@ export class BlogComponent {
     event.preventDefault();
     this.router.navigate(['buenas/practicas/ui/ux'])
   }
+
+  sendToArquitectureHexagonal(event: Event) {
+    event.preventDefault();
+    this.router.navigate(['arquitectura/hexagonal'])
+  }
 }

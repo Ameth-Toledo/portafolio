@@ -1,0 +1,53 @@
+.file-explorer {
+  font-family: 'Consolas', 'Courier New', monospace;
+  margin-left: 20px;
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  padding: 10px;
+  border-radius: 5px;
+  width: fit-content;
+  min-width: 250px;
+}
+
+.file-explorer h3 {
+  color: #569cd6;
+  margin: 0 0 10px 0;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #3c3c3c;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.tree {
+  list-style-type: none;
+  padding-left: 15px;
+  margin: 0;
+}
+
+.item {
+  cursor: pointer;
+  padding: 3px 5px;
+  display: flex;
+  align-items: center;
+  border-radius: 3px;
+  font-size: 13px;
+}
+
+.item:hover {
+  background-color: #2a2d2e;
+}
+
+.folder {
+  color: #569cd6;
+}
+
+.icon {
+  margin-right: 8px;
+  width: 16px;
+  text-align: center;
+  color: #c5c5c5;
+}
+
+.name {
+  user-select: none;
+}

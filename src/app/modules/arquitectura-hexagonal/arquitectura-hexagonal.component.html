@@ -1,0 +1,95 @@
+<section class="welcome-section">
+  <div class="welcome-container">
+    <div class="nav-container">
+      <button class="button" (click)="sendToHome($event)">
+        <div class="button-box">
+          <span class="button-elem">
+            <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+              <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
+            </svg>
+          </span>
+          <span class="button-elem">
+            <svg viewBox="0 0 46 40">
+              <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
+            </svg>
+          </span>
+        </div>
+      </button>
+
+      <h1 class="title-front">Arquitectura limpia y escalable para el desarrollo Backend 💪🔥</h1>
+    </div>
+
+    <p class="frontend-description">
+      El desarrollo frontend moderno requiere código limpio, componentes reutilizables, 
+      diseño responsivo y accesibilidad. Las mejores prácticas incluyen: organización modular, 
+      optimización de rendimiento, consistencia en estilos, testing automatizado y 
+      documentación clara.
+    </p>
+
+    <div class="tech-cards-container">
+      <app-card-tecnology title="Go"></app-card-tecnology>
+      <app-card-tecnology title="Java"></app-card-tecnology>
+      <app-card-tecnology title="Python"></app-card-tecnology>
+      <app-card-tecnology title="TypeScript"></app-card-tecnology>
+      <app-card-tecnology title="JavaScript"></app-card-tecnology> 
+    </div>
+  </div>
+</section>
+
+<div class="code-examples-container">
+  <h1 class="tip">Buenas prácticas en Arquitectura Limpia con Go</h1>
+  <p class="subtitle-buenas-practicas-frontend">
+    Al comenzar con Go, es común organizar todo el código en un solo paquete o archivo. Sin embargo, este enfoque se vuelve insostenible
+    a medida que el proyecto crece. Con el tiempo comprendí que aplicar principios de <strong>Clean Architecture</strong> permite separar claramente
+    las responsabilidades: controladores, casos de uso, entidades y repositorios. Esto hace que el código sea más mantenible, testeable y escalable.
+
+    <br><br>
+    En este caso, desarrollaremos un ejemplo de una API utilizando <strong>arquitectura hexagonal</strong>, un enfoque que promueve 
+    la separación de responsabilidades dividiendo la lógica en archivos y capas específicas. Este patrón también sigue el 
+    <strong>principio de responsabilidad única</strong>, lo cual facilita el mantenimiento, la escalabilidad y las pruebas del sistema.
+  </p>
+
+  <app-estructura-directorios 
+    [structure]="folderStructure"
+    [rootName]="'Proyecto Go'">
+  </app-estructura-directorios>
+
+  <div class="card-row">
+    <app-card-editor-code
+      [code]="goHandlerCode" 
+      tecnologyImg="icons/html.svg"
+      filename="index.html">
+    </app-card-editor-code>
+    
+    <app-card-editor-code 
+      [code]="cssCode"
+      tecnologyImg="icons/css.svg" 
+      filename="style.css">
+    </app-card-editor-code>
+  </div>
+
+  <h1 class="tip">Reutilización de componentes en frontend</h1>
+  <p class="subtitle-buenas-practicas-frontend">
+    En mis primeros proyectos solía repetir mucho código HTML y CSS, lo cual dificultaba el mantenimiento. Con el tiempo aprendí que una 
+    buena práctica en frontend es dividir la interfaz en componentes reutilizables. Por ejemplo, si tengo varios botones con el mismo diseño, 
+    creo un componente que reciba props para cambiar el texto o el estilo. Esto no solo mejora la legibilidad, sino que también permite escalar 
+    el proyecto de forma ordenada y eficiente.
+  </p>
+
+  <div class="card-row">
+    <app-card-editor-code
+      [code]="reactCode"
+      tecnologyImg="icons/react.svg"
+      filename="ReusableButton.jsx"> 
+    </app-card-editor-code>
+
+    <app-card-editor-code
+      [code]="cssCodeReact"
+      tecnologyImg="icons/css.svg"
+      filename="ReusableButton.css"> 
+    </app-card-editor-code>
+  </div>
+
+</div>
+
+<app-tecnologias></app-tecnologias>
