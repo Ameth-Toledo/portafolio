@@ -169,3 +169,141 @@
     color: #333;
     font-weight: 700;
 }
+
+/* Versión Móvil (menos de 768px) */
+@media (max-width: 767px) {
+  .abouth-me {
+    padding: 50px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .abouth-container {
+    flex-direction: column;
+    gap: 40px;
+  }
+  
+  .abouth-left {
+    max-width: 100%;
+    order: 2;
+  }
+  
+  .abouth-title {
+    font-size: 42px;
+  }
+  
+  .decorador {
+    right: -50px;
+    top: -10px;
+    width: 100px;
+  }
+  
+  .abouth-right {
+    position: relative;
+    right: auto;
+    order: 1;
+    margin-bottom: 30px;
+    width: 100%;
+  }
+  
+  .profile-wrapper {
+    width: 280px;
+    height: 280px;
+    margin: 0 auto;
+  }
+  
+  .profile-photo {
+    width: 250px;
+    height: 250px;
+  }
+  
+  .profile-badge {
+    bottom: 10px;
+    right: 10px;
+    padding: 8px 15px;
+  }
+  
+  .about-skills {
+    padding: 30px 20px;
+    gap: 15px;
+  }
+  
+  .skill-button {
+    padding: 12px 25px;
+    font-size: 16px;
+    min-width: 160px;
+    gap: 15px;
+    border-width: 2px;
+  }
+}
+
+/* Versión Tablet (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .abouth-me {
+    padding: 60px 30px;
+  }
+  
+  .abouth-container {
+    gap: 60px;
+  }
+  
+  .abouth-title {
+    font-size: 56px;
+  }
+  
+  .decorador {
+    right: -100px;
+    width: 120px;
+  }
+  
+  .profile-wrapper {
+    width: 320px;
+    height: 320px;
+  }
+  
+  .profile-photo {
+    width: 290px;
+    height: 290px;
+  }
+  
+  .about-skills {
+    padding: 40px 30px;
+    gap: 20px;
+  }
+  
+  .skill-button {
+    padding: 13px 35px;
+    font-size: 17px;
+    min-width: 180px;
+  }
+}
+
+/* Versión Desktop pequeño (1024px - 1279px) */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .abouth-container {
+    gap: 80px;
+  }
+  
+  .abouth-title {
+    font-size: 64px;
+  }
+  
+  .decorador {
+    right: -120px;
+  }
+  
+  .profile-wrapper {
+    width: 360px;
+    height: 360px;
+  }
+  
+  .profile-photo {
+    width: 330px;
+    height: 330px;
+  }
+}
+
+/* Versión Desktop grande (1280px en adelante) */
+@media (min-width: 1280px) {
+  /* Mantiene todos tus estilos originales */
+}

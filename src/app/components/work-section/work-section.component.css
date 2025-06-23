@@ -186,3 +186,105 @@
     padding: 0 20px 20px;
     margin-top: auto;
 }
+
+/* Versión Móvil (default - menos de 768px) */
+@media (max-width: 767px) {
+  .work-section {
+    padding: 60px 20px;
+  }
+  
+  .work-header {
+    flex-direction: column;
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+  
+  .work-title {
+    font-size: 42px;
+  }
+  
+  .work-description {
+    max-width: 100%;
+  }
+  
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  
+  .project-image {
+    height: auto;
+    padding: 20px;
+  }
+  
+  .work-image {
+    width: 100%;
+    max-width: 280px;
+    margin-top: 0 !important;
+  }
+  
+  .project-content {
+    padding: 20px;
+  }
+  
+  .project-title {
+    font-size: 18px;
+  }
+  
+  .btn-git {
+    font-size: 15px;
+  }
+}
+
+/* Versión Tablet (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .work-section {
+    padding: 80px 40px;
+  }
+  
+  .work-header {
+    gap: 60px;
+    margin-bottom: 60px;
+  }
+  
+  .work-title {
+    font-size: 60px;
+  }
+  
+  .projects-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+  
+  .project-image {
+    height: 200px;
+  }
+  
+  .work-image {
+    width: 320px;
+  }
+}
+
+/* Versión Desktop pequeño (1024px - 1279px) */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .work-section {
+    padding: 90px 50px;
+  }
+  
+  .work-header {
+    gap: 80px;
+  }
+  
+  .projects-grid {
+    gap: 30px;
+  }
+  
+  .work-image {
+    width: 340px;
+  }
+}
+
+/* Versión Desktop grande (1280px en adelante) */
+@media (min-width: 1280px) {
+  /* Mantiene todos tus estilos originales */
+}
