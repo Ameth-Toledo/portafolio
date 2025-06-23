@@ -16,3 +16,17 @@
   margin: 0;
   padding: 0 10px;
 }
+
+@media (max-width: 768px) {
+  .card-tecnology {
+    width: 100px;
+    height: 36px;
+    border-radius: 25px;
+    margin: 15px auto;
+  }
+  
+  .title-tecnology {
+    font-size: 0.9em;
+    padding: 0 8px;
+  }
+}

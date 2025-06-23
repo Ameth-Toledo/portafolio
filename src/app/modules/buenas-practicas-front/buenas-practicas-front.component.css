@@ -148,3 +148,72 @@
   justify-content: flex-start;
   flex-wrap: wrap;
 }
+
+/* Mobile (up to 767px) */
+@media (max-width: 767px) {
+  .button {
+    width: 48px;
+    height: 48px;
+  }
+
+  .button:before,
+  .button:after {
+    inset: 6px;
+    border-width: 3px;
+  }
+
+  .button-elem {
+    width: 18px;
+    height: 18px;
+    margin: 15px 15px 0 15px;
+  }
+
+  .title-front {
+    font-size: 36px;
+    margin-top: 20px;
+  }
+
+  .frontend-description,
+  .subtitle-buenas-practicas-frontend {
+    font-size: 1rem;
+    margin: 30px 0 0 0;
+  }
+
+  .tech-cards-container,
+  .card-row {
+    gap: 10px;
+    margin-top: 30px;
+    justify-content: center;
+  }
+
+  .header-alignment {
+    gap: 15px;
+    margin-bottom: 30px;
+  }
+}
+
+/* Tablet (768px to 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .title-front {
+    font-size: 48px;
+  }
+
+  .frontend-description,
+  .subtitle-buenas-practicas-frontend {
+    font-size: 1.05rem;
+  }
+
+  .tech-cards-container,
+  .card-row {
+    gap: 12px;
+  }
+}
+
+/* Small Desktop (1024px to 1279px) */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .title-front {
+    font-size: 56px;
+  }
+}
+
+/* Large Desktop (1280px and up) - Default styles apply */

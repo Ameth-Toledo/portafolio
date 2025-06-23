@@ -313,9 +313,169 @@
   margin-bottom: 0;
 }
 
-@media (max-width: 768px) {
+/* ==================== */
+/* DISPOSITIVOS MÓVILES */
+/* ==================== */
+@media (max-width: 767px) {
+  /* Estilos generales */
+  .welcome-section {
+    padding: 15px 0;
+  }
+  
+  .welcome-container {
+    padding: 0 15px;
+  }
+
+  /* Botón */
+  .button {
+    width: 48px;
+    height: 48px;
+  }
+
+  .button:before,
+  .button:after {
+    inset: 6px;
+    border-width: 3px;
+  }
+
+  .button-elem {
+    width: 18px;
+    height: 18px;
+    margin: 15px 15px 0 15px;
+  }
+
+  /* Títulos y texto */
+  .title-front {
+    font-size: 36px;
+    margin-top: 20px;
+  }
+
+  .frontend-description,
+  .subtitle-buenas-practicas-frontend {
+    font-size: 1rem;
+    margin: 30px 0 0 0;
+  }
+
+  /* Tarjetas de tecnologías */
+  .tech-cards-container,
+  .card-row {
+    gap: 10px;
+    margin-top: 30px;
+    justify-content: center;
+  }
+
+  /* Tabla comparativa */
+  .framework-comparison-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    border-radius: 8px;
+  }
+  
+  .framework-comparison-title {
+    font-size: 1.5rem;
+    text-align: left;
+    padding-left: 10px;
+    margin-bottom: 25px;
+  }
+  
+  .framework-comparison-title::after {
+    left: 10px;
+    transform: none;
+    width: 80px;
+  }
+
+  /* Layout apilado para móviles pequeños */
+  @media (max-width: 639px) {
+    .framework-comparison-table {
+      display: block;
+      white-space: normal;
+    }
+    
+    .framework-table-header {
+      display: none;
+    }
+    
+    .framework-table-row {
+      margin-bottom: 30px;
+      background: #252525;
+      border-radius: 8px;
+      overflow: hidden;
+      padding: 15px;
+    }
+    
+    .framework-table-cell {
+      padding: 12px 0;
+      display: block;
+      width: 100%;
+    }
+    
+    .framework-table-cell::before {
+      content: attr(data-label);
+      display: block;
+      font-weight: 600;
+      color: #96daf0;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+    
+    .framework-name-cell {
+      flex-direction: row;
+      align-items: center;
+      padding-bottom: 15px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+  }
+
+  /* Ajustes para pantallas muy pequeñas */
+  @media (max-width: 374px) {
+    .framework-name-cell {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    
+    .framework-icon {
+      width: 24px;
+      height: 24px;
+    }
+    
+    .framework-name-text {
+      font-size: 1rem;
+    }
+  }
+}
+
+/* ============= */
+/* TABLETS */
+/* ============= */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Títulos y texto */
+  .title-front {
+    font-size: 48px;
+  }
+
+  .frontend-description,
+  .subtitle-buenas-practicas-frontend {
+    font-size: 1.05rem;
+  }
+
+  /* Tarjetas de tecnologías */
+  .tech-cards-container,
+  .card-row {
+    gap: 12px;
+  }
+
+  /* Tabla comparativa */
+  .framework-comparison-container {
+    margin: 40px auto;
+    padding: 0 15px;
+  }
+  
   .framework-comparison-title {
     font-size: 1.8rem;
+    margin-bottom: 30px;
   }
   
   .framework-table-header-cell {
@@ -333,4 +493,25 @@
     align-items: flex-start;
     gap: 5px;
   }
+}
+
+/* ====================== */
+/* ESCRITORIOS PEQUEÑOS */
+/* ====================== */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .title-front {
+    font-size: 56px;
+  }
+  
+  /* Ajustes menores para la tabla */
+  .framework-table-cell {
+    padding: 15px 12px;
+  }
+}
+
+/* ====================== */
+/* ESCRITORIOS GRANDES */
+/* ====================== */
+@media (min-width: 1280px) {
+  /* Mantener estilos originales */
 }
