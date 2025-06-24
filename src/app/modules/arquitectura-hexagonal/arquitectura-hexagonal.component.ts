@@ -112,7 +112,20 @@ func (h *UserHandler) GetUser(c *gin.Context) {
     c.JSON(http.StatusOK, user)
 }
 `
-
+ verticalSlice: FileItem[] = [
+  {
+    name: 'src',
+    type: 'folder',
+    expanded: true,
+    children: [
+      { name: 'users', type: 'folder' },
+      { name: 'core', type: 'folder' },
+      { name: 'products', type: 'folder' },
+      { name: 'sales', type: 'folder' },
+      { name: 'inventory', type: 'folder' }
+    ]
+  }
+ ]
  folderStructure: FileItem[] = [
     {
       name: 'src',

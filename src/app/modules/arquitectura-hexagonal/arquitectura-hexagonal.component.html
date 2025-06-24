@@ -20,10 +20,10 @@
     </div>
 
     <p class="frontend-description">
-      El desarrollo frontend moderno requiere código limpio, componentes reutilizables, 
-      diseño responsivo y accesibilidad. Las mejores prácticas incluyen: organización modular, 
-      optimización de rendimiento, consistencia en estilos, testing automatizado y 
-      documentación clara.
+      La arquitectura limpia aplicada en Go y muchos mas lenguajes permite desarrollar sistemas backend escalables, mantenibles y testeables. 
+      A través de una estructura modular dividida en capas como <strong>domain</strong>, <strong>application</strong> e <strong>infrastructure</strong>,
+      se promueve una separación clara de responsabilidades. Este enfoque se le conoce como arquitectura hexagonal, facilita el crecimiento del proyecto, reduce la complejidad
+      y mejora la calidad del código.
     </p>
 
     <div class="tech-cards-container">
@@ -47,12 +47,24 @@
     En este caso, desarrollaremos un ejemplo de una API utilizando <strong>arquitectura hexagonal</strong>, un enfoque que promueve 
     la separación de responsabilidades dividiendo la lógica en archivos y capas específicas. Este patrón también sigue el 
     <strong>principio de responsabilidad única</strong>, lo cual facilita el mantenimiento, la escalabilidad y las pruebas del sistema.
+
+    <br><br>
+    Antes de adentrarnos en la arquitectura hexagonal, primero implementaremos un enfoque conocido como <strong>Vertical Slice</strong>, 
+    el cual nos permite estructurar el código de forma aislada por características o casos de uso específicos, 
+    facilitando así una transición más clara hacia una arquitectura limpia y desacoplada.
   </p>
 
-  <app-estructura-directorios 
-    [structure]="folderStructure"
-    [rootName]="'Api Hexagonal'">
-  </app-estructura-directorios>
+  <div class="card-row">
+    <app-estructura-directorios 
+        [structure]="verticalSlice"
+        [rootName]="'Vertical Slice'">
+    </app-estructura-directorios>
+
+    <app-estructura-directorios 
+        [structure]="folderStructure"
+        [rootName]="'Api Hexagonal'">
+    </app-estructura-directorios>
+  </div>
 
   <div class="card-row">
     <app-card-editor-code

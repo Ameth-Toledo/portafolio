@@ -35,4 +35,9 @@ export class BlogComponent {
     event.preventDefault();
     this.router.navigate(['programacion/orientada/a/objetos'])
   }
+
+  sendToDeployAWS(event: Event) {
+    event.preventDefault();
+    this.router.navigate(['despliegue/front/aws/ec2'])
+  }
 }
