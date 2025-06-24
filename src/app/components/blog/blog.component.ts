@@ -30,4 +30,9 @@ export class BlogComponent {
     event.preventDefault();
     this.router.navigate(['arquitectura/hexagonal'])
   }
+
+  sendToPoo(event: Event) {
+    event.preventDefault();
+    this.router.navigate(['programacion/orientada/a/objetos'])
+  }
 }

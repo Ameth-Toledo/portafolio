@@ -4,13 +4,14 @@
   color: #d4d4d4;
   padding: 10px;
   border-radius: 5px;
-  width: 500px; /* Ancho fijo */
-  min-height: 50px; /* Altura mínima */
-  height: auto; /* Altura flexible */
-  overflow-x: hidden; /* No scroll horizontal */
-  overflow-y: visible; /* Expansión vertical libre */
+  width: 500px;
+  min-height: 50px; 
+  height: auto; 
+  overflow-x: hidden; 
+  overflow-y: visible; 
   box-sizing: border-box;
   margin-left: 20px;
+  margin-top: 20px;
 }
 
 .file-explorer h3 {
@@ -63,7 +64,23 @@
 }
 
 .nested-folder {
-  width: calc(100% - 15px); /* Ajuste para alineación */
-  margin-left: 5px; /* Sangría para anidación */
+  width: calc(100% - 15px); 
+  margin-left: 5px; 
   overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .file-explorer {
+    width: 350px;
+    margin-left: 0;
+    padding: 8px;
+  }
+  
+  .item {
+    font-size: 12px;
+  }
+  
+  .file-explorer h3 {
+    font-size: 13px;
+  }
 }
