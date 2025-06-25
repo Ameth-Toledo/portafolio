@@ -140,22 +140,6 @@
   text-align: left;
 }
 
-.image-row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 30px;
-  margin: 30px 0;
-  flex-wrap: wrap; 
-}
-
-.lab-picture {
-  width: 40%;
-  height: auto;
-  border-radius: 8px;
-  object-fit: cover;
-}
-
 .button-outer-container {
   display: flex;
   justify-content: flex-end; 
@@ -248,6 +232,37 @@
 .learn-more-btn:hover .learn-more-text {
   color: #fff;
 }
+
+.prev-btn .learn-more-icon.arrow-left {
+  left: 1.2rem; 
+  transform: rotate(180deg);
+}
+
+.prev-btn .learn-more-icon.arrow-left::before {
+  right: 0.0625rem;
+  left: auto; 
+}
+
+.prev-btn:hover .learn-more-icon.arrow-left {
+  transform: rotate(180deg) translate(-1rem, 0);
+}
+
+.next-btn .learn-more-icon.arrow-right {
+  left: 0.625rem;
+}
+
+.next-btn .learn-more-icon.arrow-right::before {
+  right: 0.0625rem;
+}
+
+.next-btn:hover .learn-more-icon.arrow-right {
+  transform: translate(1rem, 0);
+}
+
+.button-container button:first-child {
+  margin-right: 20px;
+}
+
 /* Mobile (up to 767px) */
 @media (max-width: 767px) {
   .button {

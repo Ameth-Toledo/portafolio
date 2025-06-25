@@ -1,7 +1,7 @@
 <section class="welcome-section">
   <div class="welcome-container">
     <div class="nav-container">
-      <button class="button" (click)="sendToHome($event)">
+      <button class="button" (click)="sendToDeployAWS($event)">
         <div class="button-box">
           <span class="button-elem">
             <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
@@ -30,70 +30,77 @@
       <app-card-tecnology title="Angular"></app-card-tecnology>
       <app-card-tecnology title="React"></app-card-tecnology>
       <app-card-tecnology title="Vue"></app-card-tecnology>
-      <app-card-tecnology title="Astro"></app-card-tecnology>
-      <app-card-tecnology title="Svelte"></app-card-tecnology> 
+      <app-card-tecnology title="AWS"></app-card-tecnology>
+      <app-card-tecnology title="Nginx"></app-card-tecnology> 
     </div>
   </div>
 </section>
 
 <div class="code-examples-container">
-  <h1 class="tip">Creacion de instancia EC2 con IP elastica </h1>
+  <h1 class="tip">Asociación de IP elástica</h1>
   <p class="subtitle-buenas-practicas-frontend">
     El primer paso es dirijirnos al laboratorio de AWS y le damos en iniciar laboratorio de aprendizaje, nos abrira otra ventana en el navegador, en donde nos saldran varias opciones como:
     Start Lab, End Lab etc. Daremos click sobre <strong>Start Lab</strong> y esperamos a que el estado de aws se cambie a verde.
   </p>
 
-  <div class="image-row">
-    <img src="blog/aws/aws1.png" alt="aws1" class="lab-picture left-img">
-    <img src="blog/aws/aws2.png" alt="aws2" class="lab-picture right-img">
-  </div>
+  <app-images 
+    imageSrc="blog/aws/aws1.png" 
+    imageSrc2="blog/aws/aws2.png">
+  </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
     Despues no mostrara otra vista en donde tendremos un buscador, ahi vamos a buscar EC2 y damos click sobre la primer opcion, en mi caso aparece como visitados recientemente, damos click y nos 
     mandara la seccion de instancias, en mi caso tengo creada una llamada RabbitMQ, a ustedes les aparecera sin estancias.
   </p>
 
-  <div class="image-row">
-    <img src="blog/aws/aws3.png" alt="aws1" class="lab-picture left-img">
-    <img src="blog/aws/aws4.png" alt="aws2" class="lab-picture right-img">
-  </div>
+  <app-images 
+    imageSrc="blog/aws/aws3.png" 
+    imageSrc2="blog/aws/aws4.png">
+  </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
     Ahora aremos click sobre el boton amarillo que se encuentra de lado derecho que dice lanzar instancia, nos mandara a la seccion de configuración, nos va a pedir un nombre de instancia, en mi caso
     le pondre <strong>Front-End</strong> a qui el nombre no importa.
   </p>
 
-  <div class="image-row">
-    <img src="blog/aws/aws5.png" alt="aws1" class="lab-picture left-img">
-    <img src="blog/aws/aws6.png" alt="aws2" class="lab-picture right-img">
-  </div>
+  <app-images 
+    imageSrc="blog/aws/aws5.png" 
+    imageSrc2="blog/aws/aws6.png">
+  </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
     Ahora vamos a seleccionar el sistema operativo de nuestra maquina, aqui es importante seleccionar <strong>Ubuntu</strong>, ya que si seleccionan otro sistema operativo el despliegue no va a funcionar 
     correctamente, luego de haver seleccionado el sistema operativo nos deplazamos y encontraremos la seccion de par de claves, vamos a dar click sobre crear un nuevo par de claves.
   </p>
 
-  <div class="image-row">
-    <img src="blog/aws/aws7.png" alt="aws1" class="lab-picture left-img">
-    <img src="blog/aws/aws8.png" alt="aws2" class="lab-picture right-img">
-  </div>
+  <app-images 
+    imageSrc="blog/aws/aws7.png" 
+    imageSrc2="blog/aws/aws8.png">
+  </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
     Nos pedira un nombre para el par de claves en mi caso pondre el mismo nombre que el de mi instancia que es <strong>Front-End</strong>, dejamos la opcion RSA y en el formato de archivo mantenemos <strong>.pem</strong>
     y le damos click en crear par de claves. es muy importante guardar bien este archivo ya que nos servira para conectarnos a la instancia.
   </p>
 
-  <div class="image-row">
-    <img src="blog/aws/aws9.png" alt="aws1" class="lab-picture left-img">
-    <img src="blog/aws/aws10.png" alt="aws2" class="lab-picture right-img">
-  </div>
+  <app-images 
+    imageSrc="blog/aws/aws9.png" 
+    imageSrc2="blog/aws/aws10.png">
+  </app-images>
 </div>
 
 <div class="button-outer-container">
   <div class="button-container">
-    <button class="learn-more-btn" (click)="sendToDeployAWS2($event)">
+    <button class="learn-more-btn prev-btn" (click)="sendToDeployAWS($event)">
       <span class="learn-more-circle" aria-hidden="true">
-        <span class="learn-more-icon"></span>
+        <span class="learn-more-icon arrow-left"></span>
+      </span>
+      <span class="learn-more-text">Anterior</span>
+    </button>
+    
+    <button class="learn-more-btn next-btn" (click)="sendToDeployAWS2($event)">
+      <span class="learn-more-circle" aria-hidden="true">
+        <span class="learn-more-icon arrow-right"></span>
       </span>
       <span class="learn-more-text">Siguiente</span>
     </button>

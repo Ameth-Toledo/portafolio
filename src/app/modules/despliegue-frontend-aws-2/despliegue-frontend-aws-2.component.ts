@@ -3,10 +3,11 @@ import { CardTecnologyComponent } from "../../components/card-tecnology/card-tec
 import { TecnologiasComponent } from "../../components/tecnologias/tecnologias.component";
 import { AnimationService } from '../../services/animation/animation.service';
 import { Router } from '@angular/router';
+import { ImagesComponent } from "../../components/images/images.component";
 @Component({
   selector: 'app-despliegue-frontend-aws-2',
   standalone: true,
-  imports: [CardTecnologyComponent, TecnologiasComponent],
+  imports: [CardTecnologyComponent, TecnologiasComponent, ImagesComponent],
   templateUrl: './despliegue-frontend-aws-2.component.html',
   styleUrl: './despliegue-frontend-aws-2.component.css'
 })
@@ -32,5 +33,10 @@ constructor (
   sendToDeployAWS2(event: Event) {
     event.preventDefault();
     this.router.navigate(['despliegue/front/aws/ec2/id=2'])
+  }
+
+  sendToDeployAWS(event: Event) {
+    event.preventDefault();
+    this.router.navigate(['despliegue/front/aws/ec2'])
   }
 }

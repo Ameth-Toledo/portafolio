@@ -1,0 +1,58 @@
+.image-row {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin: 30px 0;
+  flex-wrap: wrap;
+}
+
+.image-zoom-container {
+  width: 40%;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.lab-picture {
+  cursor: pointer;
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* Versión móvil */
+@media (max-width: 767px) {
+  .image-zoom-container {
+    width: 90%;
+  }
+}
+
+/*code anterior
+
+
+.image-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  margin: 30px 0;
+  flex-wrap: wrap; 
+}
+
+.lab-picture {
+  width: 40%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+  transition: transform 0.3s ease; 
+}
+
+.lab-picture:hover {
+  transform: scale(1.05); 
+  cursor: zoom-in; 
+}
+
+*/
