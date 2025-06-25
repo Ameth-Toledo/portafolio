@@ -37,43 +37,56 @@
 </section>
 
 <div class="code-examples-container">
-  <h1 class="tip">Asociación de IP elástica</h1>
+  <h1 class="tip">Instalación de Nginx</h1>
   <p class="subtitle-buenas-practicas-frontend">
-    Vamos a crear y asociar una direccion ip elastica a nuestra instancia que hemos creado, para ellos nos vamos al menu izquierdo y nos dirijimos a la seccion de <strong>Red y Seguridad</strong> y seleccionamos <strong>Direcciones IP elasticas</strong>
-    nos mostrara diferentes opciones, vamos a dar click sobre el boton amarillo que dice Asignar direccion IP elastica, nos va a abrir otra vista, aqui no movemos nada simplementa daremos click en asignar y listo.
+    Vamos a instalar y configurar nginx para que nuestra aplicación web Front-End funcione perfectamente.
+
+    <br><br>
+    Seleccionamos nuestra instancia y damos click sobre el boton que dice <strong>Conectar</strong>, nos llevara a otra vista donde veremos nuetra IP y otras cosas, nos desplazaremos hacia abajo y damos click sobre el boton amarillo que dice conectar y esperamos.
   </p>
 
   <app-images 
-    imageSrc="blog/aws/aws13.png" 
-    imageSrc2="blog/aws/aws14.png">
+    imageSrc="blog/aws/aws28.png" 
+    imageSrc2="blog/aws/aws29.png">
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
-    Nos mandara el mensaje de exito, si quieren pueden ponerle un nombre o dejarlo asi como está, en mi caso le pondre Front-End para identificarlo.
+    Nos abrira la terminal. Aqui vamos a buscar y actualizar paquetes que nuestro sistema operativo nesesite asi que vamos a ejecutar el comando <strong>sudo apt update && sudo apt upgrade -y</strong> para buscar y actualizar paquetes.
   </p>
 
+  <app-comand-copy comand="sudo apt update && sudo apt upgrade -y"></app-comand-copy>
+
+  <p class="subtitle-buenas-practicas-frontend">
+    Despues de que hayamos actualizado nuestros paquetes vamos a instalar <strong>Nginx</strong> para ellos vamos a ejecutar el comando <strong>sudo apt install nginx -y</strong> y solo queda esperar a que termine el proceso de instalación.
+  </p>
+
+  <app-comand-copy comand="sudo apt install nginx -y"></app-comand-copy>
+
   <app-images 
-    imageSrc="blog/aws/aws15.png" 
-    imageSrc2="blog/aws/aws16.png">
+    imageSrc="blog/aws/aws30.png" 
+    imageSrc2="blog/aws/aws31.png">
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
-    Ahora vamos damos click sobre el boton Asociar esta direccion IP elastica, nos mandara a otra vista, nos desplazamos hacia abajo y buscamos la seccion de instancia. Aqui vamos seleccionar nuestra instancia que creamos, desplegamos la lista de instancias
-    y buscamos la nuestra, en mi caso es la de <strong>Front-End</strong>, la seleccionamos y damos click sobre el boton amarillo que dice Asociado.
+    Ahora regresamos a nuestra app web en <strong>Visual Studio Code</strong> y tenemos que hacer un build para que el framework nos genere la carpeta dist, el comando para hacer build depende mucho del framework asi que te tocara buscar cual es 
+    el comando para hacer build en tu app.
+
+    <br><br>
+    Una ves que tengamos la carpeta dist, vamos a hacer huzo de FileZilla para subir nuestros archivos a EC2 si no lo tienes puedes decargarlos aqui: <a href="https://filezilla-project.org/download.php?platform=win64" target="_blank">https://filezilla-project.org/download.php?platform=win64</a>
   </p>
 
   <app-images 
-    imageSrc="blog/aws/aws17.png" 
-    imageSrc2="blog/aws/aws18.png">
+    imageSrc="blog/aws/aws32.png" 
+    imageSrc2="blog/aws/aws33.png">
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
-    Nos regresamos a la seccion de instancias, veremos que la direccion IP de nuestra instancias ha cambiado y ahora ya no cambiara la IP siempre sera la misma.
+    Una ves de que ya tengamos <strong>FileZilla</strong> vamos a abrirlo y daremos click sobre el icono de servidores que se encuentra de lado izquierdo, en la imagen se muestra en que opcion se debe de dar click.
   </p>
 
   <app-images 
-    imageSrc="blog/aws/aws12.png" 
-    imageSrc2="blog/aws/aws19.png">
+    imageSrc="blog/aws/aws33.png" 
+    imageSrc2="blog/aws/aws34.png">
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">

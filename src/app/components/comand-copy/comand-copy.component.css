@@ -59,7 +59,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    background-color: #1E2933; 
+    background-color: #000000; 
     padding: 10px;
     border-radius: 10px;
     transition: background-color 0.3s ease;
@@ -71,7 +71,7 @@
 
 .email-text {
     font-family: 'Inter', sans-serif;
-    color: #FFFFFF;
+    color: #06eb06;
     font-size: 1rem;
     word-break: break-word;
     flex-grow: 1; 

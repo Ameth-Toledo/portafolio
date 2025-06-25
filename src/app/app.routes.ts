@@ -7,6 +7,9 @@ import { ArquitecturaHexagonalComponent } from './modules/arquitectura-hexagonal
 import { NotfoundComponent } from './modules/notfound/notfound.component';
 import { DespliegueFrontendAwsComponent } from './modules/despliegue-frontend-aws/despliegue-frontend-aws.component';
 import { DespliegueFrontendAws2Component } from './modules/despliegue-frontend-aws-2/despliegue-frontend-aws-2.component';
+import { DespliegueFrontendAws3Component } from './modules/despliegue-frontend-aws-3/despliegue-frontend-aws-3.component';
+import { DespliegueFrontendAws4Component } from './modules/despliegue-frontend-aws-4/despliegue-frontend-aws-4.component';
+import { DespliegueFrontendAws5Component } from './modules/despliegue-frontend-aws-5/despliegue-frontend-aws-5.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '', pathMatch: 'full' },
@@ -17,5 +20,8 @@ export const routes: Routes = [
     { path: 'arquitectura/hexagonal', component: ArquitecturaHexagonalComponent },
     { path: 'despliegue/front/aws/ec2', component: DespliegueFrontendAwsComponent },
     { path: 'despliegue/front/aws/ec2/id=2', component: DespliegueFrontendAws2Component },
+    { path: 'despliegue/front/aws/ec2/id=3', component: DespliegueFrontendAws3Component },
+    { path: 'despliegue/front/aws/ec2/id=4', component: DespliegueFrontendAws4Component },
+    { path: 'despliegue/front/aws/ec2/id=5', component: DespliegueFrontendAws5Component },
     { path: '**', component: NotfoundComponent }
 ];

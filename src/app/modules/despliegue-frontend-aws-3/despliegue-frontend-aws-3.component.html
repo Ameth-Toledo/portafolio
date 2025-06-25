@@ -37,43 +37,51 @@
 </section>
 
 <div class="code-examples-container">
-  <h1 class="tip">Asociación de IP elástica</h1>
+  <h1 class="tip">Configuración de puertos</h1>
   <p class="subtitle-buenas-practicas-frontend">
-    Vamos a crear y asociar una direccion ip elastica a nuestra instancia que hemos creado, para ellos nos vamos al menu izquierdo y nos dirijimos a la seccion de <strong>Red y Seguridad</strong> y seleccionamos <strong>Direcciones IP elasticas</strong>
-    nos mostrara diferentes opciones, vamos a dar click sobre el boton amarillo que dice Asignar direccion IP elastica, nos va a abrir otra vista, aqui no movemos nada simplementa daremos click en asignar y listo.
+    Vamos a gestionar los grupos de seguridad para poder habilitar los puertos correspondientes, que este caso para despliegue de front solo son 3 (SSH, HTTP, HTTPS).
+
+    <br><br>
+    Seleccionamos nuestra instancia y en la parte de abajo nos apareceran varias opciones, buscamos la opcion que dice <strong>Seguridad</strong>, nos desplazamos hacia abajo y encontraremos la seccion de <strong>Grupos de seguridad</strong>, damos click sobre el enlace y nos 
+    abrira otra vista en donde veremos los puertos abiertos, por defecto solo estara abierto el de ssh.
   </p>
 
   <app-images 
-    imageSrc="blog/aws/aws13.png" 
-    imageSrc2="blog/aws/aws14.png">
+    imageSrc="blog/aws/aws20.png" 
+    imageSrc2="blog/aws/aws21.png">
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
-    Nos mandara el mensaje de exito, si quieren pueden ponerle un nombre o dejarlo asi como está, en mi caso le pondre Front-End para identificarlo.
+    Ahora vamos a dar click sobre la opcion de <strong>Editar reglas de entrada</strong>, nos va a abrir otra vista en donde nos dara la opcion de agregar mas puertos con su origen correspondiente que este caso manejaremos el origen <strong style="color: #40a9da;">0.0.0.0/0</strong>.
+    <br><br>
+    Damos click en <strong>Agregar regla</strong> y buscamos el protocolo, primero vamos a configurar el de http, el numero de puerto es el 80.
   </p>
 
   <app-images 
-    imageSrc="blog/aws/aws15.png" 
-    imageSrc2="blog/aws/aws16.png">
+    imageSrc="blog/aws/aws22.png" 
+    imageSrc2="blog/aws/aws23.png">
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
-    Ahora vamos damos click sobre el boton Asociar esta direccion IP elastica, nos mandara a otra vista, nos desplazamos hacia abajo y buscamos la seccion de instancia. Aqui vamos seleccionar nuestra instancia que creamos, desplegamos la lista de instancias
-    y buscamos la nuestra, en mi caso es la de <strong>Front-End</strong>, la seleccionamos y damos click sobre el boton amarillo que dice Asociado.
+    En Origen vamos a seleccionar Anywhere y quedaria configurada el primer protocolo <strong>HTTP</strong>.
+    <br>
+    Ahora vamos a configurar el protocolo https, este protocolo corre en el puerto numero 443, hacemos el mismo proceso de configuración. 
   </p>
 
   <app-images 
-    imageSrc="blog/aws/aws17.png" 
-    imageSrc2="blog/aws/aws18.png">
+    imageSrc="blog/aws/aws24.png" 
+    imageSrc2="blog/aws/aws25.png">
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
-    Nos regresamos a la seccion de instancias, veremos que la direccion IP de nuestra instancias ha cambiado y ahora ya no cambiara la IP siempre sera la misma.
+    Una ves de que ya hayamos abierto los puertos, daremos click en <strong>Guardar reglas</strong>. 
+    <br>
+    Nos mostrara el mensaje de exito una ves que hayamos guardado los cambios y ahora en la lista ya apareceran los puertos que configuramos.
   </p>
 
   <app-images 
-    imageSrc="blog/aws/aws12.png" 
-    imageSrc2="blog/aws/aws19.png">
+    imageSrc="blog/aws/aws26.png" 
+    imageSrc2="blog/aws/aws27.png">
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">

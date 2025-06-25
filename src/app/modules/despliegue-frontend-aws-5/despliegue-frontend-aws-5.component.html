@@ -37,43 +37,48 @@
 </section>
 
 <div class="code-examples-container">
-  <h1 class="tip">Asociación de IP elástica</h1>
+  <h1 class="tip">Instalación de Nginx</h1>
   <p class="subtitle-buenas-practicas-frontend">
-    Vamos a crear y asociar una direccion ip elastica a nuestra instancia que hemos creado, para ellos nos vamos al menu izquierdo y nos dirijimos a la seccion de <strong>Red y Seguridad</strong> y seleccionamos <strong>Direcciones IP elasticas</strong>
-    nos mostrara diferentes opciones, vamos a dar click sobre el boton amarillo que dice Asignar direccion IP elastica, nos va a abrir otra vista, aqui no movemos nada simplementa daremos click en asignar y listo.
+    Vamos a instalar y configurar nginx para que nuestra aplicación web Front-End funcione perfectamente.
+
+    <br><br>
+    Seleccionamos nuestra instancia y damos click sobre el boton que dice <strong>Conectar</strong>, nos llevara a otra vista donde veremos nuetra IP y otras cosas, nos desplazaremos hacia abajo y damos click sobre el boton amarillo que dice conectar y esperamos.
   </p>
 
   <app-images 
-    imageSrc="blog/aws/aws13.png" 
-    imageSrc2="blog/aws/aws14.png">
+    imageSrc="blog/aws/aws28.png" 
+    imageSrc2="blog/aws/aws29.png">
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
-    Nos mandara el mensaje de exito, si quieren pueden ponerle un nombre o dejarlo asi como está, en mi caso le pondre Front-End para identificarlo.
+    Nos abrira la terminal
   </p>
 
   <app-images 
-    imageSrc="blog/aws/aws15.png" 
-    imageSrc2="blog/aws/aws16.png">
+    imageSrc="blog/aws/aws30.png" 
+    imageSrc2="blog/aws/aws31.png">
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
-    Ahora vamos damos click sobre el boton Asociar esta direccion IP elastica, nos mandara a otra vista, nos desplazamos hacia abajo y buscamos la seccion de instancia. Aqui vamos seleccionar nuestra instancia que creamos, desplegamos la lista de instancias
-    y buscamos la nuestra, en mi caso es la de <strong>Front-End</strong>, la seleccionamos y damos click sobre el boton amarillo que dice Asociado.
+    En Origen vamos a seleccionar Anywhere y quedaria configurada el primer protocolo <strong>HTTP</strong>.
+    <br>
+    Ahora vamos a configurar el protocolo https, este protocolo corre en el puerto numero 443, hacemos el mismo proceso de configuración. 
   </p>
 
   <app-images 
-    imageSrc="blog/aws/aws17.png" 
-    imageSrc2="blog/aws/aws18.png">
+    imageSrc="blog/aws/aws24.png" 
+    imageSrc2="blog/aws/aws25.png">
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
-    Nos regresamos a la seccion de instancias, veremos que la direccion IP de nuestra instancias ha cambiado y ahora ya no cambiara la IP siempre sera la misma.
+    Una ves de que ya hayamos abierto los puertos, daremos click en <strong>Guardar reglas</strong>. 
+    <br>
+    Nos mostrara el mensaje de exito una ves que hayamos guardado los cambios y ahora en la lista ya apareceran los puertos que configuramos.
   </p>
 
   <app-images 
-    imageSrc="blog/aws/aws12.png" 
-    imageSrc2="blog/aws/aws19.png">
+    imageSrc="blog/aws/aws26.png" 
+    imageSrc2="blog/aws/aws27.png">
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">

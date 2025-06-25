@@ -32,7 +32,7 @@ constructor (
 
   sendToDeployAWS2(event: Event) {
     event.preventDefault();
-    this.router.navigate(['despliegue/front/aws/ec2/id=2'])
+    this.router.navigate(['despliegue/front/aws/ec2/id=3'])
   }
 
   sendToDeployAWS(event: Event) {
