@@ -4,11 +4,12 @@ import { AnimationService } from '../../services/animation/animation.service';
 import { TecnologiasComponent } from "../../components/tecnologias/tecnologias.component";
 import { ImagesComponent } from "../../components/images/images.component";
 import { CardTecnologyComponent } from "../../components/card-tecnology/card-tecnology.component";
+import { ComandCopyComponent } from "../../components/comand-copy/comand-copy.component";
 
 @Component({
   selector: 'app-despliegue-frontend-aws-5',
   standalone: true,
-  imports: [TecnologiasComponent, ImagesComponent, CardTecnologyComponent],
+  imports: [TecnologiasComponent, ImagesComponent, CardTecnologyComponent, ComandCopyComponent],
   templateUrl: './despliegue-frontend-aws-5.component.html',
   styleUrl: './despliegue-frontend-aws-5.component.css'
 })
@@ -33,11 +34,11 @@ constructor (
 
   sendToDeployAWS2(event: Event) {
     event.preventDefault();
-    this.router.navigate(['despliegue/front/aws/ec2/id=5'])
+    this.router.navigate(['despliegue/front/aws/ec2/id=6'])
   }
 
   sendToDeployAWS(event: Event) {
     event.preventDefault();
-    this.router.navigate(['despliegue/front/aws/ec2/id=3'])
+    this.router.navigate(['despliegue/front/aws/ec2/id=4'])
   }
 }

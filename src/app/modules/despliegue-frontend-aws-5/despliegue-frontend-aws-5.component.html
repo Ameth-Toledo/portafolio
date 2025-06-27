@@ -37,26 +37,45 @@
 </section>
 
 <div class="code-examples-container">
-  <h1 class="tip">Instalación de Nginx</h1>
+  <h1 class="tip">Configuración de Nginx para despliegue</h1>
   <p class="subtitle-buenas-practicas-frontend">
-    Vamos a instalar y configurar nginx para que nuestra aplicación web Front-End funcione perfectamente.
+    ahora regresamos a nuestra consola de EC2 y nos iremos la siguiente ruta <strong>/var/www/html/</strong> para ver el index.html de nginx.
+  </p>
 
-    <br><br>
-    Seleccionamos nuestra instancia y damos click sobre el boton que dice <strong>Conectar</strong>, nos llevara a otra vista donde veremos nuetra IP y otras cosas, nos desplazaremos hacia abajo y damos click sobre el boton amarillo que dice conectar y esperamos.
+  <app-comand-copy comand="cd /var/www/html/"></app-comand-copy>
+
+  <p class="subtitle-buenas-practicas-frontend">
+    con <strong>ls</strong> vamos a ver el archivo <strong>index.nginx-debian.html</strong>, ese archivo lo vamos a borrar y sera reemplazado por el index.html de nuestra app web, vamos a borrarlo, les dejo el comando:
+  </p>
+
+  <app-comand-copy comand="sudo rm -r index.nginx-debian.html"></app-comand-copy>
+ 
+  <p class="subtitle-buenas-practicas-frontend">
+    luego regresamos a filezilla y vamos a transferir nuestros archivos de la carpeta dist, para ello buscamo de lado izquierdo nuestra carpeta, y arrastramos solamente <strong>dist</strong> a la carpeta llamada <strong>ubuntu</strong> que esta de lado derecho, ya nadamas esperamos.
   </p>
 
   <app-images 
-    imageSrc="blog/aws/aws28.png" 
-    imageSrc2="blog/aws/aws29.png">
+    imageSrc="blog/aws/aws39.png" 
+    imageSrc2="blog/aws/aws40.png">
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
-    Nos abrira la terminal
+    Nos regresamos a la consola de EC2 y ejecutamos <strong>ls</strong> para ver que este la carpeta dist en el home.
+
+    <br>Luego de que ya verificamos de que si esta el directorio, vamos a entrar como super usuario para no tener que estar escribiendo sudo a cada rato, para ellos ejecutamos el siguiente comando:
   </p>
 
+  <app-comand-copy comand="sudo su"></app-comand-copy>
+
+  <p class="subtitle-buenas-practicas-frontend">
+    Ahora vamos a mover nuestros archivos a la carperta /var/www/html, para ellos primero entraremos a la carpeta dist y luego moveremos cada archivo y carpeta que tenga adentro con el siguiente comando:
+  </p>
+
+  <app-comand-copy comand="cp -R archivo.txt /var/www/html/"></app-comand-copy>
+
   <app-images 
-    imageSrc="blog/aws/aws30.png" 
-    imageSrc2="blog/aws/aws31.png">
+    imageSrc="blog/aws/aws41.png" 
+    imageSrc2="blog/aws/aws42.png">
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">

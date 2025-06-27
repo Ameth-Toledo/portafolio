@@ -90,6 +90,35 @@
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
+    Nos va a aparecer una ventana de sitios, por defecto estara vacia, aqui es donde vamos a hacer uso de el par de claves <strong>.pem</strong> para conectarnos por ssh a EC2.
+
+    <br><br>
+    Hacemos click en <strong>nuevo sitio</strong>, y llenamos la siguiente información:
+    <br>
+    <br><strong>Protocolo:</strong> seleccionamos SFTP.
+    <br><strong>Servidor:</strong> ponemos la IP de nuestra instancia.
+    <br><strong>Mode de acceso:</strong>Archivo de claves.
+    <br><strong>Usuario:</strong> ubuntu
+    <br><strong>Archivo de claves:</strong> la direccion en donde se encuentra nuestro .pem
+  </p>
+
+  <app-images 
+    imageSrc="blog/aws/aws35.png"
+    imageSrc2="blog/aws/aws36.png">
+  </app-images>
+
+  <p class="subtitle-buenas-practicas-frontend">
+    Para obtener la ruta de nuestro archivo .pem damos click en el boton que dice examinar y nos abrira el explorador de archivos para buscar el .pem. 
+    <br>
+    una ves que ya hayamos llenado estos datos damos click en el boton que dice <strong>conectar</strong>, y listo tendremos exito al conectarnos. Ya podremos ver las carpetas que se encuentran en nuestra consola EC2.
+  </p>
+
+  <app-images
+    imageSrc="blog/aws/aws37.png"
+    imageSrc2="blog/aws/aws38.png">
+  </app-images>
+
+  <p class="subtitle-buenas-practicas-frontend">
     Ve a la siguiente pagina para continuar con el despliegue.
   </p>
 </div>
