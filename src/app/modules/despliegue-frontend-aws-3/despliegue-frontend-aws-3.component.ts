@@ -4,6 +4,7 @@ import { AnimationService } from '../../services/animation/animation.service';
 import { TecnologiasComponent } from "../../components/tecnologias/tecnologias.component";
 import { ImagesComponent } from "../../components/images/images.component";
 import { CardTecnologyComponent } from "../../components/card-tecnology/card-tecnology.component";
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-despliegue-frontend-aws-3',
@@ -15,7 +16,8 @@ import { CardTecnologyComponent } from "../../components/card-tecnology/card-tec
 export class DespliegueFrontendAws3Component {
 constructor (
     private router : Router,
-    private animationService: AnimationService
+    private animationService: AnimationService,
+    private viewportScroller: ViewportScroller
   ) {}
 
   ngOnInit() {
@@ -33,11 +35,15 @@ constructor (
 
   sendToDeployAWS2(event: Event) {
     event.preventDefault();
-    this.router.navigate(['despliegue/front/aws/ec2/id=4'])
+    this.router.navigate(['despliegue/front/aws/ec2/id=4']).then(() => {
+      this.viewportScroller.scrollToPosition([0, 0]);
+    });
   }
 
   sendToDeployAWS(event: Event) {
     event.preventDefault();
-    this.router.navigate(['despliegue/front/aws/ec2/id=2'])
+    this.router.navigate(['despliegue/front/aws/ec2/id=2']).then(() => {
+      this.viewportScroller.scrollToPosition([0, 0]);
+    });
   }
 }

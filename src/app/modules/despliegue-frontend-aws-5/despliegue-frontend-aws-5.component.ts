@@ -5,6 +5,7 @@ import { TecnologiasComponent } from "../../components/tecnologias/tecnologias.c
 import { ImagesComponent } from "../../components/images/images.component";
 import { CardTecnologyComponent } from "../../components/card-tecnology/card-tecnology.component";
 import { ComandCopyComponent } from "../../components/comand-copy/comand-copy.component";
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-despliegue-frontend-aws-5',
@@ -16,7 +17,8 @@ import { ComandCopyComponent } from "../../components/comand-copy/comand-copy.co
 export class DespliegueFrontendAws5Component {
 constructor (
     private router : Router,
-    private animationService: AnimationService
+    private animationService: AnimationService,
+    private viewportScroller: ViewportScroller
   ) {}
 
   ngOnInit() {
@@ -34,12 +36,16 @@ constructor (
 
   sendToDeployAWS2(event: Event) {
     event.preventDefault();
-    this.router.navigate(['despliegue/front/aws/ec2/id=6'])
+    this.router.navigate(['despliegue/front/aws/ec2/id=6']).then(() => {
+      this.viewportScroller.scrollToPosition([0, 0]);
+    });
   }
 
   sendToDeployAWS(event: Event) {
     event.preventDefault();
-    this.router.navigate(['despliegue/front/aws/ec2/id=4'])
+    this.router.navigate(['despliegue/front/aws/ec2/id=4']).then(() => {
+      this.viewportScroller.scrollToPosition([0, 0]);
+    });
   }
 
   scrollToConfig() {

@@ -4,6 +4,8 @@ import { TecnologiasComponent } from "../../components/tecnologias/tecnologias.c
 import { AnimationService } from '../../services/animation/animation.service';
 import { Router } from '@angular/router';
 import { ImagesComponent } from "../../components/images/images.component";
+import { ViewportScroller } from '@angular/common';
+
 @Component({
   selector: 'app-despliegue-frontend-aws-2',
   standalone: true,
@@ -14,7 +16,8 @@ import { ImagesComponent } from "../../components/images/images.component";
 export class DespliegueFrontendAws2Component {
 constructor (
     private router : Router,
-    private animationService: AnimationService
+    private animationService: AnimationService,
+    private viewportScroller: ViewportScroller
   ) {}
 
   ngOnInit() {
@@ -32,11 +35,15 @@ constructor (
 
   sendToDeployAWS2(event: Event) {
     event.preventDefault();
-    this.router.navigate(['despliegue/front/aws/ec2/id=3'])
+    this.router.navigate(['despliegue/front/aws/ec2/id=3']).then(() => {
+      this.viewportScroller.scrollToPosition([0, 0]);
+    });
   }
 
   sendToDeployAWS(event: Event) {
     event.preventDefault();
-    this.router.navigate(['despliegue/front/aws/ec2'])
+    this.router.navigate(['despliegue/front/aws/ec2']).then(() => {
+      this.viewportScroller.scrollToPosition([0, 0]);
+    });
   }
 }

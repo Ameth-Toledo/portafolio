@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-blog',
@@ -9,35 +10,49 @@ import { Router } from '@angular/router';
   styleUrl: './blog.component.css'
 })
 export class BlogComponent {
-  constructor (private router : Router) {}
+  constructor (
+    private router : Router,
+    private viewportScroller: ViewportScroller) {}
 
   sendToGoodPracticesFront(event: Event) {
     event.preventDefault();
-    this.router.navigate(['buenas/practicas/de/front'])
+    this.router.navigate(['buenas/practicas/de/front']).then(() => {
+      this.viewportScroller.scrollToPosition([0, 0]);
+    });
   }
 
   sendToWhenToUseFramewors(event: Event) {
     event.preventDefault();
-    this.router.navigate(['cuando/usar/react/y/cuando/angular'])
+    this.router.navigate(['cuando/usar/react/y/cuando/angular']).then(() => {
+      this.viewportScroller.scrollToPosition([0, 0]);
+    });
   }
 
   sendToGoodPracticesUiUx(event: Event) {
     event.preventDefault();
-    this.router.navigate(['buenas/practicas/ui/ux'])
+    this.router.navigate(['buenas/practicas/ui/ux']).then(() => {
+      this.viewportScroller.scrollToPosition([0, 0]);
+    });
   }
 
   sendToArquitectureHexagonal(event: Event) {
     event.preventDefault();
-    this.router.navigate(['arquitectura/hexagonal'])
+    this.router.navigate(['arquitectura/hexagonal']).then(() => {
+      this.viewportScroller.scrollToPosition([0, 0]);
+    });
   }
 
   sendToPoo(event: Event) {
     event.preventDefault();
-    this.router.navigate(['programacion/orientada/a/objetos'])
+    this.router.navigate(['programacion/orientada/a/objetos']).then(() => {
+      this.viewportScroller.scrollToPosition([0, 0]);
+    });
   }
 
   sendToDeployAWS(event: Event) {
     event.preventDefault();
-    this.router.navigate(['despliegue/front/aws/ec2'])
+    this.router.navigate(['despliegue/front/aws/ec2']).then(() => {
+      this.viewportScroller.scrollToPosition([0, 0]);
+    });
   }
 }
