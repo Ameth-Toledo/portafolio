@@ -263,6 +263,12 @@
   margin-right: 20px;
 }
 
+.volver {
+  color: #1289b1;
+  cursor: pointer;
+  font-weight: bold;
+}
+
 /* Mobile (up to 767px) */
 @media (max-width: 767px) {
   .button {

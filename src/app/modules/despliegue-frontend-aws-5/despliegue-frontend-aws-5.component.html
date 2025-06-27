@@ -79,28 +79,95 @@
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
-    En Origen vamos a seleccionar Anywhere y quedaria configurada el primer protocolo <strong>HTTP</strong>.
+    Una ves que hayamos movido todos los archivos ya estaria listo para visualizarse en la web. Copiamos nuestra IP la pegamos en una nueva ventana y nos mostrara nuestra pragina web.
+    <br><br>
+    Ahora hay un problema, si recargamos la pagina web, nos dara error 404, esto se debe a que nginx no esta serviendo en el html de nuestra web, ngnix no va a encontrar la ruta y va a mandar el error, vamos a solucionarlo en el siguiente paso.
   </p>
 
   <app-images 
-    imageSrc="blog/aws/aws24.png" 
-    imageSrc2="blog/aws/aws25.png">
+    imageSrc="blog/aws/aws43.png" 
+    imageSrc2="blog/aws/aws44.png">
   </app-images>
 
-  <p class="subtitle-buenas-practicas-frontend">
-    Una ves de que ya hayamos abierto los puertos, daremos click en <strong>Guardar reglas</strong>. 
+  <p class="subtitle-buenas-practicas-frontend" id="config">
+    Nos dirigiremos a la carpeta de configuración de Nginx (<code>sites-enabled</code>) que aqui es donde se encuentra nuestro sistema servicio web.
     <br>
-    Nos mostrara el mensaje de exito una ves que hayamos guardado los cambios y ahora en la lista ya apareceran los puertos que configuramos.
+    vamos a ejecutar el siguiente comando:
   </p>
 
+  <app-comand-copy comand="cd /etc/nginx/sites-enabled/
+    ls">
+  </app-comand-copy>
+
+  <p class="subtitle-buenas-practicas-frontend">
+    Nos va a mandar a la configuracion de sitios de nginx, si ejecutamos <strong>ls</strong> vamos a encontrar un archivo llamado default, este archivo contiene el proxy para servir en index.
+    vamos a ejecutar el siguiente comando para editarlo:
+  </p>
+
+  <app-comand-copy comand="nano defatult"></app-comand-copy>
+
+  <p class="subtitle-buenas-practicas-frontend">
+    Nos desplazaremos hacia abajo hasta encontrar <strong>location</strong>, borramos esa parte de configuracion y la reemplazamos por la siguiente información:
+  </p>
+
+  <app-comand-copy comand="location / {
+    try_files @uri /index.html
+  }"></app-comand-copy>
+
   <app-images 
-    imageSrc="blog/aws/aws26.png" 
-    imageSrc2="blog/aws/aws27.png">
+    imageSrc="blog/aws/aws45.png" 
+    imageSrc2="blog/aws/aws46.png">
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
-    Ve a la siguiente pagina para continuar con el despliegue.
+    luego de hacer eso, guardamos el archivo con los nuevos cambios que realizamos y ejecutamos el comando <strong>exit</strong> y nos regresamos el home con <strong>cd</strong>
   </p>
+
+  <app-comand-copy comand="exit
+    cd">
+  </app-comand-copy>
+
+  <p class="subtitle-buenas-practicas-frontend">
+    Ahora vamos a reiniciar el servicio de nginx para aplicar correctamente los cambios, una ves reiniciado confirmamos de que el serivicio este corriendo.
+  </p>
+
+  <app-comand-copy comand="sudo service nginx restart
+    sudo service nginx status">
+  </app-comand-copy>
+
+  <app-images 
+    imageSrc="blog/aws/aws47.png" 
+    imageSrc2="blog/aws/aws48.png">
+  </app-images>
+
+  <p class="subtitle-buenas-practicas-frontend">
+    Ahora nos regresamos a la ventana en donde pegamos la IP y recargamos la pagina y ya nos deveria de mostrar correctamente nuestra web, sin error 404 y podemos irnos a cualquier ruta y va a funcionar.
+  </p>
+
+  <app-images 
+    imageSrc="blog/aws/aws49.png" 
+    imageSrc2="blog/aws/aws50.png">
+  </app-images>
+
+  <p class="subtitle-buenas-practicas-frontend">
+    Si por alguna razon les llegara a dar un <strong>error de servidor (error 500)</strong> volveremos a dirijinos a la carpeta de configuración de nginx regresaremos a al paso de configuracion del servicio web <a class="volver" (click)="scrollToConfig()">click para volver</a>
+    <br><br>
+    Pero antes copia esto:
+  </p>
+
+  <app-comand-copy comand="location / {
+    try_files $uri /index.html
+    }">
+  </app-comand-copy>
+
+  <p class="subtitle-buenas-practicas-frontend">
+    Se va a reemplzar el &#64; por el $ para algunos servicios si funciona con el primer codigo, pero si falla tenemos que dejarlo con el signo de pesos. Una ves que hayas corrigido esto y hecho los demas paso, es muy importante volver a hacer todo y seguir los pasos para que funcione correctamente, si ya hiciste todo de nuevo y reiniciaste el servicio ya puedes volver a recargar tu IP y deberia de funcionar correctamente.
+  </p>
+
+  <app-images 
+    imageSrc="blog/aws/aws51.png" 
+    imageSrc2="blog/aws/aws52.png">
+  </app-images>
 </div>
 
 <div class="button-outer-container">
@@ -110,13 +177,6 @@
         <span class="learn-more-icon arrow-left"></span>
       </span>
       <span class="learn-more-text">Anterior</span>
-    </button>
-    
-    <button class="learn-more-btn next-btn" (click)="sendToDeployAWS2($event)">
-      <span class="learn-more-circle" aria-hidden="true">
-        <span class="learn-more-icon arrow-right"></span>
-      </span>
-      <span class="learn-more-text">Siguiente</span>
     </button>
   </div>
 </div>

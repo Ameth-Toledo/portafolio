@@ -41,4 +41,9 @@ constructor (
     event.preventDefault();
     this.router.navigate(['despliegue/front/aws/ec2/id=4'])
   }
+
+  scrollToConfig() {
+    const element = document.getElementById('config');
+    if (element) element.scrollIntoView({ behavior: 'smooth' });
+  }
 }
