@@ -1,10 +1,11 @@
 import { Component, OnInit, AfterViewInit, Renderer2, ElementRef } from '@angular/core';
 import { HeroService } from '../../services/hero/hero.service';
+import { TecnologiasComponent } from "../tecnologias/tecnologias.component";
 
 @Component({
   selector: 'app-hero',
   standalone: true,
-  imports: [],
+  imports: [TecnologiasComponent],
   templateUrl: './hero.component.html',
   styleUrl: './hero.component.css'
 })
