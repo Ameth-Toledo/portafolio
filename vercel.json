@@ -1,27 +1,6 @@
 {
-  "redirects": [
-    {
-      "source": "/(.*)",
-      "has": [
-        {
-          "type": "host",
-          "value": "amethdev.pro"
-        }
-      ],
-      "destination": "https://www.amethdev.pro/:1",
-      "permanent": true
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/:path*",
-      "destination": "/index.html",
-      "has": [
-        {
-          "type": "host",
-          "value": "www.amethdev.pro"
-        }
-      ]
-    }
-  ]
-}
+    "rewrites": [
+      { "source": "/(.*)", "destination": "/index.html" }
+    ]
+  }
+  
