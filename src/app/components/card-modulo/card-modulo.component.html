@@ -1,0 +1,13 @@
+<div class="card" (click)="onCardClick()">
+  <div class="main-content">
+    <div class="div1">
+      <img [src]="imageUrl" alt="Card image" class="curso-imagen" *ngIf="imageUrl">
+    </div>
+    <div class="div2">
+      <h3 class="heading">{{ title }}</h3>
+    </div>
+    <div class="div3">
+      <p class="description">{{ description }}</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,85 @@
+.button-container {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button-group {
+  position: relative;
+}
+
+.custom-button {
+  position: relative;
+  display: inline-block;
+  padding: 1px;
+  font-weight: 600;
+  color: white;
+  background-color: #171717;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  box-shadow: 0 25px 50px -12px rgba(5, 150, 105, 0.25);
+  transition: all 0.3s ease-in-out;
+}
+
+.custom-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 25px 50px -12px rgba(16, 185, 129, 0.6);
+}
+
+.custom-button:active {
+  transform: scale(0.95);
+}
+
+.button-gradient {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: linear-gradient(to right, #10b981, #06b6d4, #0ea5e9);
+  padding: 2px;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.button-group:hover .button-gradient {
+  opacity: 1;
+}
+
+.button-inner {
+  position: relative;
+  z-index: 10;
+  display: block;
+  padding: 12px 24px;
+  border-radius: 16px;
+  background-color: #0a0a0a;
+}
+
+.button-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.button-text {
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.5s;
+}
+
+.button-group:hover .button-text {
+  transform: translateX(6px);
+  color: #6ee7b7;
+}
+
+.button-icon {
+  width: 28px;
+  height: 28px;
+  transition: all 0.5s;
+}
+
+.button-group:hover .button-icon {
+  transform: translateX(6px);
+  color: #6ee7b7;
+}

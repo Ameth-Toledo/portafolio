@@ -1,0 +1,78 @@
+<app-header-blog (buscar)="onBuscar($event)"></app-header-blog>
+
+<section class="welcome-section">
+  <div class="welcome-container">
+    <div class="nav-container">
+      <button class="button" (click)="sendToHome($event)">
+        <div class="button-box">
+          <span class="button-elem">
+            <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+              <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
+            </svg>
+          </span>
+          <span class="button-elem">
+            <svg viewBox="0 0 46 40">
+              <path d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z"></path>
+            </svg>
+          </span>
+        </div>
+      </button>
+
+    <h1 class="title-front">¡Bienvenido a los cursos de programación! 🚀</h1>
+    </div>
+
+    <p class="frontend-description">
+      Me apasiona compartir mi conocimiento y experiencia en el mundo del desarrollo web y la programación. 
+      Aquí encontrarás cursos diseñados para ayudarte a dominar desde los conceptos básicos hasta técnicas avanzadas, 
+      con ejemplos prácticos y explicaciones claras. ¡Comencemos este viaje de aprendizaje juntos!
+    </p>
+
+    <div class="tech-cards-container">
+      <app-card-tecnology title="FrontEnd"></app-card-tecnology>
+      <app-card-tecnology title="BackEnd"></app-card-tecnology>
+      <app-card-tecnology title="FullStack"></app-card-tecnology>
+      <app-card-tecnology title="Bases de Datos"></app-card-tecnology>
+      <app-card-tecnology title="Control de Versiones"></app-card-tecnology> 
+    </div>
+  </div>
+</section>
+
+<div class="code-examples-container">
+  <h1 class="tip">Divirtámonos y aprendamos juntos 💡🚀</h1>
+
+  <p class="subtitle-buenas-practicas-frontend">
+    Aquí encontrarás recursos útiles, buenas prácticas y estrategias reales para convertirte en un desarrollador completo. 
+    Aprenderemos juntos a escribir código limpio, estructurado y escalable, mientras nos divertimos construyendo proyectos increíbles. 🚀✨
+  </p>
+  
+  <div class="card-row">
+    @for (curso of cursosFiltrados; track curso.id) {
+      <app-card-cursos
+        [nombre]="curso.nombre"
+        [descripcion]="curso.descripcion"
+        [nivel]="curso.nivel"
+        [duracion]="curso.duracion"
+        [tecnologia]="curso.tecnologia"
+        [fecha]="curso.fecha"
+        [imagen]="curso.imagen"
+        [id]="curso.id">        
+      </app-card-cursos>
+    }
+    @empty {
+        <div class="card-alert">
+        <span
+            ><svg viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="m569.517 440.013c18.458 31.994-4.711 71.987-41.577 71.987h-479.886c-36.937 0-59.999-40.055-41.577-71.987l239.946-416.028c18.467-32.009 64.72-31.951 83.154 0zm-281.517-86.013c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346 7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"
+            ></path>
+            </svg>
+            <p>
+            No se encontraron resultados
+            </p></span
+        >
+        </div>
+    }
+  </div>
+</div>
+
+<app-tecnologias></app-tecnologias>
