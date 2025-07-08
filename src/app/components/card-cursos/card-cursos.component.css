@@ -111,3 +111,24 @@
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
   transform: translateY(-5px);
 }
+
+@media (max-width: 768px) {
+  .card {
+    width: 260px;
+    height: 360px;
+    padding: 15px;
+  }
+  
+  .curso-imagen {
+    width: 260px;
+    height: 140px;
+  }
+  
+  .card .heading {
+    font-size: 18px;
+  }
+  
+  .card .description {
+    font-size: 13px;
+  }
+}
