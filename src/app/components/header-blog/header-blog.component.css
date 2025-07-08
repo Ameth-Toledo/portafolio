@@ -184,3 +184,37 @@
     transform: scale(1);
   }
 }
+
+@media (max-width: 1024px) {
+  .encabezado {
+    padding: 20px 40px;
+  }
+  
+  .search-bar {
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .texto-marca {
+    display: none;
+  }
+
+  .simbolo {
+    display: none;
+  }
+
+  .encabezado {
+    padding: 15px 30px;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .navbar-container {
+    width: 100%;
+  }
+  
+  .search-bar {
+    max-width: 100%;
+  }
+}
