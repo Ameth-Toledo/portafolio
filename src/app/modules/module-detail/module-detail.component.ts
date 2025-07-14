@@ -46,11 +46,9 @@ export class ModuleDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Obtener TODOS los query parameters, incluyendo los del curso
     this.route.queryParams.subscribe(params => {
       const idModulo = params['id_modulo'];
       
-      // GUARDAR LOS PARÁMETROS DEL CURSO PARA EL REGRESO
       this.cursoId = params['cursoId'] ? Number(params['cursoId']) : null;
       this.nombreCurso = params['nombreCurso'] || null;
       
@@ -91,9 +89,7 @@ export class ModuleDetailComponent implements OnInit {
     }
   }
 
-  // MÉTODO goBack() CORREGIDO
   goBack(): void {
-    // Si tenemos información del curso, regresar a la vista de módulos del curso
     if (this.cursoId && this.nombreCurso) {
       this.router.navigate(['/modulos'], {
         queryParams: {
@@ -102,7 +98,6 @@ export class ModuleDetailComponent implements OnInit {
         }
       });
     } else {
-      // Si no tenemos info del curso, regresar a la vista general de módulos
       this.router.navigate(['/modulos']);
     }
   }
@@ -111,7 +106,6 @@ export class ModuleDetailComponent implements OnInit {
     if (this.modulo && this.modulo.id_modulo > 1) {
       const previousId = this.modulo.id_modulo - 1;
       
-      // MANTENER LOS PARÁMETROS DEL CURSO AL NAVEGAR
       const queryParams: any = { id_modulo: previousId };
       if (this.cursoId) queryParams.cursoId = this.cursoId;
       if (this.nombreCurso) queryParams.nombreCurso = this.nombreCurso;
@@ -126,7 +120,6 @@ export class ModuleDetailComponent implements OnInit {
     if (this.modulo) {
       const nextId = this.modulo.id_modulo + 1;
       
-      // MANTENER LOS PARÁMETROS DEL CURSO AL NAVEGAR
       const queryParams: any = { id_modulo: nextId };
       if (this.cursoId) queryParams.cursoId = this.cursoId;
       if (this.nombreCurso) queryParams.nombreCurso = this.nombreCurso;
@@ -145,7 +138,6 @@ export class ModuleDetailComponent implements OnInit {
     }
   }
 
-  // ... resto de métodos del componente sin cambios
   ngAfterViewInit() {
     if (this.videoPlayer) {
       this.videoPlayer.nativeElement.volume = this.volume;

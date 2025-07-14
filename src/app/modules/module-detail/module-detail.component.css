@@ -38,7 +38,7 @@
 .module-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center; 
   gap: 40px;
   margin-bottom: 40px;
 }
@@ -53,15 +53,16 @@
 
 .module-image {
   width: 40%;
-  margin-top: 50px;
   max-width: 400px;
+  min-width: 300px; 
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  align-self: center; 
 }
 
 .module-image img {
-  width: 70%;
+  width: 100%; 
   height: auto;
   display: block;
 }
@@ -71,19 +72,6 @@
   align-items: flex-start;
   gap: 30px;
   margin-bottom: 0; 
-}
-
-@media (max-width: 768px) {
-  .module-header {
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .module-image {
-    width: 100%;
-    max-width: none;
-    order: -1; 
-  }
 }
 
 .custom-video {
@@ -368,41 +356,6 @@
   color: #ffffff;
 }
 
-@media (max-width: 768px) {
-  .module-navigation {
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .module-title h1 {
-    font-size: 32px;
-  }
-  
-  .materials-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .module-pagination {
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .pagination-button {
-    justify-content: center;
-    width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .module-title h1 {
-    font-size: 28px;
-  }
-  
-  .section-title {
-    font-size: 24px;
-  }
-}
-
 .button {
   display: block;
   position: relative;
@@ -601,6 +554,7 @@
   display: flex;
   gap: 20px;
 }
+
 .card {
   width: 100%;
   max-width: 1200px;
@@ -707,4 +661,159 @@
 .utility-icons {
   display: flex;
   gap: 16px;
+}
+
+@media (max-width: 767px) {
+  .module-section {
+    padding: 20px 0;
+  }
+  
+  .module-container {
+    padding: 0 15px;
+  }
+  
+  .module-title h1 {
+    font-size: 28px;
+  }
+  
+  .module-description {
+    font-size: 1rem;
+  }
+  
+  .module-header {
+    flex-direction: column;
+    align-items: center; 
+    gap: 25px;
+  }
+  
+  .module-image {
+    display: none;
+  }
+  
+  .module-info {
+    width: 100%;
+    text-align: center; 
+  }
+  
+  .video-container {
+    margin-bottom: 30px;
+  }
+  
+  .video-controls {
+    padding: 8px;
+  }
+  
+  .controls-bar {
+    gap: 10px;
+  }
+  
+  .time-display {
+    font-size: 12px;
+    min-width: 70px;
+  }
+  
+  .volume-slider {
+    width: 60px;
+  }
+  
+  .video-placeholder svg {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .video-placeholder p {
+    font-size: 1rem;
+  }
+  
+  .repository-section h2,
+  .section-title {
+    font-size: 24px;
+  }
+  
+  .repository-section h2::after,
+  .section-title::after {
+    height: 2px;
+  }
+  
+  .card {
+    width: calc(100% - 30px);
+    margin: 20px auto;
+  }
+  
+  .card-header {
+    padding: 12px 16px;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .user-info {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .avatar {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .title {
+    font-size: 14px;
+  }
+  
+  .username {
+    font-size: 13px;
+  }
+  
+  .options-button {
+    display: none;
+  }
+  
+  .content {
+    padding: 12px 16px;
+    font-size: 10px;
+  }
+  
+  .card-footer {
+    padding: 12px;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .action-icons,
+  .utility-icons {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .btn-repositorio {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .btn-repositorio .iconsvg {
+    height: 24px;
+  }
+  
+  .navigation-buttons .button-group {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+  
+  .custom-button {
+    width: 100%;
+  }
+  
+  .button-inner {
+    padding: 10px 20px;
+  }
+  
+  .button-text {
+    font-size: 14px;
+  }
+  
+  .button-icon {
+    width: 20px;
+    height: 20px;
+  }
 }
