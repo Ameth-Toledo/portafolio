@@ -1,5 +1,3 @@
-// Modificaciones necesarias en ModuleDetailComponent
-
 import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,6 +6,7 @@ import { Contenido } from '../../models/contenido';
 import { ContenidoService } from '../../services/contenido/contenido.service';
 import { FormsModule } from '@angular/forms';
 import { TimeFormatPipe } from '../../pipes/time-format.pipe';
+import { ModulosService } from '../../services/modulos/modulos.service';
 
 @Component({
   selector: 'app-module-detail',
@@ -24,7 +23,6 @@ export class ModuleDetailComponent implements OnInit {
   loading = true;
   error: string | null = null;
 
-  // NUEVAS PROPIEDADES PARA MANEJAR LA NAVEGACIÓN DE REGRESO
   cursoId: number | null = null;
   nombreCurso: string | null = null;
 
@@ -38,11 +36,14 @@ export class ModuleDetailComponent implements OnInit {
   private controlsTimeout: any;
   private hideControlsDelay = 3000;
   
+  showFinalModal: boolean = false;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private sanitizer: DomSanitizer,
-    private contenidoService: ContenidoService
+    private contenidoService: ContenidoService,
+    private modulosService: ModulosService
   ) {}
 
   ngOnInit(): void {
@@ -103,31 +104,63 @@ export class ModuleDetailComponent implements OnInit {
   }
 
   goToPreviousModule(): void {
-    if (this.modulo && this.modulo.id_modulo > 1) {
-      const previousId = this.modulo.id_modulo - 1;
-      
-      const queryParams: any = { id_modulo: previousId };
-      if (this.cursoId) queryParams.cursoId = this.cursoId;
-      if (this.nombreCurso) queryParams.nombreCurso = this.nombreCurso;
-      
-      this.router.navigate(['/modulo/detail'], { 
-        queryParams: queryParams
-      });
+    if (!this.modulo || !this.cursoId) {
+      return;
     }
+
+    this.modulosService.getModulosByCursoId(this.cursoId).subscribe({
+      next: (modulosDelCurso) => {
+        const currentIndex = modulosDelCurso.findIndex(m => m.id === this.modulo!.id_modulo);
+        
+        if (currentIndex > 0) {
+          const previousModulo = modulosDelCurso[currentIndex - 1];
+          
+          const queryParams: any = { id_modulo: previousModulo.id };
+          if (this.cursoId) queryParams.cursoId = this.cursoId;
+          if (this.nombreCurso) queryParams.nombreCurso = this.nombreCurso;
+          
+          this.router.navigate(['/modulo/detail'], { 
+            queryParams: queryParams
+          });
+        } else {
+          alert('Este es el primer módulo del curso.');
+        }
+      },
+      error: (err) => {
+        console.error('Error al verificar módulos del curso:', err);
+        alert('No se pudo verificar el módulo anterior.');
+      }
+    });
   }
 
   goToNextModule(): void {
-    if (this.modulo) {
-      const nextId = this.modulo.id_modulo + 1;
-      
-      const queryParams: any = { id_modulo: nextId };
-      if (this.cursoId) queryParams.cursoId = this.cursoId;
-      if (this.nombreCurso) queryParams.nombreCurso = this.nombreCurso;
-      
-      this.router.navigate(['/modulo/detail'], { 
-        queryParams: queryParams
-      });
+    if (!this.modulo || !this.cursoId) {
+      return;
     }
+
+    this.modulosService.getModulosByCursoId(this.cursoId).subscribe({
+      next: (modulosDelCurso) => {
+        const currentIndex = modulosDelCurso.findIndex(m => m.id === this.modulo!.id_modulo);
+        
+        if (currentIndex !== -1 && currentIndex < modulosDelCurso.length - 1) {
+          const nextModulo = modulosDelCurso[currentIndex + 1];
+          
+          const queryParams: any = { id_modulo: nextModulo.id };
+          if (this.cursoId) queryParams.cursoId = this.cursoId;
+          if (this.nombreCurso) queryParams.nombreCurso = this.nombreCurso;
+          
+          this.router.navigate(['/modulo/detail'], { 
+            queryParams: queryParams
+          });
+        } else {
+          this.openFinalModal();
+        }
+      },
+      error: (err) => {
+        console.error('Error al verificar módulos del curso:', err);
+        alert('No se pudo verificar si hay más módulos en este curso.');
+      }
+    });
   }
 
   openRepository(): void {
@@ -266,5 +299,14 @@ export class ModuleDetailComponent implements OnInit {
         this.toggleMute();
         break;
     }
+  }
+
+  openFinalModal() {
+    this.showFinalModal = true;
+  }
+
+  closeFinalModal() {
+    this.showFinalModal = false;
+    this.goBack();
   }
 }
