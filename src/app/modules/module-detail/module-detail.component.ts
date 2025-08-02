@@ -7,11 +7,13 @@ import { ContenidoService } from '../../services/contenido/contenido.service';
 import { FormsModule } from '@angular/forms';
 import { TimeFormatPipe } from '../../pipes/time-format.pipe';
 import { ModulosService } from '../../services/modulos/modulos.service';
+import { ComentariosService, Comentario } from '../../services/comentarios/comentarios.service';
 
 @Component({
   selector: 'app-module-detail',
   standalone: true,
   imports: [CommonModule, FormsModule, TimeFormatPipe],
+  providers: [ComentariosService],
   templateUrl: './module-detail.component.html',
   styleUrl: './module-detail.component.css'
 })
@@ -35,24 +37,33 @@ export class ModuleDetailComponent implements OnInit {
   volume = 0.7;
   private controlsTimeout: any;
   private hideControlsDelay = 3000;
-  
+
   showFinalModal: boolean = false;
+
+  comentarios: any[] = [];
+  nuevoComentario = '';
+  cargandoComentarios = true;
+
+  // Variables para la funcionalidad de edición
+  editandoComentario: string | null = null;
+  textoEditando: string = '';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private sanitizer: DomSanitizer,
     private contenidoService: ContenidoService,
-    private modulosService: ModulosService
-  ) {}
+    private modulosService: ModulosService,
+    private comentariosService: ComentariosService,
+  ) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       const idModulo = params['id_modulo'];
-      
+
       this.cursoId = params['cursoId'] ? Number(params['cursoId']) : null;
       this.nombreCurso = params['nombreCurso'] || null;
-      
+
       if (idModulo) {
         this.loadModulo(Number(idModulo));
       } else {
@@ -71,6 +82,8 @@ export class ModuleDetailComponent implements OnInit {
         if (contenidos && contenidos.length > 0) {
           this.modulo = contenidos[0];
           this.setupVideoUrl();
+          // Cargar comentarios cuando se carga el módulo
+          this.cargarComentarios(idModulo);
         } else {
           this.error = 'No se encontró contenido para este módulo';
         }
@@ -111,15 +124,15 @@ export class ModuleDetailComponent implements OnInit {
     this.modulosService.getModulosByCursoId(this.cursoId).subscribe({
       next: (modulosDelCurso) => {
         const currentIndex = modulosDelCurso.findIndex(m => m.id === this.modulo!.id_modulo);
-        
+
         if (currentIndex > 0) {
           const previousModulo = modulosDelCurso[currentIndex - 1];
-          
+
           const queryParams: any = { id_modulo: previousModulo.id };
           if (this.cursoId) queryParams.cursoId = this.cursoId;
           if (this.nombreCurso) queryParams.nombreCurso = this.nombreCurso;
-          
-          this.router.navigate(['/modulo/detail'], { 
+
+          this.router.navigate(['/modulo/detail'], {
             queryParams: queryParams
           });
         } else {
@@ -141,15 +154,15 @@ export class ModuleDetailComponent implements OnInit {
     this.modulosService.getModulosByCursoId(this.cursoId).subscribe({
       next: (modulosDelCurso) => {
         const currentIndex = modulosDelCurso.findIndex(m => m.id === this.modulo!.id_modulo);
-        
+
         if (currentIndex !== -1 && currentIndex < modulosDelCurso.length - 1) {
           const nextModulo = modulosDelCurso[currentIndex + 1];
-          
+
           const queryParams: any = { id_modulo: nextModulo.id };
           if (this.cursoId) queryParams.cursoId = this.cursoId;
           if (this.nombreCurso) queryParams.nombreCurso = this.nombreCurso;
-          
-          this.router.navigate(['/modulo/detail'], { 
+
+          this.router.navigate(['/modulo/detail'], {
             queryParams: queryParams
           });
         } else {
@@ -198,7 +211,7 @@ export class ModuleDetailComponent implements OnInit {
 
   hideControls() {
     if (!this.isPlaying) {
-      this.showControls = true; 
+      this.showControls = true;
       return;
     }
     this.controlsTimeout = setTimeout(() => {
@@ -206,7 +219,11 @@ export class ModuleDetailComponent implements OnInit {
     }, this.hideControlsDelay);
   }
 
-  togglePlay() {
+  togglePlay(event?: MouseEvent) {
+    if (event && event.target !== this.videoPlayer.nativeElement) {
+      return;
+    }
+
     if (this.videoPlayer) {
       if (this.videoPlayer.nativeElement.paused) {
         this.videoPlayer.nativeElement.play();
@@ -215,7 +232,7 @@ export class ModuleDetailComponent implements OnInit {
       } else {
         this.videoPlayer.nativeElement.pause();
         this.isPlaying = false;
-        this.showControls = true; 
+        this.showControls = true;
       }
     }
   }
@@ -270,9 +287,12 @@ export class ModuleDetailComponent implements OnInit {
   }
 
   @HostListener('document:keydown', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
+handleKeyboardEvent(event: KeyboardEvent) {
+  if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
+    return;
+  }
     if (!this.videoPlayer) return;
-    
+
     switch (event.key) {
       case ' ':
         event.preventDefault();
@@ -308,5 +328,105 @@ export class ModuleDetailComponent implements OnInit {
   closeFinalModal() {
     this.showFinalModal = false;
     this.goBack();
+  }
+
+  cargarComentarios(moduloId: number) {
+    this.cargandoComentarios = true;
+    this.comentariosService.getComentariosPorModulo(moduloId.toString())
+      .subscribe({
+        next: (actions) => {
+          this.comentarios = actions.map((a: any) => {
+            const data = a.payload.val();
+            const key = a.payload.key;
+            return { key, ...data };
+          });
+          this.cargandoComentarios = false;
+        },
+        error: (err) => {
+          console.error('Error al cargar comentarios:', err);
+          this.cargandoComentarios = false;
+        }
+      });
+  }
+
+  agregarComentario() {
+    if (!this.nuevoComentario.trim() || !this.modulo) return;
+
+    this.comentariosService.agregarComentario(
+      this.modulo.id_modulo.toString(),
+      this.nuevoComentario
+    ).then(() => {
+      this.nuevoComentario = '';
+      this.cargarComentarios(this.modulo!.id_modulo);
+    }).catch(err => {
+      console.error('Error al agregar comentario:', err);
+      alert('Error al agregar el comentario');
+    });
+  }
+
+  editarComentario(key: string, textoActual: string) {
+    this.editandoComentario = key;
+    this.textoEditando = textoActual;
+  }
+
+  cancelarEdicion() {
+    this.editandoComentario = null;
+    this.textoEditando = '';
+  }
+
+  guardarEdicion(key: string) {
+    if (!this.textoEditando.trim()) {
+      alert('El comentario no puede estar vacío');
+      return;
+    }
+
+    this.comentariosService.editarComentario(key, this.textoEditando)
+      .then(() => {
+        this.editandoComentario = null;
+        this.textoEditando = '';
+        if (this.modulo) {
+          this.cargarComentarios(this.modulo.id_modulo);
+        }
+      })
+      .catch(err => {
+        console.error('Error al editar comentario:', err);
+        alert('Error al editar el comentario');
+      });
+  }
+
+  eliminarComentario(key: string) {
+    if (confirm('¿Estás seguro de eliminar este comentario?')) {
+      this.comentariosService.eliminarComentario(key).then(() => {
+        if (this.modulo) {
+          this.cargarComentarios(this.modulo.id_modulo);
+        }
+      }).catch(err => {
+        console.error('Error al eliminar comentario:', err);
+        alert('Error al eliminar el comentario');
+      });
+    }
+  }
+
+  handleTextareaKeydown(event: Event) {
+    const keyboardEvent = event as KeyboardEvent;
+    if (keyboardEvent.key === ' ') {
+      keyboardEvent.preventDefault();
+      keyboardEvent.stopPropagation();
+      
+      const target = keyboardEvent.target as HTMLTextAreaElement;
+      if (target) {
+        const start = target.selectionStart;
+        const end = target.selectionEnd;
+        
+        this.nuevoComentario = 
+          this.nuevoComentario.substring(0, start) + 
+          ' ' + 
+          this.nuevoComentario.substring(end);
+          
+        setTimeout(() => {
+          target.selectionStart = target.selectionEnd = start + 1;
+        });
+      }
+    }
   }
 }
