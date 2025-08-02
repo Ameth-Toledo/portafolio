@@ -7,7 +7,7 @@ export interface Comentario {
   moduloId: string;
   autor: string;
   fecha: string;
-  fechaEditado?: string; // Agregar esta propiedad opcional
+  fechaEditado?: string; 
 }
 
 @Injectable()
