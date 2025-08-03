@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { TimeFormatPipe } from '../../pipes/time-format.pipe';
 import { ModulosService } from '../../services/modulos/modulos.service';
 import { ComentariosService, Comentario } from '../../services/comentarios/comentarios.service';
-import { LikesService } from '../../services/likes/likes.service';
+import { LikesService } from '../../services/likes/likes.service'; 
 
 @Component({
   selector: 'app-module-detail',
@@ -52,7 +52,6 @@ export class ModuleDetailComponent implements OnInit {
   likesCount = 0;
   userHasLiked = false;
   loadingLikes = false;
-  private readonly USUARIO_ACTUAL = 'Ing'; 
 
   constructor(
     private route: ActivatedRoute,
@@ -450,7 +449,8 @@ export class ModuleDetailComponent implements OnInit {
         });
         
         this.likesCount = this.likes.length;
-        this.userHasLiked = this.likes.some(like => like.usuario === this.USUARIO_ACTUAL);
+        const currentUserId = this.likesService.getUsuarioId();
+        this.userHasLiked = this.likes.some(like => like.usuarioId === currentUserId);
         this.loadingLikes = false;
       },
       error: (err) => {
@@ -465,9 +465,10 @@ export class ModuleDetailComponent implements OnInit {
 
     this.loadingLikes = true;
     const moduloIdStr = this.modulo.id_modulo.toString();
+    const currentUserId = this.likesService.getUsuarioId();
 
     if (this.userHasLiked) {
-      const userLike = this.likes.find(like => like.usuario === this.USUARIO_ACTUAL);
+      const userLike = this.likes.find(like => like.usuarioId === currentUserId);
       if (userLike && userLike.key) {
         this.likesService.quitarLike(userLike.key)
           .then(() => {
@@ -480,7 +481,7 @@ export class ModuleDetailComponent implements OnInit {
           });
       }
     } else {
-      this.likesService.agregarLike(moduloIdStr, this.USUARIO_ACTUAL)
+      this.likesService.agregarLike(moduloIdStr)
         .then(() => {
           this.cargarLikes(this.modulo!.id_modulo);
         })
