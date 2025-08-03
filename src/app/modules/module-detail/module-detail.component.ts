@@ -8,12 +8,13 @@ import { FormsModule } from '@angular/forms';
 import { TimeFormatPipe } from '../../pipes/time-format.pipe';
 import { ModulosService } from '../../services/modulos/modulos.service';
 import { ComentariosService, Comentario } from '../../services/comentarios/comentarios.service';
+import { LikesService } from '../../services/likes/likes.service';
 
 @Component({
   selector: 'app-module-detail',
   standalone: true,
   imports: [CommonModule, FormsModule, TimeFormatPipe],
-  providers: [ComentariosService],
+  providers: [ComentariosService, LikesService], 
   templateUrl: './module-detail.component.html',
   styleUrl: './module-detail.component.css'
 })
@@ -44,9 +45,14 @@ export class ModuleDetailComponent implements OnInit {
   nuevoComentario = '';
   cargandoComentarios = true;
 
-  // Variables para la funcionalidad de edición
   editandoComentario: string | null = null;
   textoEditando: string = '';
+
+  likes: any[] = [];
+  likesCount = 0;
+  userHasLiked = false;
+  loadingLikes = false;
+  private readonly USUARIO_ACTUAL = 'Ing'; 
 
   constructor(
     private route: ActivatedRoute,
@@ -55,6 +61,7 @@ export class ModuleDetailComponent implements OnInit {
     private contenidoService: ContenidoService,
     private modulosService: ModulosService,
     private comentariosService: ComentariosService,
+    private likesService: LikesService, 
   ) { }
 
   ngOnInit(): void {
@@ -82,8 +89,8 @@ export class ModuleDetailComponent implements OnInit {
         if (contenidos && contenidos.length > 0) {
           this.modulo = contenidos[0];
           this.setupVideoUrl();
-          // Cargar comentarios cuando se carga el módulo
           this.cargarComentarios(idModulo);
+          this.cargarLikes(idModulo);
         } else {
           this.error = 'No se encontró contenido para este módulo';
         }
@@ -287,10 +294,10 @@ export class ModuleDetailComponent implements OnInit {
   }
 
   @HostListener('document:keydown', ['$event'])
-handleKeyboardEvent(event: KeyboardEvent) {
-  if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
-    return;
-  }
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
+      return;
+    }
     if (!this.videoPlayer) return;
 
     switch (event.key) {
@@ -427,6 +434,61 @@ handleKeyboardEvent(event: KeyboardEvent) {
           target.selectionStart = target.selectionEnd = start + 1;
         });
       }
+    }
+  }
+
+  cargarLikes(moduloId: number) {
+    this.loadingLikes = true;
+    const moduloIdStr = moduloId.toString();
+    
+    this.likesService.getLikesPorModulo(moduloIdStr).subscribe({
+      next: (actions) => {
+        this.likes = actions.map((a: any) => {
+          const data = a.payload.val();
+          const key = a.payload.key;
+          return { key, ...data };
+        });
+        
+        this.likesCount = this.likes.length;
+        this.userHasLiked = this.likes.some(like => like.usuario === this.USUARIO_ACTUAL);
+        this.loadingLikes = false;
+      },
+      error: (err) => {
+        console.error('Error al cargar likes:', err);
+        this.loadingLikes = false;
+      }
+    });
+  }
+
+  toggleLike() {
+    if (!this.modulo || this.loadingLikes) return;
+
+    this.loadingLikes = true;
+    const moduloIdStr = this.modulo.id_modulo.toString();
+
+    if (this.userHasLiked) {
+      const userLike = this.likes.find(like => like.usuario === this.USUARIO_ACTUAL);
+      if (userLike && userLike.key) {
+        this.likesService.quitarLike(userLike.key)
+          .then(() => {
+            this.cargarLikes(this.modulo!.id_modulo);
+          })
+          .catch((err) => {
+            console.error('Error al quitar like:', err);
+            alert('Error al quitar el like');
+            this.loadingLikes = false;
+          });
+      }
+    } else {
+      this.likesService.agregarLike(moduloIdStr, this.USUARIO_ACTUAL)
+        .then(() => {
+          this.cargarLikes(this.modulo!.id_modulo);
+        })
+        .catch((err) => {
+          console.error('Error al agregar like:', err);
+          alert('Error al agregar el like');
+          this.loadingLikes = false;
+        });
     }
   }
 }
