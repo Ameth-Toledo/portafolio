@@ -10,11 +10,12 @@ import { CommonModule } from '@angular/common';
 import { Modulo } from '../../models/modulo';
 import { Curso } from '../../models/curso';
 import { RedesSocialesComponent } from "../../components/redes-sociales/redes-sociales.component";
+import { ChatbotComponent } from "../../components/chatbot/chatbot.component";
 
 @Component({
   selector: 'app-modulos',
   standalone: true,
-  imports: [CommonModule, TecnologiasComponent, CardTecnologyComponent, CardModuloComponent, RedesSocialesComponent],
+  imports: [CommonModule, TecnologiasComponent, CardTecnologyComponent, CardModuloComponent, RedesSocialesComponent, ChatbotComponent],
   templateUrl: './modulos.component.html',
   styleUrl: './modulos.component.css'
 })

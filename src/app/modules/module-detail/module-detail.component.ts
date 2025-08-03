@@ -8,12 +8,13 @@ import { FormsModule } from '@angular/forms';
 import { TimeFormatPipe } from '../../pipes/time-format.pipe';
 import { ModulosService } from '../../services/modulos/modulos.service';
 import { ComentariosService, Comentario } from '../../services/comentarios/comentarios.service';
-import { LikesService } from '../../services/likes/likes.service'; 
+import { LikesService } from '../../services/likes/likes.service';
+import { ChatbotComponent } from "../../components/chatbot/chatbot.component"; 
 
 @Component({
   selector: 'app-module-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule, TimeFormatPipe],
+  imports: [CommonModule, FormsModule, TimeFormatPipe, ChatbotComponent],
   providers: [ComentariosService, LikesService], 
   templateUrl: './module-detail.component.html',
   styleUrl: './module-detail.component.css'

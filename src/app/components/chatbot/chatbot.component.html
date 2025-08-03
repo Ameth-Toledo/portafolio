@@ -1,0 +1,70 @@
+<!-- Botón flotante del chatbot -->
+<div class="chatbot-toggle" [class.hidden]="isOpen" (click)="toggleChat()">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M8 12H16M8 8H16M8 16H13M7 4V2.5C7 2.22386 7.22386 2 7.5 2H16.5C16.7761 2 17 2.22386 17 2.5V4M20 12C20 16.4183 16.4183 20 12 20C10.4407 20 8.99066 19.4768 7.82836 18.5836L4 20L5.41644 16.1716C4.52321 14.9093 4 13.4593 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</div>
+
+<!-- Ventana del chatbot -->
+<div class="chatbot-container" [class.open]="isOpen">
+  <div class="chatbot-header">
+    <div class="header-content">
+      <div class="avatar">
+        <img src="perfilAI2.png" alt="AmethDev" />
+      </div>
+      <div class="chat-info">
+        <div class="chat-title">AmethDev</div>
+        <div class="chat-subtitle">Asistente de IA</div>
+      </div>
+    </div>
+    <button class="close-btn" (click)="toggleChat()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="messages-container">
+    <div *ngFor="let message of messages" 
+         class="message-wrapper"
+         [class.user-message]="message.isUser"
+         [class.bot-message]="!message.isUser">
+      <div class="message-box">
+        <p [innerHTML]="message.text"></p>
+        <span class="timestamp">{{ message.timestamp | date:'HH:mm' }}</span>
+      </div>
+    </div>
+    
+    <!-- Indicador de carga -->
+    <div *ngIf="isLoading" class="message-wrapper bot-message">
+      <div class="message-box loading-message">
+        <div class="typing-animation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <span class="loading-text">AmethDev está escribiendo...</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="input-container">
+    <form (ngSubmit)="sendMessage()">
+      <textarea 
+        [(ngModel)]="newMessage"
+        name="chatMessage"
+        (keypress)="onKeyPress($event)"
+        placeholder="Pregúntame lo que quieras..."
+        class="message-input"
+        [disabled]="isLoading"
+        rows="1"
+        maxlength="500"></textarea>
+      <button type="submit" class="send-btn" [disabled]="!newMessage.trim() || isLoading">
+        <svg *ngIf="!isLoading" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div *ngIf="isLoading" class="loading-spinner"></div>
+      </button>
+    </form>
+  </div>
+</div>
