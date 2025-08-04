@@ -9,14 +9,14 @@ import { TimeFormatPipe } from '../../pipes/time-format.pipe';
 import { ModulosService } from '../../services/modulos/modulos.service';
 import { ComentariosService, Comentario } from '../../services/comentarios/comentarios.service';
 import { LikesService } from '../../services/likes/likes.service';
-import { PaypalService } from '../../services/paypal/paypal.service';
 import { ChatbotComponent } from "../../components/chatbot/chatbot.component";
+import { MercadoPagoService } from '../../services/mercadoPago/mercado-pago.service';
 
 @Component({
   selector: 'app-module-detail',
   standalone: true,
   imports: [CommonModule, FormsModule, TimeFormatPipe, ChatbotComponent],
-  providers: [ComentariosService, LikesService, PaypalService],
+  providers: [ComentariosService, LikesService, MercadoPagoService],
   templateUrl: './module-detail.component.html',
   styleUrl: './module-detail.component.css'
 })
@@ -55,10 +55,10 @@ export class ModuleDetailComponent implements OnInit {
   userHasLiked = false;
   loadingLikes = false;
 
-  showPayPalModal = false;
+  showMercadoPagoModal = false;
   selectedAmount = '50.00';
   customAmount: number | null = null;
-  paypalLoaded = false;
+  mercadoPagoLoaded = false;
 
   quickAmounts = [
     { value: '20.00', label: 'Un café ☕' },
@@ -77,7 +77,7 @@ export class ModuleDetailComponent implements OnInit {
     private modulosService: ModulosService,
     private comentariosService: ComentariosService,
     private likesService: LikesService,
-    private paypalService: PaypalService
+    private mercadoPagoService: MercadoPagoService
   ) { }
 
   ngOnInit(): void {
@@ -95,53 +95,72 @@ export class ModuleDetailComponent implements OnInit {
       }
     });
 
-    this.loadPayPalSDK();
-  }
-
-  private async loadPayPalSDK(): Promise<void> {
-    try {
-      await this.paypalService.loadPayPalScript();
-      this.paypalLoaded = true;
-      console.log('PayPal SDK cargado exitosamente');
-    } catch (error) {
-      console.error('Error cargando PayPal SDK:', error);
-    }
-  }
-
-  openPayPalModal(): void {
-    if (!this.paypalLoaded) {
-      alert('PayPal aún se está cargando, por favor espera un momento...');
-      return;
-    }
-    this.showPayPalModal = true;
+    this.loadMercadoPagoSDK();
 
     setTimeout(() => {
-      this.renderPayPalButton();
+      this.mercadoPagoService.debugMercadoPago();
+    }, 2000);
+  }
+
+  private async loadMercadoPagoSDK(): Promise<void> {
+    try {
+      await this.mercadoPagoService.loadMercadoPagoScript();
+      this.mercadoPagoLoaded = true;
+      console.log('MercadoPago SDK cargado exitosamente');
+    } catch (error) {
+      console.error('Error cargando MercadoPago SDK:', error);
+    }
+  }
+
+  openMercadoPagoModal(): void {
+    if (!this.mercadoPagoLoaded) {
+      alert('MercadoPago aún se está cargando, por favor espera un momento...');
+      return;
+    }
+    this.showMercadoPagoModal = true;
+
+    setTimeout(() => {
+      this.renderMercadoPagoButton();
     }, 100);
   }
 
-  closePayPalModal(): void {
-    this.showPayPalModal = false;
+  closeMercadoPagoModal(): void {
+    this.showMercadoPagoModal = false;
     this.selectedAmount = '50.00';
     this.customAmount = null;
   }
 
-  private renderPayPalButton(): void {
-    const container = document.getElementById('paypal-button-container');
+  private renderMercadoPagoButton(): void {
+    const container = document.getElementById('mercadopago-button-container');
     if (container) {
-      container.innerHTML = ''; 
-      this.paypalService.createDonationButton('paypal-button-container', this.finalAmount)
+      container.innerHTML = ''; // Limpiar contenido anterior
+      
+      this.mercadoPagoService.createCustomDonationButton('mercadopago-button-container', this.finalAmount)
         .then(() => {
-          console.log('Botón de PayPal renderizado con monto:', this.finalAmount);
+          console.log('Botón de MercadoPago renderizado con monto:', this.finalAmount);
         })
         .catch(error => {
-          console.error('Error renderizando botón de PayPal:', error);
+          console.error('Error renderizando botón de MercadoPago:', error);
+          // Fallback: mostrar botón simple
+          this.renderFallbackButton();
         });
     }
   }
 
+  private renderFallbackButton(): void {
+    const container = document.getElementById('mercadopago-button-container');
+    if (container) {
+      container.innerHTML = `
+        <button class="mercadopago-fallback-btn" onclick="alert('MercadoPago no está disponible en este momento. Por favor intenta más tarde.')">
+          <span>Donar $${this.finalAmount} MXN</span>
+          <small>MercadoPago</small>
+        </button>
+      `;
+    }
+  }
+
   onAmountChange(): void {
-    this.renderPayPalButton();
+    this.renderMercadoPagoButton();
   }
 
   loadModulo(idModulo: number): void {
@@ -568,21 +587,38 @@ export class ModuleDetailComponent implements OnInit {
   selectQuickAmount(amount: string): void {
     this.selectedAmount = amount;
     this.customAmount = null;
-    this.renderPayPalButton();
+    setTimeout(() => {
+      this.renderMercadoPagoButton();
+    }, 50);
   }
 
   onCustomAmountChange(): void {
     if (this.customAmount && this.customAmount >= 10 && this.customAmount <= 10000) {
       this.selectedAmount = this.customAmount.toFixed(2);
-      this.renderPayPalButton();
+      setTimeout(() => {
+        this.renderMercadoPagoButton();
+      }, 50);
     } else if (this.customAmount && this.customAmount < 10) {
       this.customAmount = 10;
       this.selectedAmount = '10.00';
-      this.renderPayPalButton();
+      setTimeout(() => {
+        this.renderMercadoPagoButton();
+      }, 50);
     } else if (this.customAmount && this.customAmount > 10000) {
       this.customAmount = 10000;
       this.selectedAmount = '10000.00';
-      this.renderPayPalButton();
+      setTimeout(() => {
+        this.renderMercadoPagoButton();
+      }, 50);
     }
+  }
+
+  testMercadoPago(): void {
+    console.log('Estado de MercadoPago:', {
+      loaded: this.mercadoPagoLoaded,
+      finalAmount: this.finalAmount,
+      selectedAmount: this.selectedAmount,
+      customAmount: this.customAmount
+    });
   }
 }

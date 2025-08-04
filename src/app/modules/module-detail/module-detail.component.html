@@ -166,7 +166,7 @@
       </div>
 
       <div class="utility-icons">
-        <button class="pay-btn" (click)="openPayPalModal()">
+        <button class="pay-btn" (click)="openMercadoPagoModal()">
           <span class="btn-text">Apóyame</span>
           <div class="icon-container">
             <svg viewBox="0 0 24 24" class="icon card-icon">
@@ -195,13 +195,13 @@
         </button>
       </div>
 
-      <div class="paypal-modal" *ngIf="showPayPalModal">
-        <div class="paypal-modal-overlay" (click)="closePayPalModal()"></div>
+      <div class="paypal-modal" *ngIf="showMercadoPagoModal">
+        <div class="paypal-modal-overlay" (click)="closeMercadoPagoModal()"></div>
         <div class="paypal-modal-container">
           <div class="paypal-modal-card">
             <div class="paypal-modal-header">
               <h2 class="paypal-modal-title">☕ ¡Apoya mi trabajo!</h2>
-              <button class="paypal-close-btn" (click)="closePayPalModal()">
+              <button class="paypal-close-btn" (click)="closeMercadoPagoModal()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                   stroke="currentColor" stroke-width="2">
                   <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -247,7 +247,7 @@
               </div>
 
               <div class="paypal-button-wrapper">
-                <div id="paypal-button-container" class="paypal-button-container"></div>
+                <div id="mercadopago-button-container" class="paypal-button-container"></div>
               </div>
 
               <div class="paypal-security">
@@ -257,7 +257,7 @@
                   <circle cx="12" cy="16" r="1"></circle>
                   <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                 </svg>
-                <span>Pago seguro procesado por PayPal</span>
+                <span>Pago seguro procesado por MercadoPago</span>
               </div>
             </div>
           </div>
