@@ -608,35 +608,6 @@
   margin: 0;
 }
 
-.options-button {
-  display: flex;
-  height: 40px;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-  border-radius: 6px;
-  border: 1px solid #00d4aa;
-  background-color: #0A0A0A;
-  padding: 0 12px;
-  cursor: pointer;
-}
-
-.options-button:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
-}
-
-.icon {
-  width: 24px;
-  height: 24px;
-  color: #64748b;
-}
-
-.small-icon {
-  width: 16px;
-  height: 16px;
-}
-
 .content {
   padding: 16px 24px;
   font-size: 18px;
@@ -1531,12 +1502,6 @@
   gap: 12px;
 }
 
-.icon.small-icon {
-  width: 20px;
-  height: 20px;
-}
-
-
 .like-button label.disabled {
   opacity: 0.6;
   cursor: not-allowed;
@@ -1557,4 +1522,650 @@
 .like-count.two {
   opacity: 1;
   color: #ef4444;
+}
+
+.pay-btn {
+  border: 2px solid #22C55E;
+  position: relative;
+  padding: 12px 24px;
+  font-size: 16px;
+  background: #1a1a1a;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.pay-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+.icon-container {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  color: #22c55e;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.default-icon {
+  opacity: 1;
+  visibility: visible;
+}
+
+.pay-btn:hover .icon {
+  animation: none;
+}
+
+.pay-btn:hover .wallet-icon {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.pay-btn:hover .card-icon {
+  animation: iconRotate 2.5s infinite;
+  animation-delay: 0s;
+}
+
+.pay-btn:hover .payment-icon {
+  animation: iconRotate 2.5s infinite;
+  animation-delay: 0.5s;
+}
+
+.pay-btn:hover .dollar-icon {
+  animation: iconRotate 2.5s infinite;
+  animation-delay: 1s;
+}
+
+.pay-btn:hover .check-icon {
+  animation: iconRotate 2.5s infinite;
+  animation-delay: 1.5s;
+}
+
+/* Active state - show only checkmark */
+.pay-btn:active .icon {
+  animation: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.pay-btn:active .check-icon {
+  animation: checkmarkAppear 0.6s ease forwards;
+  visibility: visible;
+}
+
+.btn-text {
+  font-weight: 600;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+@keyframes iconRotate {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px) scale(0.5);
+  }
+
+  5% {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+
+  15% {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+
+  20% {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px) scale(0.5);
+  }
+
+  100% {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px) scale(0.5);
+  }
+}
+
+@keyframes checkmarkAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotate(-45deg);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2) rotate(0deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.paypal-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+}
+
+.paypal-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+}
+
+.paypal-modal-container {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 20px;
+  z-index: 10;
+}
+
+.paypal-modal-card {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  animation: slideUp 0.4s ease;
+}
+
+.paypal-modal-header {
+  background: linear-gradient(135deg, #10b981, #059669);
+  padding: 25px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.paypal-modal-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.paypal-modal-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.paypal-close-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.paypal-close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+.paypal-modal-content {
+  padding: 30px;
+}
+
+.paypal-description {
+  color: #e5e5e5;
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.amount-selector {
+  margin-bottom: 25px;
+}
+
+.amount-selector label {
+  display: block;
+  color: #10b981;
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.amount-select {
+  width: 100%;
+  background: #252525;
+  border: 2px solid #404040;
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.amount-select:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.amount-select option {
+  background: #252525;
+  color: white;
+  padding: 10px;
+}
+
+.paypal-button-wrapper {
+  margin: 25px 0;
+  min-height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.paypal-security {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #888;
+  font-size: 14px;
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.paypal-security svg {
+  color: #10b981;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 640px) {
+  .paypal-modal-container {
+    margin: 0 10px;
+  }
+
+  .paypal-modal-card {
+    border-radius: 16px;
+  }
+
+  .paypal-modal-header {
+    padding: 20px;
+  }
+
+  .paypal-modal-title {
+    font-size: 20px;
+  }
+
+  .paypal-modal-content {
+    padding: 20px;
+  }
+
+  .paypal-description {
+    font-size: 15px;
+  }
+
+  .amount-select {
+    font-size: 15px;
+    padding: 10px 14px;
+  }
+
+  .paypal-close-btn {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .paypal-modal-title {
+    font-size: 18px;
+  }
+
+  .paypal-modal-content {
+    padding: 15px;
+  }
+
+  .paypal-description {
+    font-size: 14px;
+  }
+
+  .amount-selector label {
+    font-size: 15px;
+  }
+
+  .amount-select {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  .paypal-security {
+    font-size: 13px;
+    padding: 12px;
+  }
+}
+
+/* Agregar estos estilos al final de tu archivo CSS existente */
+
+/* Estilos mejorados para el modal de PayPal */
+.paypal-modal-container {
+  max-width: 520px;
+  /* Aumentar el ancho máximo */
+}
+
+/* Cantidades rápidas */
+.quick-amount-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.quick-amount-btn {
+  background: #252525;
+  border: 2px solid #404040;
+  border-radius: 12px;
+  padding: 12px 8px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.quick-amount-btn:hover {
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+.quick-amount-btn.active {
+  border-color: #10b981;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1));
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
+}
+
+.quick-amount-btn.active::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 16px;
+  height: 16px;
+  background: #10b981;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quick-amount-btn.active::after {
+  content: '✓';
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.amount-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #10b981;
+}
+
+.amount-label {
+  font-size: 12px;
+  color: #888;
+  text-align: center;
+}
+
+/* Campo personalizado */
+.custom-amount-section {
+  margin-bottom: 25px;
+}
+
+.custom-amount-section label {
+  display: block;
+  color: #10b981;
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.custom-amount-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #252525;
+  border: 2px solid #404040;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.custom-amount-input-container:focus-within {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.currency-symbol {
+  padding: 12px 15px;
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  font-weight: 700;
+  font-size: 18px;
+  border-right: 1px solid #404040;
+}
+
+.custom-amount-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 12px 15px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  outline: none;
+  text-align: center;
+}
+
+.custom-amount-input::placeholder {
+  color: #666;
+  font-weight: 400;
+}
+
+.currency-code {
+  padding: 12px 15px;
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  font-weight: 700;
+  font-size: 14px;
+  border-left: 1px solid #404040;
+}
+
+.amount-hint {
+  color: #888;
+  font-size: 12px;
+  margin-top: 8px;
+  text-align: center;
+}
+
+/* Monto seleccionado */
+.selected-amount-display {
+  margin-bottom: 25px;
+}
+
+.selected-amount-card {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05));
+  border: 2px solid rgba(16, 185, 129, 0.3);
+  border-radius: 12px;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.selected-label {
+  color: #10b981;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.selected-value {
+  color: white;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.paypal-button-container {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.paypal-button-wrapper #paypal-button-container>div {
+  width: 100% !important;
+}
+
+.paypal-button-wrapper #paypal-button-container iframe {
+  width: 100% !important;
+  min-width: 100% !important;
+}
+
+.paypal-button-wrapper #paypal-button-container .paypal-button {
+  width: 100% !important;
+}
+
+.paypal-button-wrapper {
+  margin: 25px 0;
+  min-height: 55px;
+}
+
+@media (max-width: 640px) {
+  .quick-amount-buttons {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .quick-amount-btn {
+    padding: 10px 6px;
+  }
+
+  .amount-value {
+    font-size: 16px;
+  }
+
+  .amount-label {
+    font-size: 11px;
+  }
+
+  .custom-amount-input {
+    font-size: 15px;
+  }
+
+  .selected-value {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .quick-amount-buttons {
+    grid-template-columns: 1fr;
+  }
+
+  .custom-amount-input {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+
+  .currency-symbol,
+  .currency-code {
+    padding: 10px 12px;
+  }
+
+  .selected-amount-card {
+    padding: 12px 16px;
+  }
+
+  .selected-label {
+    font-size: 15px;
+  }
+
+  .selected-value {
+    font-size: 17px;
+  }
 }

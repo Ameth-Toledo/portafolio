@@ -9,13 +9,14 @@ import { TimeFormatPipe } from '../../pipes/time-format.pipe';
 import { ModulosService } from '../../services/modulos/modulos.service';
 import { ComentariosService, Comentario } from '../../services/comentarios/comentarios.service';
 import { LikesService } from '../../services/likes/likes.service';
-import { ChatbotComponent } from "../../components/chatbot/chatbot.component"; 
+import { PaypalService } from '../../services/paypal/paypal.service';
+import { ChatbotComponent } from "../../components/chatbot/chatbot.component";
 
 @Component({
   selector: 'app-module-detail',
   standalone: true,
   imports: [CommonModule, FormsModule, TimeFormatPipe, ChatbotComponent],
-  providers: [ComentariosService, LikesService], 
+  providers: [ComentariosService, LikesService, PaypalService],
   templateUrl: './module-detail.component.html',
   styleUrl: './module-detail.component.css'
 })
@@ -54,6 +55,20 @@ export class ModuleDetailComponent implements OnInit {
   userHasLiked = false;
   loadingLikes = false;
 
+  showPayPalModal = false;
+  selectedAmount = '50.00';
+  customAmount: number | null = null;
+  paypalLoaded = false;
+
+  quickAmounts = [
+    { value: '20.00', label: 'Un café ☕' },
+    { value: '50.00', label: 'Desayuno 🥐' },
+    { value: '100.00', label: 'Comida 🍕' },
+    { value: '200.00', label: 'Cena 🍽️' },
+    { value: '500.00', label: '¡Eres increíble! 🎉' },
+    { value: '1000.00', label: '¡Súper apoyo! 🌟' }
+  ];
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -61,7 +76,8 @@ export class ModuleDetailComponent implements OnInit {
     private contenidoService: ContenidoService,
     private modulosService: ModulosService,
     private comentariosService: ComentariosService,
-    private likesService: LikesService, 
+    private likesService: LikesService,
+    private paypalService: PaypalService
   ) { }
 
   ngOnInit(): void {
@@ -78,6 +94,54 @@ export class ModuleDetailComponent implements OnInit {
         this.loading = false;
       }
     });
+
+    this.loadPayPalSDK();
+  }
+
+  private async loadPayPalSDK(): Promise<void> {
+    try {
+      await this.paypalService.loadPayPalScript();
+      this.paypalLoaded = true;
+      console.log('PayPal SDK cargado exitosamente');
+    } catch (error) {
+      console.error('Error cargando PayPal SDK:', error);
+    }
+  }
+
+  openPayPalModal(): void {
+    if (!this.paypalLoaded) {
+      alert('PayPal aún se está cargando, por favor espera un momento...');
+      return;
+    }
+    this.showPayPalModal = true;
+
+    setTimeout(() => {
+      this.renderPayPalButton();
+    }, 100);
+  }
+
+  closePayPalModal(): void {
+    this.showPayPalModal = false;
+    this.selectedAmount = '50.00';
+    this.customAmount = null;
+  }
+
+  private renderPayPalButton(): void {
+    const container = document.getElementById('paypal-button-container');
+    if (container) {
+      container.innerHTML = ''; 
+      this.paypalService.createDonationButton('paypal-button-container', this.finalAmount)
+        .then(() => {
+          console.log('Botón de PayPal renderizado con monto:', this.finalAmount);
+        })
+        .catch(error => {
+          console.error('Error renderizando botón de PayPal:', error);
+        });
+    }
+  }
+
+  onAmountChange(): void {
+    this.renderPayPalButton();
   }
 
   loadModulo(idModulo: number): void {
@@ -419,17 +483,17 @@ export class ModuleDetailComponent implements OnInit {
     if (keyboardEvent.key === ' ') {
       keyboardEvent.preventDefault();
       keyboardEvent.stopPropagation();
-      
+
       const target = keyboardEvent.target as HTMLTextAreaElement;
       if (target) {
         const start = target.selectionStart;
         const end = target.selectionEnd;
-        
-        this.nuevoComentario = 
-          this.nuevoComentario.substring(0, start) + 
-          ' ' + 
+
+        this.nuevoComentario =
+          this.nuevoComentario.substring(0, start) +
+          ' ' +
           this.nuevoComentario.substring(end);
-          
+
         setTimeout(() => {
           target.selectionStart = target.selectionEnd = start + 1;
         });
@@ -440,7 +504,7 @@ export class ModuleDetailComponent implements OnInit {
   cargarLikes(moduloId: number) {
     this.loadingLikes = true;
     const moduloIdStr = moduloId.toString();
-    
+
     this.likesService.getLikesPorModulo(moduloIdStr).subscribe({
       next: (actions) => {
         this.likes = actions.map((a: any) => {
@@ -448,7 +512,7 @@ export class ModuleDetailComponent implements OnInit {
           const key = a.payload.key;
           return { key, ...data };
         });
-        
+
         this.likesCount = this.likes.length;
         const currentUserId = this.likesService.getUsuarioId();
         this.userHasLiked = this.likes.some(like => like.usuarioId === currentUserId);
@@ -491,6 +555,34 @@ export class ModuleDetailComponent implements OnInit {
           alert('Error al agregar el like');
           this.loadingLikes = false;
         });
+    }
+  }
+
+  get finalAmount(): string {
+    if (this.customAmount && this.customAmount >= 10) {
+      return this.customAmount.toFixed(2);
+    }
+    return this.selectedAmount;
+  }
+
+  selectQuickAmount(amount: string): void {
+    this.selectedAmount = amount;
+    this.customAmount = null;
+    this.renderPayPalButton();
+  }
+
+  onCustomAmountChange(): void {
+    if (this.customAmount && this.customAmount >= 10 && this.customAmount <= 10000) {
+      this.selectedAmount = this.customAmount.toFixed(2);
+      this.renderPayPalButton();
+    } else if (this.customAmount && this.customAmount < 10) {
+      this.customAmount = 10;
+      this.selectedAmount = '10.00';
+      this.renderPayPalButton();
+    } else if (this.customAmount && this.customAmount > 10000) {
+      this.customAmount = 10000;
+      this.selectedAmount = '10000.00';
+      this.renderPayPalButton();
     }
   }
 }
