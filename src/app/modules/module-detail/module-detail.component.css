@@ -1913,15 +1913,10 @@
   }
 }
 
-/* Agregar estos estilos al final de tu archivo CSS existente */
-
-/* Estilos mejorados para el modal de PayPal */
 .paypal-modal-container {
   max-width: 520px;
-  /* Aumentar el ancho máximo */
 }
 
-/* Cantidades rápidas */
 .quick-amount-buttons {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -1994,7 +1989,6 @@
   text-align: center;
 }
 
-/* Campo personalizado */
 .custom-amount-section {
   margin-bottom: 25px;
 }
@@ -2065,7 +2059,6 @@
   text-align: center;
 }
 
-/* Monto seleccionado */
 .selected-amount-display {
   margin-bottom: 25px;
 }
