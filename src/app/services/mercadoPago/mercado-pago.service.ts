@@ -83,8 +83,8 @@ export class MercadoPagoService {
 
       // Verificar que MercadoPago esté disponible
       if (!window.MercadoPago || !this.isInitialized) {
-        console.log('MercadoPago no disponible, creando botón directo');
-        this.createDirectPaymentButton(container, amount);
+        console.log('MercadoPago no disponible, creando opciones alternativas');
+        this.createPaymentOptionsButton(container, amount);
         return;
       }
 
@@ -95,11 +95,11 @@ export class MercadoPagoService {
           this.createPreferenceButton(container, preferenceId, amount);
         } catch (error) {
           console.error('Error creando preferencia:', error);
-          this.createDirectPaymentButton(container, amount);
+          this.createPaymentOptionsButton(container, amount);
         }
       } else {
-        console.log('No hay access token, creando botón directo');
-        this.createDirectPaymentButton(container, amount);
+        console.log('No hay access token, creando opciones de pago');
+        this.createPaymentOptionsButton(container, amount);
       }
 
       // Agregar estilos
@@ -116,62 +116,68 @@ export class MercadoPagoService {
       <div class="mercadopago-button-container">
         <div class="mp-loading-button">
           <div class="mp-spinner"></div>
-          <span>Cargando MercadoPago...</span>
+          <span>Cargando opciones de pago...</span>
         </div>
       </div>
     `;
   }
 
   private async createDonationPreference(amount: string): Promise<string> {
-    const preferenceData = {
-      items: [
-        {
-          title: `Donación de apoyo - $${amount} MXN`,
-          quantity: 1,
-          currency_id: 'MXN',
-          unit_price: parseFloat(amount)
-        }
-      ],
-      payer: {
-        email: 'donador@example.com'
-      },
-      back_urls: {
-        success: window.location.origin + '/donation-success',
-        failure: window.location.origin + '/donation-failure',
-        pending: window.location.origin + '/donation-pending'
-      },
-      auto_return: 'approved',
-      external_reference: `donation-${Date.now()}`,
-      expires: true,
-      expiration_date_from: new Date().toISOString(),
-      expiration_date_to: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
-    };
+  const timestamp = Date.now();
+  const randomId = Math.floor(Math.random() * 1000);
+  
+  const preferenceData = {
+    items: [
+      {
+        title: `Donación de apoyo - $${amount} MXN`,
+        quantity: 1,
+        currency_id: 'MXN',
+        unit_price: parseFloat(amount)
+      }
+    ],
+    payer: {
+      email: 'shakerzest@gmail.com',
+      name: 'Donador',
+      surname: 'Anónimo'
+    },
+    external_reference: `donation-${timestamp}-${randomId}`,
+    statement_descriptor: 'DONACION APOYO',
+    payment_methods: {
+      excluded_payment_methods: [], 
+      excluded_payment_types: [],   
+      installments: 12              
+    },
+    expires: false,
+    binary_mode: false
+    // Sin auto_return ni back_urls - el usuario se queda en MercadoPago
+  };
 
-    const response = await fetch('https://api.mercadopago.com/checkout/preferences', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${environment.mercadoPago.accessToken}`
-      },
-      body: JSON.stringify(preferenceData)
-    });
+  const response = await fetch('https://api.mercadopago.com/checkout/preferences', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${environment.mercadoPago.accessToken}`
+    },
+    body: JSON.stringify(preferenceData)
+  });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Error response from MercadoPago:', errorData);
-      throw new Error(`Error creating preference: ${response.status}`);
-    }
-
-    const preference = await response.json();
-    return preference.id;
+  if (!response.ok) {
+    const errorData = await response.json();
+    console.error('Error response from MercadoPago:', errorData);
+    throw new Error(`Error creating preference: ${response.status} - ${JSON.stringify(errorData)}`);
   }
+
+  const preference = await response.json();
+  console.log('Preferencia creada exitosamente:', preference.id);
+  return preference.id;
+}
 
   private createPreferenceButton(container: HTMLElement, preferenceId: string, amount: string): void {
     const checkoutUrl = `https://www.mercadopago.com.mx/checkout/v1/redirect?pref_id=${preferenceId}`;
     
     container.innerHTML = `
       <div class="mercadopago-button-container">
-        <button class="mercadopago-donation-btn" onclick="window.open('${checkoutUrl}', '_blank')">
+        <button class="mercadopago-donation-btn primary" onclick="window.open('${checkoutUrl}', '_blank')">
           <div class="mp-button-content">
             <div class="mp-logo">
               <svg class="mp-icon" viewBox="0 0 100 100" fill="currentColor">
@@ -188,8 +194,12 @@ export class MercadoPagoService {
             <span class="mp-method">💳 Tarjeta</span>
             <span class="mp-method">🏪 OXXO</span>
             <span class="mp-method">🏦 Transferencia</span>
+            <span class="mp-method">📱 Pagos digitales</span>
           </div>
         </button>
+        
+        ${this.createAlternativeOptions(amount)}
+        
         <div class="mp-security">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
@@ -202,13 +212,14 @@ export class MercadoPagoService {
     `;
   }
 
-  private createDirectPaymentButton(container: HTMLElement, amount: string): void {
-    // Crear enlace directo a MercadoPago para donaciones
-    const mercadoPagoUrl = `https://www.mercadopago.com.mx`;
-    
+  private createPaymentOptionsButton(container: HTMLElement, amount: string): void {
     container.innerHTML = `
       <div class="mercadopago-button-container">
-        <button class="mercadopago-donation-btn" onclick="window.open('${mercadoPagoUrl}', '_blank')">
+        <div class="payment-options-title">
+          <h4>Opciones de donación - $${amount} MXN</h4>
+        </div>
+        
+        <button class="mercadopago-donation-btn primary" onclick="window.open('https://www.mercadopago.com.mx', '_blank')">
           <div class="mp-button-content">
             <div class="mp-logo">
               <svg class="mp-icon" viewBox="0 0 100 100" fill="currentColor">
@@ -217,19 +228,57 @@ export class MercadoPagoService {
               </svg>
             </div>
             <div class="mp-text-content">
-              <span class="mp-button-text">Donar $${amount} MXN</span>
-              <span class="mp-subtitle">vía MercadoPago</span>
+              <span class="mp-button-text">MercadoPago</span>
+              <span class="mp-subtitle">Pago con cuenta MP</span>
             </div>
           </div>
-          <div class="mp-payment-methods">
-            <span class="mp-method">💳 Tarjeta</span>
-            <span class="mp-method">🏪 OXXO</span>
-            <span class="mp-method">🏦 Transferencia</span>
+        </button>
+        
+        ${this.createAlternativeOptions(amount)}
+        
+        <div class="mp-info">
+          <small>Elige la opción que más te convenga</small>
+        </div>
+      </div>
+    `;
+  }
+
+  private createAlternativeOptions(amount: string): string {
+    return `
+      <div class="alternative-payment-methods">
+        <div class="payment-method-separator">
+          <span>O también puedes:</span>
+        </div>
+        
+        <button class="alternative-payment-btn" onclick="window.open('https://pay.mercadopago.com.mx/', '_blank')">
+          <div class="alt-method-content">
+            <span class="alt-method-icon">💳</span>
+            <div class="alt-method-text">
+              <span class="alt-method-title">Pagar con Tarjeta</span>
+              <span class="alt-method-subtitle">Sin cuenta MercadoPago</span>
+            </div>
           </div>
         </button>
-        <div class="mp-info">
-          <small>Serás redirigido a MercadoPago para realizar tu donación</small>
-        </div>
+        
+        <button class="alternative-payment-btn" onclick="navigator.share ? navigator.share({title: 'Donación de apoyo', text: 'Apoya este proyecto con $${amount} MXN', url: window.location.href}) : prompt('Comparte este enlace:', window.location.href)">
+          <div class="alt-method-content">
+            <span class="alt-method-icon">📤</span>
+            <div class="alt-method-text">
+              <span class="alt-method-title">Compartir</span>
+              <span class="alt-method-subtitle">Invita a otros a donar</span>
+            </div>
+          </div>
+        </button>
+        
+        <button class="alternative-payment-btn" onclick="alert('Para otras opciones de donación, contacta directamente al creador del contenido.')">
+          <div class="alt-method-content">
+            <span class="alt-method-icon">💬</span>
+            <div class="alt-method-text">
+              <span class="alt-method-title">Contactar</span>
+              <span class="alt-method-subtitle">Otras formas de apoyo</span>
+            </div>
+          </div>
+        </button>
       </div>
     `;
   }
@@ -240,13 +289,23 @@ export class MercadoPagoService {
 
     container.innerHTML = `
       <div class="mercadopago-button-container">
-        <button class="mercadopago-fallback-btn" onclick="alert('MercadoPago no está disponible en este momento. Por favor intenta más tarde o contacta al creador.')">
+        <div class="payment-options-title">
+          <h4>Opciones de donación - $${amount} MXN</h4>
+        </div>
+        
+        <button class="mercadopago-fallback-btn" onclick="window.open('https://www.mercadopago.com.mx', '_blank')">
           <div class="fallback-content">
             <span class="fallback-icon">⚠️</span>
-            <span class="fallback-text">Donar $${amount} MXN</span>
-            <small>MercadoPago no disponible</small>
+            <span class="fallback-text">Ir a MercadoPago</span>
+            <small>Servicio temporalmente no disponible</small>
           </div>
         </button>
+        
+        ${this.createAlternativeOptions(amount)}
+        
+        <div class="mp-info">
+          <small>Si tienes problemas, intenta más tarde o contacta al creador</small>
+        </div>
       </div>
     `;
   }
@@ -262,8 +321,21 @@ export class MercadoPagoService {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 12px;
-        padding: 15px 0;
+        gap: 15px;
+        padding: 20px 0;
+      }
+      
+      .payment-options-title {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 10px;
+      }
+      
+      .payment-options-title h4 {
+        color: #10b981;
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0;
       }
       
       .mercadopago-donation-btn {
@@ -281,6 +353,7 @@ export class MercadoPagoService {
         max-width: 350px !important;
         position: relative !important;
         overflow: hidden !important;
+        margin-bottom: 10px !important;
       }
       
       .mercadopago-donation-btn:hover {
@@ -289,8 +362,84 @@ export class MercadoPagoService {
         box-shadow: 0 6px 20px rgba(0, 158, 227, 0.4) !important;
       }
       
-      .mercadopago-donation-btn:active {
-        transform: translateY(0) !important;
+      .alternative-payment-methods {
+        width: 100%;
+        max-width: 350px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      
+      .payment-method-separator {
+        text-align: center;
+        color: #888;
+        font-size: 14px;
+        margin: 10px 0;
+        position: relative;
+      }
+      
+      .payment-method-separator::before,
+      .payment-method-separator::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 30%;
+        height: 1px;
+        background: #444;
+      }
+      
+      .payment-method-separator::before {
+        left: 0;
+      }
+      
+      .payment-method-separator::after {
+        right: 0;
+      }
+      
+      .alternative-payment-btn {
+        background: #252525 !important;
+        border: 2px solid #404040 !important;
+        border-radius: 10px !important;
+        padding: 12px 16px !important;
+        color: white !important;
+        cursor: pointer !important;
+        transition: all 0.3s ease !important;
+        width: 100% !important;
+      }
+      
+      .alternative-payment-btn:hover {
+        border-color: #666 !important;
+        background: #333 !important;
+        transform: translateY(-1px) !important;
+      }
+      
+      .alt-method-content {
+        display: flex !important;
+        align-items: center !important;
+        gap: 12px !important;
+      }
+      
+      .alt-method-icon {
+        font-size: 20px !important;
+        width: 24px !important;
+        text-align: center !important;
+      }
+      
+      .alt-method-text {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 2px !important;
+      }
+      
+      .alt-method-title {
+        font-size: 14px !important;
+        font-weight: 600 !important;
+      }
+      
+      .alt-method-subtitle {
+        font-size: 12px !important;
+        color: #888 !important;
       }
       
       .mp-button-content {
@@ -334,8 +483,8 @@ export class MercadoPagoService {
       
       .mp-payment-methods {
         display: flex !important;
-        gap: 8px !important;
-        font-size: 11px !important;
+        gap: 6px !important;
+        font-size: 10px !important;
         opacity: 0.85 !important;
         flex-wrap: wrap !important;
         justify-content: center !important;
@@ -343,10 +492,10 @@ export class MercadoPagoService {
       }
       
       .mp-method {
-        font-size: 10px !important;
+        font-size: 9px !important;
         white-space: nowrap !important;
         background: rgba(255, 255, 255, 0.1) !important;
-        padding: 2px 6px !important;
+        padding: 2px 4px !important;
         border-radius: 4px !important;
       }
       
@@ -357,6 +506,7 @@ export class MercadoPagoService {
         color: #888 !important;
         font-size: 12px !important;
         text-align: center !important;
+        margin-top: 10px !important;
       }
       
       .mp-security svg {
@@ -403,6 +553,7 @@ export class MercadoPagoService {
         width: 100% !important;
         max-width: 350px !important;
         transition: all 0.3s ease !important;
+        margin-bottom: 10px !important;
       }
       
       .mercadopago-fallback-btn:hover {
@@ -429,9 +580,14 @@ export class MercadoPagoService {
       @media (max-width: 640px) {
         .mercadopago-donation-btn, 
         .mercadopago-fallback-btn, 
-        .mp-loading-button {
+        .mp-loading-button,
+        .alternative-payment-methods {
           max-width: 100% !important;
           margin: 0 10px !important;
+        }
+        
+        .payment-options-title h4 {
+          font-size: 16px;
         }
         
         .mp-button-content {
@@ -443,7 +599,19 @@ export class MercadoPagoService {
         }
         
         .mp-payment-methods {
-          gap: 6px !important;
+          gap: 4px !important;
+        }
+        
+        .alternative-payment-btn {
+          padding: 10px 12px !important;
+        }
+        
+        .alt-method-title {
+          font-size: 13px !important;
+        }
+        
+        .alt-method-subtitle {
+          font-size: 11px !important;
         }
       }
     `;
