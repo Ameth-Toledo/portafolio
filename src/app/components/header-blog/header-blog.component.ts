@@ -59,4 +59,6 @@ export class HeaderBlogComponent {
       this.isListening = true;
     }
   }
+
+  onLogin() {}
 }
