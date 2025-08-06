@@ -12,6 +12,13 @@ import { DespliegueFrontendAws5Component } from './modules/despliegue-frontend-a
 import { CoursesComponent } from './modules/courses/courses.component';
 import { ModulosComponent } from './modules/modulos/modulos.component';
 import { ModuleDetailComponent } from './modules/module-detail/module-detail.component';
+import { LoginComponent } from './modules/login/login.component';
+import { RegisterComponent } from './modules/register/register.component';
+import { UserGuard } from './guards/auth.guard';
+import { DashboardComponent } from './modules/dashboard/dashboard.component';
+import { ComentariosComponent } from './modules/comentarios/comentarios.component';
+import { CursosDashboardComponent } from './modules/cursos-dashboard/cursos-dashboard.component';
+import { ModulesDashboardComponent } from './modules/modules-dashboard/modules-dashboard.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '', pathMatch: 'full' },
@@ -25,7 +32,14 @@ export const routes: Routes = [
     { path: 'despliegue/front/aws/ec2/id=4', component: DespliegueFrontendAws4Component },
     { path: 'despliegue/front/aws/ec2/id=5', component: DespliegueFrontendAws5Component },
     { path: 'blog', component: CoursesComponent },
-    { path: 'modulos', component: ModulosComponent },
-    { path: 'modulo/detail', component: ModuleDetailComponent },
+    { path: 'modulos', component: ModulosComponent, canActivate: [UserGuard] },
+    { path: 'modulo/detail', component: ModuleDetailComponent, canActivate: [UserGuard] },
+    { path: 'login', component: LoginComponent },
+    { path: 'register', component: RegisterComponent },
+    { path: 'dashboard', component: DashboardComponent, children: [
+        { path: 'comentarios', component: ComentariosComponent },
+        { path: 'cursos', component: CursosDashboardComponent },
+        { path: 'modules', component: ModulesDashboardComponent }
+    ] },
     { path: '**', component: NotfoundComponent }
 ];

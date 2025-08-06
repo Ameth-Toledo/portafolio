@@ -1,0 +1,165 @@
+.card {
+  width: 300px;
+  height: 400px;  
+  padding: 20px;
+  color: #333;
+  background: white;
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(145deg, transparent 35%,#e81cff, #40c9ff) border-box;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transform-origin: right bottom;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.card .main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.card .header span:first-child {
+  font-weight: 600;
+  color: #666;
+}
+
+.card .header .fecha {
+  background-color: #f0f0f0;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  color: #555;
+}
+
+.curso-imagen {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.card .heading {
+  font-size: 20px;
+  margin: 0 0 10px 0;
+  font-weight: 700;
+  color: #222;
+  line-height: 1.3;
+}
+
+.card .description {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.5;
+  margin-bottom: 15px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; 
+  line-clamp: 3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card .categories {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+  flex-wrap: wrap;
+}
+
+.card .categories span {
+  padding: 5px 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 11px;
+  border-radius: 50em;
+  letter-spacing: 0.5px;
+}
+
+.card .categories .tech {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.card .categories .level {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.card .categories .duration {
+  background-color: #fff3e0;
+  color: #e65100;
+}
+
+.card:hover {
+  rotate: 8deg;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+}
+
+@media screen and (max-width: 768px) {
+  .card {
+    width: calc(100vw - 40px); 
+    max-width: 280px; 
+    height: auto; 
+    min-height: 320px; 
+    padding: 15px;
+    margin: 0 auto; 
+  }
+  
+  .card .header {
+    margin-bottom: 10px;
+    font-size: 12px;
+  }
+  
+  .card .header .fecha {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+  
+  .curso-imagen {
+    width: 100%;
+    height: 120px;
+    margin-bottom: 12px;
+  }
+  
+  .card .heading {
+    font-size: 16px;
+    margin: 0 0 8px 0;
+  }
+  
+  .card .description {
+    font-size: 12px;
+    margin-bottom: 10px;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+  
+  .card .categories {
+    gap: 5px;
+  }
+  
+  .card .categories span {
+    padding: 3px 6px;
+    font-size: 9px;
+  }
+  
+  .card:hover {
+    rotate: 5deg;
+    transform: translateY(-3px);
+  }
+}

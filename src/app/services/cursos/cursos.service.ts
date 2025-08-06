@@ -7,7 +7,7 @@ import { Curso } from '../../models/curso';
   providedIn: 'root'
 })
 export class CursosService {
-  private apiUrl = 'https://amethdev-api.vercel.app/api/cursos';
+  private apiUrl = 'http://localhost:8080/cursos';
 
   constructor(private http: HttpClient) {}
 
@@ -23,5 +23,17 @@ export class CursosService {
   searchCursosByNombre(nombre: string): Observable<Curso[]> {
     const params = new HttpParams().set('nombre', nombre);
     return this.http.get<Curso[]>(this.apiUrl, { params });
+  }
+
+  createCurso(curso: Omit<Curso, 'id'>): Observable<Curso> {
+    return this.http.post<Curso>(this.apiUrl, curso);
+  }
+
+  updateCurso(curso: Curso): Observable<Curso> {
+    return this.http.put<Curso>(`${this.apiUrl}/${curso.id}`, curso);
+  }
+
+  deleteCurso(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }
