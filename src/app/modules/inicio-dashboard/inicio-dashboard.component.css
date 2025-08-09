@@ -1,0 +1,20 @@
+.home {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0 20px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.header .text {
+  font-size: 44px;
+  font-weight: 600;
+  color: #11101D;
+  margin: 0;
+}

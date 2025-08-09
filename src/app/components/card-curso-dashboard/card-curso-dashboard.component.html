@@ -1,4 +1,4 @@
-<div class="card" (click)="navegarAModulos()" style="cursor: pointer;">
+<div class="card" (click)="onCardClick()">
   <div class="main-content">
     <div class="header">
       <span class="fecha">Agregado el {{fecha}}</span>
@@ -10,6 +10,257 @@
       <span class="tech">{{tecnologia}}</span>
       <span class="level">{{nivel}}</span>
       <span class="duration">{{duracion}}</span>
+    </div>
+  </div>
+  
+  <!-- Botones de acciones -->
+  <div class="card-actions" (click)="$event.stopPropagation()">
+    <button class="action-btn edit-btn" (click)="openEditModal()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+      </svg>
+    </button>
+    <button class="action-btn delete-btn" (click)="openDeleteModal()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="3 6 5 6 21 6"></polyline>
+        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+        <line x1="10" y1="11" x2="10" y2="17"></line>
+        <line x1="14" y1="11" x2="14" y2="17"></line>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- Modal de Confirmación para Eliminar -->
+<div class="modal-overlay" *ngIf="showDeleteModal" (click)="closeDeleteModal()">
+  <div class="modal-content confirm-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Confirmar Eliminación</h2>
+      <button class="modal-close" (click)="closeDeleteModal()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>¿Estás seguro que deseas eliminar el curso "{{ nombre }}"? Esta acción no se puede deshacer.</p>
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" (click)="closeDeleteModal()">
+          Cancelar
+        </button>
+        <button type="button" class="btn-confirm-delete" (click)="confirmDelete()">
+          Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Edición (reutiliza el mismo de creación pero con datos cargados) -->
+<div class="modal-overlay" *ngIf="showEditModal" (click)="closeEditModal()">
+  <div class="modal-content add-course-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title-section">
+        <div class="modal-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <h2>Editar Curso</h2>
+      </div>
+      <button class="modal-close" (click)="closeEditModal()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <form (ngSubmit)="onEditSubmit()" class="modal-form">
+        <div class="form-section">
+          <h3 class="section-title">Información Básica</h3>
+          
+          <div class="form-group">
+            <label for="edit-nombre">Nombre del Curso <span class="required">*</span></label>
+            <div class="input-wrapper">
+              <input 
+                type="text" 
+                id="edit-nombre" 
+                [(ngModel)]="editData.nombre" 
+                name="nombre" 
+                required
+                class="form-input"
+                placeholder="Ej: Desarrollo Web con React">
+              <div class="input-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="edit-nivel">Nivel de Dificultad <span class="required">*</span></label>
+              <div class="select-wrapper">
+                <select 
+                  id="edit-nivel" 
+                  [(ngModel)]="editData.nivel" 
+                  name="nivel" 
+                  required
+                  class="form-select">
+                  <option value="" disabled>Selecciona un nivel</option>
+                  <option *ngFor="let nivel of niveles" [value]="nivel">{{ nivel }}</option>
+                </select>
+                <div class="select-arrow">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="edit-tecnologia">Tecnología Principal <span class="required">*</span></label>
+              <div class="input-wrapper">
+                <input 
+                  type="text" 
+                  id="edit-tecnologia" 
+                  [(ngModel)]="editData.tecnologia" 
+                  name="tecnologia" 
+                  required
+                  class="form-input"
+                  placeholder="Ej: React.js, Python, Node.js">
+                <div class="input-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="12,2 15.09,8.26 22,9 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9 8.91,8.26" stroke="currentColor" stroke-width="2" fill="none"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="edit-duracion">Duración del Curso <span class="required">*</span></label>
+              <div class="input-wrapper">
+                <input 
+                  type="text" 
+                  id="edit-duracion" 
+                  [(ngModel)]="editData.duracion" 
+                  name="duracion" 
+                  required
+                  class="form-input"
+                  placeholder="Ej: 8 semanas, 40 horas">
+                <div class="input-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                    <polyline points="12,6 12,12 16,14" stroke="currentColor" stroke-width="2"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="edit-fecha">Fecha de Inicio <span class="required">*</span></label>
+              <div class="input-wrapper">
+                <input 
+                  type="text" 
+                  id="edit-fecha" 
+                  [(ngModel)]="editData.fecha" 
+                  name="fecha" 
+                  required
+                  class="form-input"
+                  placeholder="Ej: 15 de Septiembre 2025">
+                <div class="input-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="2"/>
+                    <line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="2"/>
+                    <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="2"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3 class="section-title">Contenido y Recursos</h3>
+          
+          <div class="form-group">
+            <label for="edit-imagen">URL de la Imagen de Portada <span class="required">*</span></label>
+            <div class="input-wrapper">
+              <input 
+                type="url" 
+                id="edit-imagen" 
+                [(ngModel)]="editData.imagen" 
+                name="imagen" 
+                required
+                class="form-input"
+                placeholder="https://ejemplo.com/imagen-del-curso.jpg">
+              <div class="input-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                  <circle cx="8.5" cy="8.5" r="1.5" stroke="currentColor" stroke-width="2"/>
+                  <polyline points="21,15 16,10 5,21" stroke="currentColor" stroke-width="2"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-descripcion">Descripción del Curso <span class="required">*</span></label>
+            <div class="textarea-wrapper">
+              <textarea 
+                id="edit-descripcion" 
+                [(ngModel)]="editData.descripcion" 
+                name="descripcion" 
+                required
+                rows="4"
+                class="form-textarea"
+                placeholder="Describe el contenido, objetivos de aprendizaje y lo que los estudiantes lograrán al completar este curso..."></textarea>
+              <div class="textarea-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M14 2H6A2 2 0 0 0 4 4V20A2 2 0 0 0 6 22H18A2 2 0 0 0 20 20V8L14 2Z" stroke="currentColor" stroke-width="2"/>
+                  <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2"/>
+                  <line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2"/>
+                  <line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2"/>
+                  <polyline points="10,9 9,9 8,9" stroke="currentColor" stroke-width="2"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" (click)="closeEditModal()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Cancelar
+          </button>
+          <button 
+            type="submit" 
+            class="btn-save" 
+            [disabled]="!isEditFormValid() || isSaving">
+            <div class="btn-content">
+              <div class="btn-spinner" *ngIf="isSaving">
+                <div class="spinner-mini"></div>
+              </div>
+              <svg *ngIf="!isSaving" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 21H5A2 2 0 0 1 3 19V5A2 2 0 0 1 5 3H16L21 8V19A2 2 0 0 1 19 21Z" stroke="currentColor" stroke-width="2"/>
+                <polyline points="17,21 17,13 7,13 7,21" stroke="currentColor" stroke-width="2"/>
+                <polyline points="7,3 7,8 15,8" stroke="currentColor" stroke-width="2"/>
+              </svg>
+              <span>{{ isSaving ? 'Guardando...' : 'Guardar Cambios' }}</span>
+            </div>
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

@@ -7,10 +7,14 @@ import { Modulo } from '../../models/modulo';
   providedIn: 'root'
 })
 export class ModulosService {
-  private apiUrl = 'https://amethdev-api.vercel.app/api/modulos';
+  private apiUrl = 'http://localhost:8080/modulos';
 
   constructor(private http: HttpClient) {}
 
+  createModulo(moduloData: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}`, moduloData);
+  }
+  
   getModulos(): Observable<Modulo[]> {
     return this.http.get<Modulo[]>(this.apiUrl);
   }

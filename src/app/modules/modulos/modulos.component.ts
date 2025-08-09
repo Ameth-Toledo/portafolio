@@ -89,9 +89,10 @@ export class ModulosComponent implements OnInit, OnDestroy {
 
   cargarDatosCurso(): void {
     this.cursosService.getCursoById(this.cursoId).subscribe({
-      next: (curso) => {
-        this.curso = curso;
-        this.nombreCurso = curso.nombre;
+      next: (response: any) => {
+        // La API devuelve un objeto con la propiedad 'curso'
+        this.curso = response.curso || response;
+        this.nombreCurso = this.curso?.nombre || this.nombreCurso;
       },
       error: (err) => {
         console.error('Error al cargar datos del curso:', err);
@@ -103,12 +104,17 @@ export class ModulosComponent implements OnInit, OnDestroy {
     this.cargando = true;
     this.modulosService.getModulosByCursoId(this.cursoId).subscribe({
       next: (modulos) => {
-        this.modulos = modulos;
-        this.filteredModulos = [...modulos];
+        // Filtrar los módulos para asegurar que solo se muestren los del curso seleccionado
+        this.modulos = modulos.filter(modulo => modulo.id_curso === this.cursoId);
+        this.filteredModulos = [...this.modulos];
         this.cargando = false;
+        
+        console.log(`Cargados ${this.modulos.length} módulos para el curso ${this.cursoId}`);
       },
       error: (err) => {
         console.error('Error al cargar módulos:', err);
+        this.modulos = [];
+        this.filteredModulos = [];
         this.cargando = false;
       }
     });
@@ -126,23 +132,35 @@ export class ModulosComponent implements OnInit, OnDestroy {
 
   buscarModulos(termino: string): void {
     if (!termino.trim()) {
+      // Si no hay término de búsqueda, mostrar todos los módulos del curso actual
       this.filteredModulos = [...this.modulos];
       return;
     }
 
+    // Primero filtrar localmente entre los módulos ya cargados del curso
     this.filteredModulos = this.modulos.filter(modulo =>
       modulo.titulo.toLowerCase().includes(termino.toLowerCase()) ||
       modulo.descripcion.toLowerCase().includes(termino.toLowerCase())
     );
 
-    this.modulosService.searchModulosByNombreAndCurso(termino, this.cursoId).subscribe({
-      next: (modulos) => {
-        this.filteredModulos = modulos;
-      },
-      error: (err) => {
-        console.error('Error al buscar módulos:', err);
-      }
-    });
+    // Opcionalmente, también hacer búsqueda en el servidor para más precisión
+    // pero asegurándose de que solo devuelva módulos del curso actual
+    if (this.cursoId) {
+      this.modulosService.searchModulosByNombreAndCurso(termino, this.cursoId).subscribe({
+        next: (modulos) => {
+          // Doble verificación: filtrar por curso ID
+          this.filteredModulos = modulos.filter(modulo => modulo.id_curso === this.cursoId);
+        },
+        error: (err) => {
+          console.error('Error al buscar módulos:', err);
+          // En caso de error, mantener el filtrado local
+          this.filteredModulos = this.modulos.filter(modulo =>
+            modulo.titulo.toLowerCase().includes(termino.toLowerCase()) ||
+            modulo.descripcion.toLowerCase().includes(termino.toLowerCase())
+          );
+        }
+      });
+    }
   }
 
   sendToHome(event: Event): void {

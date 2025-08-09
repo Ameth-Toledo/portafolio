@@ -57,66 +57,128 @@
     </div>
 
     <div class="module-content">
-      <div class="video-container">
-        <div class="video-wrapper">
-          <video #videoPlayer class="custom-video" [src]="safeVideoUrl" (click)="togglePlay($event)"
-            (timeupdate)="updateTime()">
-            Tu navegador no soporta el elemento de video.
-          </video>
+<!-- Video container actualizado -->
+<div class="video-container">
+  <div class="video-wrapper" 
+       (mouseenter)="showVideoControls()" 
+       (mouseleave)="hideVideoControlsDelayed()"
+       (mousemove)="showVideoControls()"
+       (click)="handleVideoClick($event)">
+    
+    <!-- iframe para YouTube/Vimeo -->
+    <iframe 
+      *ngIf="safeVideoUrl" 
+      [src]="safeVideoUrl" 
+      class="video-iframe"
+      frameborder="0" 
+      allowfullscreen
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      #videoIframe>
+    </iframe>
 
-          <div class="video-controls" [class.hidden]="!showControls">
-            <div class="progress-container">
-              <div class="progress-bar" [style.width.%]="progressPercent"></div>
-              <input type="range" class="progress-slider" min="0" max="100" step="0.1" [(ngModel)]="progressPercent"
-                (input)="seekVideo()">
-            </div>
+    <!-- Overlay transparente para capturar clics -->
+    <div class="video-click-overlay" 
+         (click)="handleVideoClick($event)">
+    </div>
 
-            <div class="controls-bar">
-              <button class="control-btn" (click)="togglePlay()">
-                <svg *ngIf="!isPlaying" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                  <path fill="currentColor" d="M8 5v14l11-7z" />
-                </svg>
-                <svg *ngIf="isPlaying" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                  <path fill="currentColor" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-                </svg>
-              </button>
+    <!-- Controles personalizados superpuestos -->
+    <div class="video-controls-overlay" 
+         [class.show]="showControls && !isControlsHidden"
+         [class.hidden]="isControlsHidden"
+         (click)="$event.stopPropagation()"
+         (mouseenter)="keepControlsVisible()"
+         (mouseleave)="startHideControlsTimer()">
+     
+      <!-- Botón de play/pause central -->
+      <div class="center-play-button" 
+           *ngIf="!isPlaying && showCenterButton" 
+           (click)="togglePlayYouTube()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path fill="currentColor" d="M8 5v14l11-7z" />
+        </svg>
+      </div>
 
-              <div class="time-display">
-                {{ currentTime | timeFormat }} / {{ duration | timeFormat }}
-              </div>
+      <!-- Controles inferiores -->
+      <div class="controls-bottom">
+        <!-- Barra de progreso -->
+        <div class="progress-container" (click)="seekVideo($event)">
+          <div class="progress-track"></div>
+          <div class="progress-bar" [style.width.%]="progressPercent"></div>
+          <div class="progress-thumb" [style.left.%]="progressPercent"></div>
+        </div>
 
-              <button class="control-btn" (click)="toggleMute()">
-                <svg *ngIf="!isMuted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                  <path fill="currentColor"
-                    d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
-                </svg>
-                <svg *ngIf="isMuted" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                  <path fill="currentColor"
-                    d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
-                </svg>
-              </button>
-
-              <input type="range" class="volume-slider" min="0" max="1" step="0.01" [(ngModel)]="volume"
-                (input)="updateVolume()">
-
-              <button class="control-btn fullscreen-btn" (click)="toggleFullscreen()">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                  <path fill="currentColor"
-                    d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          <div *ngIf="!safeVideoUrl" class="video-placeholder">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff">
-              <path
-                d="M10 16.5l6-4.5-6-4.5v9zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+        <!-- Controles principales -->
+        <div class="controls-bar">
+          <button class="control-btn play-pause-btn" (click)="togglePlayYouTube()">
+            <svg *ngIf="!isPlaying" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M8 5v14l11-7z" />
             </svg>
-            <p>Video no disponible</p>
+            <svg *ngIf="isPlaying" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+            </svg>
+          </button>
+
+          <!-- Tiempo actual / duración -->
+          <div class="time-display">
+            <span class="current-time">{{ currentTime | timeFormat }}</span>
+            <span class="time-separator">/</span>
+            <span class="duration-time">{{ duration | timeFormat }}</span>
           </div>
+
+          <div class="spacer"></div>
+
+          <!-- Control de volumen con slider horizontal -->
+          <div class="volume-control" 
+               (mouseenter)="showVolumeSlider = true" 
+               (mouseleave)="showVolumeSlider = false">
+            <button class="control-btn volume-btn" (click)="toggleMute()">
+              <svg *ngIf="!isMuted && volume > 0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+              </svg>
+              <svg *ngIf="!isMuted && volume <= 0.5 && volume > 0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z"/>
+              </svg>
+              <svg *ngIf="isMuted || volume === 0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+              </svg>
+            </button>
+            
+            <!-- Slider horizontal de volumen -->
+            <div class="volume-slider-horizontal" 
+                 [class.show]="showVolumeSlider">
+              <input type="range" 
+                     class="volume-slider" 
+                     min="0" 
+                     max="1" 
+                     step="0.01" 
+                     [(ngModel)]="volume" 
+                     (input)="updateVolume()"
+                     (click)="$event.stopPropagation()">
+            </div>
+          </div>
+
+          <!-- Botón de pantalla completa -->
+          <button class="control-btn fullscreen-btn" (click)="toggleFullscreenYouTube()">
+            <svg *ngIf="!isFullscreen" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
+            </svg>
+            <svg *ngIf="isFullscreen" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z" />
+            </svg>
+          </button>
         </div>
       </div>
+    </div>
+
+    <!-- Placeholder cuando no hay video -->
+    <div *ngIf="!safeVideoUrl" class="video-placeholder">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff">
+        <path d="M10 16.5l6-4.5-6-4.5v9zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+      </svg>
+      <p>Video no disponible</p>
+    </div>
+  </div>
+</div>
     </div>
   </div>
 

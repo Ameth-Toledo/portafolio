@@ -19,6 +19,7 @@ import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { ComentariosComponent } from './modules/comentarios/comentarios.component';
 import { CursosDashboardComponent } from './modules/cursos-dashboard/cursos-dashboard.component';
 import { ModulesDashboardComponent } from './modules/modules-dashboard/modules-dashboard.component';
+import { InicioDashboardComponent } from './modules/inicio-dashboard/inicio-dashboard.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '', pathMatch: 'full' },
@@ -39,7 +40,8 @@ export const routes: Routes = [
     { path: 'dashboard', component: DashboardComponent, children: [
         { path: 'comentarios', component: ComentariosComponent },
         { path: 'cursos', component: CursosDashboardComponent },
-        { path: 'modules', component: ModulesDashboardComponent }
+        { path: 'modules', component: ModulesDashboardComponent },
+        { path: 'inicio', component: InicioDashboardComponent },
     ] },
     { path: '**', component: NotfoundComponent }
 ];

@@ -56,10 +56,10 @@ export class ChatbotComponent {
 
     TECNOLOGÍAS QUE DOMINAS:
     - JavaScript, TypeScript, React, Angular, Vue.js
-    - Python, Django, Flask
+    - Python, Django, Flask, FastApi, Go
     - HTML5, CSS3, SASS, Bootstrap, Tailwind
     - Node.js, Express
-    - Bases de datos (SQL, MongoDB)
+    - Bases de datos (SQL, POstgreSQL, MongoDB)
     - Git, herramientas de desarrollo
     - APIs REST, GraphQL
     - Testing, deployment básico
@@ -167,7 +167,7 @@ export class ChatbotComponent {
     
     const programmingKeywords = [
       // Lenguajes
-      'javascript', 'js', 'python', 'java', 'typescript', 'php', 'c++', 'c#',
+      'javascript', 'js', 'python', 'java', 'typescript', 'php', 'c++', 'c#', 'go',
       // Frameworks y librerías
       'react', 'angular', 'vue', 'django', 'flask', 'express', 'nodejs', 'node',
       // Web

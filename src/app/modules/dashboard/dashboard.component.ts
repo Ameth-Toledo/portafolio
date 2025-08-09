@@ -67,7 +67,7 @@ export class DashboardComponent implements OnInit {
 
   onInicio(event: Event) {
     event.preventDefault();
-    this.router.navigate(['dashboard'])
+    this.router.navigate(['dashboard/inicio'])
   }
 
   onCursos(event: Event) {

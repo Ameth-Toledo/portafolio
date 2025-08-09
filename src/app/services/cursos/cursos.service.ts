@@ -3,6 +3,10 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Curso } from '../../models/curso';
 
+interface TotalCursosResponse {
+  message: string;
+  total_cursos: number;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -20,6 +24,10 @@ export class CursosService {
     return this.http.get<Curso>(this.apiUrl, { params });
   }
 
+  getTotalCursos(): Observable<TotalCursosResponse> {
+    return this.http.get<TotalCursosResponse>(`${this.apiUrl}/total`);
+  }
+  
   searchCursosByNombre(nombre: string): Observable<Curso[]> {
     const params = new HttpParams().set('nombre', nombre);
     return this.http.get<Curso[]>(this.apiUrl, { params });

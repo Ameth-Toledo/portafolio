@@ -203,7 +203,7 @@ export class AuthService {
     switch (user.rol_id) {
       case 1:
         console.log('getRedirectUrl() - Redirigiendo a dashboard (admin)');
-        return '/dashboard';
+        return '/dashboard/inicio';
       case 2:
         console.log('getRedirectUrl() - Redirigiendo a blog (usuario)');
         return '/blog';      

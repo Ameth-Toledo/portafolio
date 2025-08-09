@@ -75,7 +75,7 @@ export class UserGuard implements CanActivate {
     }
 
     if (user.rol_id !== 2) {
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/dashboard/inicio']);
       return false;
     }
 
