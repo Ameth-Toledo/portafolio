@@ -24,12 +24,10 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('videoPlayer') videoPlayer!: ElementRef<HTMLVideoElement>;
   @ViewChild('videoIframe') videoIframe!: ElementRef<HTMLIFrameElement>;
 
-  // Variables del reproductor
   private youtubePlayer: any = null;
   private youtubeApiReady = false;
   showCenterButton = true;
 
-  // Variables del módulo
   modulo: Contenido | null = null;
   safeVideoUrl: SafeResourceUrl | null = null;
   loading = true;
@@ -37,7 +35,6 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
   cursoId: number | null = null;
   nombreCurso: string | null = null;
 
-  // Estados del video
   isPlaying = false;
   isMuted = false;
   showControls = true;
@@ -49,7 +46,6 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
   showVolumeSlider = false;
   isControlsHidden = false;
 
-  // Timers y controles
   private controlsTimeout: any;
   private hideControlsDelay = 3000;
   private mouseMoveTimeout: any;
@@ -57,7 +53,6 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
   private lastMouseMoveTime = 0;
   private controlsHideTimer: any;
 
-  // Modal y comentarios
   showFinalModal: boolean = false;
   comentarios: any[] = [];
   nuevoComentario = '';
@@ -65,13 +60,11 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
   editandoComentario: string | null = null;
   textoEditando: string = '';
 
-  // Sistema de likes
   likes: any[] = [];
   likesCount = 0;
   userHasLiked = false;
   loadingLikes = false;
 
-  // MercadoPago
   showMercadoPagoModal = false;
   selectedAmount = '50.00';
   customAmount: number | null = null;
@@ -118,7 +111,7 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loadYouTubeAPI();
     this.setupCustomControls();
     this.setupMouseMovementTracking();
-    
+
     if (this.videoPlayer) {
       this.videoPlayer.nativeElement.volume = this.volume;
       this.videoPlayer.nativeElement.addEventListener('loadedmetadata', () => {
@@ -149,7 +142,6 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  // ========== CARGA DE MÓDULO ==========
   loadModulo(idModulo: number): void {
     console.log('Cargando módulo con ID:', idModulo);
     this.loading = true;
@@ -183,7 +175,6 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
       console.log('URL original del video:', this.modulo.video_url);
       let videoUrl = this.modulo.video_url;
 
-      // Configurar YouTube con controles completamente ocultos
       if (videoUrl.includes('youtube.com/watch?v=')) {
         const videoId = videoUrl.split('v=')[1].split('&')[0];
         videoUrl = this.buildYouTubeEmbedUrl(videoId);
@@ -192,12 +183,10 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
         const videoId = videoUrl.split('youtu.be/')[1].split('?')[0];
         videoUrl = this.buildYouTubeEmbedUrl(videoId);
       }
-      // Vimeo URLs
       else if (videoUrl.includes('vimeo.com/') && !videoUrl.includes('/embed/')) {
         const videoId = videoUrl.split('vimeo.com/')[1].split('/')[0];
         videoUrl = this.buildVimeoEmbedUrl(videoId);
       }
-      // Videos locales
       else if (videoUrl.startsWith('./') || videoUrl.startsWith('/') || !videoUrl.startsWith('http')) {
         if (!videoUrl.startsWith('http')) {
           videoUrl = `/assets/videos/${videoUrl.replace('./', '')}`;
@@ -225,7 +214,7 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
       'origin': window.location.origin,
       'widget_referrer': window.location.origin
     });
-    
+
     return `https://www.youtube.com/embed/${videoId}?${params.toString()}`;
   }
 
@@ -240,11 +229,10 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
       'transparent': '0',        // Fondo no transparente
       'responsive': '1'          // Responsive
     });
-    
+
     return `https://player.vimeo.com/video/${videoId}?${params.toString()}`;
   }
 
-  // ========== API DE YOUTUBE ==========
   private loadYouTubeAPI(): void {
     if (!(window as any).YT) {
       const tag = document.createElement('script');
@@ -349,28 +337,25 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     }, 1000);
   }
 
-  // ========== CONTROLES DE VIDEO ==========
   handleVideoClick(event: MouseEvent): void {
     event.preventDefault();
     event.stopPropagation();
-    
+
     const target = event.target as HTMLElement;
-    
-    // Si el click fue en los controles, no hacer nada
+
     if (target.closest('.video-controls-overlay') ||
-        target.closest('.center-play-button') ||
-        target.classList.contains('video-controls-overlay') ||
-        target.classList.contains('center-play-button')) {
+      target.closest('.center-play-button') ||
+      target.classList.contains('video-controls-overlay') ||
+      target.classList.contains('center-play-button')) {
       return;
     }
 
-    // Toggle play/pause
     this.togglePlayYouTube();
   }
 
   togglePlayYouTube(): void {
     console.log('Toggle play/pause - Estado actual:', this.isPlaying);
-    
+
     if (this.youtubePlayer && this.youtubeApiReady) {
       try {
         if (this.isPlaying) {
@@ -410,7 +395,6 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
       this.clearAllTimers();
     }
 
-    // Comunicación con iframe
     if (this.videoIframe) {
       const message = this.isPlaying ?
         '{"event":"command","func":"playVideo","args":""}' :
@@ -427,7 +411,7 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
   seekVideo(event: MouseEvent): void {
     event.preventDefault();
     event.stopPropagation();
-    
+
     if (!this.duration) return;
 
     const progressContainer = event.currentTarget as HTMLElement;
@@ -499,7 +483,6 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  // ========== GESTIÓN DE CONTROLES ==========
   showVideoControls(): void {
     this.showControls = true;
     this.isControlsHidden = false;
@@ -529,7 +512,6 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     this.hideVideoControlsDelayed();
   }
 
-  // ========== TRACKING DE MOUSE ==========
   private setupMouseMovementTracking(): void {
     const videoWrapper = document.querySelector('.video-wrapper');
     if (videoWrapper) {
@@ -566,7 +548,7 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (this.isPlaying) {
       this.clearAllTimers();
-      
+
       if (this.mouseMoveTimeout) {
         clearTimeout(this.mouseMoveTimeout);
       }
@@ -584,11 +566,11 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     if (videoWrapper) {
       videoWrapper.addEventListener('click', (e) => {
         const target = e.target as HTMLElement;
-        
-        if (target.closest('.video-controls-overlay') || 
-            target.closest('.center-play-button') ||
-            target.classList.contains('video-controls-overlay') ||
-            target.classList.contains('center-play-button')) {
+
+        if (target.closest('.video-controls-overlay') ||
+          target.closest('.center-play-button') ||
+          target.classList.contains('video-controls-overlay') ||
+          target.classList.contains('center-play-button')) {
           return;
         }
 
@@ -611,18 +593,17 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  // ========== CONTROLES DE TECLADO ==========
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    if (event.target instanceof HTMLInputElement || 
-        event.target instanceof HTMLTextAreaElement ||
-        event.target instanceof HTMLSelectElement) {
+    if (event.target instanceof HTMLInputElement ||
+      event.target instanceof HTMLTextAreaElement ||
+      event.target instanceof HTMLSelectElement) {
       return;
     }
 
     const activeElement = document.activeElement;
     const videoContainer = document.querySelector('.video-container');
-    
+
     if (!videoContainer || !activeElement?.closest('.video-container')) {
       return;
     }
@@ -671,7 +652,7 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const newTime = Math.max(0, Math.min(this.duration, this.currentTime + seconds));
     const percentage = (newTime / this.duration) * 100;
-    
+
     this.currentTime = newTime;
     this.progressPercent = percentage;
 
@@ -693,7 +674,7 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     const newVolume = Math.max(0, Math.min(1, this.volume + delta));
     this.volume = newVolume;
     this.updateVolume();
-    
+
     this.showVideoControls();
     if (this.isPlaying) {
       this.hideVideoControlsDelayed();
@@ -705,7 +686,6 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isFullscreen = !!document.fullscreenElement;
   }
 
-  // ========== NAVEGACIÓN ==========
   goBack(): void {
     if (this.cursoId && this.nombreCurso) {
       this.router.navigate(['/modulos'], {
@@ -821,7 +801,6 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  // ========== MODAL FINAL ==========
   openFinalModal(): void {
     this.showFinalModal = true;
   }
@@ -831,7 +810,6 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     this.goBack();
   }
 
-  // ========== SISTEMA DE COMENTARIOS ==========
   cargarComentarios(moduloId: number): void {
     this.cargandoComentarios = true;
     this.comentariosService.getComentariosPorModulo(moduloId.toString())
@@ -932,22 +910,13 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  // ========== SISTEMA DE LIKES ==========
-  cargarLikes(moduloId: number): void {
+  cargarLikes(moduloId: number) {
     this.loadingLikes = true;
-    const moduloIdStr = moduloId.toString();
 
-    this.likesService.getLikesPorModulo(moduloIdStr).subscribe({
-      next: (actions) => {
-        this.likes = actions.map((a: any) => {
-          const data = a.payload.val();
-          const key = a.payload.key;
-          return { key, ...data };
-        });
-
-        this.likesCount = this.likes.length;
-        const currentUserId = this.likesService.getUsuarioId();
-        this.userHasLiked = this.likes.some(like => like.usuarioId === currentUserId);
+    this.likesService.getLikeCount(moduloId).subscribe({
+      next: (response) => {
+        this.likesCount = response.like_count;
+        this.userHasLiked = response.user_liked;
         this.loadingLikes = false;
       },
       error: (err) => {
@@ -957,40 +926,28 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  toggleLike(): void {
+  toggleLike() {
     if (!this.modulo || this.loadingLikes) return;
 
     this.loadingLikes = true;
-    const moduloIdStr = this.modulo.id_modulo.toString();
-    const currentUserId = this.likesService.getUsuarioId();
+    const moduloId = this.modulo.id_modulo;
 
-    if (this.userHasLiked) {
-      const userLike = this.likes.find(like => like.usuarioId === currentUserId);
-      if (userLike && userLike.key) {
-        this.likesService.quitarLike(userLike.key)
-          .then(() => {
-            this.cargarLikes(this.modulo!.id_modulo);
-          })
-          .catch((err: any) => {
-            console.error('Error al quitar like:', err);
-            alert('Error al quitar el like');
-            this.loadingLikes = false;
-          });
+    this.likesService.toggleLike(moduloId).subscribe({
+      next: (response) => {
+        this.likesCount = response.like_count;
+        this.userHasLiked = response.action === 'liked';
+        this.loadingLikes = false;
+
+        console.log(response.message);
+      },
+      error: (err) => {
+        console.error('Error al cambiar like:', err);
+        alert('Error al cambiar el like');
+        this.loadingLikes = false;
       }
-    } else {
-      this.likesService.agregarLike(moduloIdStr)
-        .then(() => {
-          this.cargarLikes(this.modulo!.id_modulo);
-        })
-        .catch((err: any) => {
-          console.error('Error al agregar like:', err);
-          alert('Error al agregar el like');
-          this.loadingLikes = false;
-        });
-    }
+    });
   }
 
-  // ========== MERCADOPAGO ==========
   private async loadMercadoPagoSDK(): Promise<void> {
     try {
       await this.mercadoPagoService.loadMercadoPagoScript();
@@ -1083,7 +1040,6 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  // ========== MÉTODOS LEGACY (para compatibilidad) ==========
   togglePlay(event?: MouseEvent): void {
     if (event && event.target !== this.videoPlayer?.nativeElement) {
       return;
