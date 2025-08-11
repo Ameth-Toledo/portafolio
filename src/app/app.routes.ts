@@ -20,6 +20,8 @@ import { ComentariosComponent } from './modules/comentarios/comentarios.componen
 import { CursosDashboardComponent } from './modules/cursos-dashboard/cursos-dashboard.component';
 import { ModulesDashboardComponent } from './modules/modules-dashboard/modules-dashboard.component';
 import { InicioDashboardComponent } from './modules/inicio-dashboard/inicio-dashboard.component';
+import { ProfileComponent } from './modules/profile/profile.component';
+import { PerfilComponent } from './modules/perfil/perfil.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '', pathMatch: 'full' },
@@ -37,11 +39,13 @@ export const routes: Routes = [
     { path: 'modulo/detail', component: ModuleDetailComponent, canActivate: [UserGuard] },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
+    { path: 'perfil', component: PerfilComponent },
     { path: 'dashboard', component: DashboardComponent, children: [
         { path: 'comentarios', component: ComentariosComponent },
         { path: 'cursos', component: CursosDashboardComponent },
         { path: 'modules', component: ModulesDashboardComponent },
         { path: 'inicio', component: InicioDashboardComponent },
+        { path: 'profile', component: ProfileComponent }
     ] },
     { path: '**', component: NotfoundComponent }
 ];

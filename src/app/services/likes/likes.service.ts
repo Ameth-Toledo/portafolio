@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface Like {
   id?: number;
@@ -17,7 +18,7 @@ export interface LikeCountResponse {
 }
 
 export interface ToggleLikeResponse {
-  action: string; // "liked" o "unliked"
+  action: string; 
   like_count: number;
   message: string;
 }
@@ -57,98 +58,87 @@ export interface LikeStats {
   providedIn: 'root'
 })
 export class LikesService {
-  private readonly baseUrl = 'http://localhost:8080/likes'; // Cambia por tu URL de API
-  private fingerprint: string;
+  
+  private readonly baseUrl = `${environment.apiUrl}/likes`; 
 
-  constructor(private http: HttpClient) {
-    this.fingerprint = this.generateFingerprint();
-  }
+  constructor(
+    private http: HttpClient
+  ) {}
 
-  private generateFingerprint(): string {
-    let fingerprint = sessionStorage.getItem('user_fingerprint');
-    
-    if (!fingerprint) {
-      const userAgent = navigator.userAgent;
-      const language = navigator.language;
-      const platform = navigator.platform;
-      const screenResolution = `${screen.width}x${screen.height}`;
-      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      const timestamp = Date.now();
-      
-      const fingerprintData = `${userAgent}_${language}_${platform}_${screenResolution}_${timezone}_${timestamp}`;
-      fingerprint = this.simpleHash(fingerprintData);
-      
-      sessionStorage.setItem('user_fingerprint', fingerprint);
+  private getCurrentUserId(): number | null {
+    try {
+      const userStr = localStorage.getItem('currentUser');
+      if (userStr) {
+        const user = JSON.parse(userStr);
+        return user.userId || null;
+      }
+
+      const sessionUserStr = sessionStorage.getItem('currentUser');
+      if (sessionUserStr) {
+        const user = JSON.parse(sessionUserStr);
+        return user.userId || null;
+      }
+
+      return null;
+    } catch (error) {
+      console.error('Error obteniendo usuario actual:', error);
+      return null;
     }
+  }
+
+  isUserAuthenticated(): boolean {
+    const userId = this.getCurrentUserId();
+    return userId !== null;
+  }
+
+  toggleLike(moduloId: number): Observable<ToggleLikeResponse> {
+    const usuarioId = this.getCurrentUserId();
     
-    return fingerprint;
-  }
-
-  private simpleHash(str: string): string {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      const char = str.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
-      hash = hash & hash; 
+    if (!usuarioId) {
+      return throwError(() => new Error('Debes iniciar sesión para dar like'));
     }
-    return Math.abs(hash).toString(36);
-  }
 
-  getFingerprint(): string {
-    return this.fingerprint;
-  }
-
-  // Toggle like (dar/quitar like)
-  toggleLike(moduloId: number, usuarioId?: number): Observable<ToggleLikeResponse> {
-    const body: any = {};
-    
-    if (usuarioId) {
-      body.usuario_id = usuarioId;
-    } else {
-      body.fingerprint_hash = this.fingerprint;
-    }
+    const body = {
+      usuario_id: usuarioId
+    };
 
     return this.http.post<ToggleLikeResponse>(`${this.baseUrl}/modulo/${moduloId}/toggle`, body);
   }
 
-  // Obtener contador de likes y estado del usuario
-  getLikeCount(moduloId: number, usuarioId?: number): Observable<LikeCountResponse> {
+  getLikeCount(moduloId: number): Observable<LikeCountResponse> {
+    const usuarioId = this.getCurrentUserId();
+    
     let params = new HttpParams();
     
     if (usuarioId) {
       params = params.set('usuario_id', usuarioId.toString());
     } else {
-      params = params.set('fingerprint_hash', this.fingerprint);
+      console.log('Usuario no autenticado, obteniendo solo conteo');
     }
 
     return this.http.get<LikeCountResponse>(`${this.baseUrl}/modulo/${moduloId}`, { params });
   }
 
-  // Obtener todos los likes de un módulo
   getLikesPorModulo(moduloId: number): Observable<{ modulo_id: number; likes: Like[]; total: number }> {
     return this.http.get<{ modulo_id: number; likes: Like[]; total: number }>(`${this.baseUrl}/modulo/${moduloId}/all`);
   }
 
-  // Obtener módulos más likeados
   getMostLikedModulos(limit: number = 10): Observable<{ modulos: ModuloWithLikes[]; total_modulos: number; limit_applied: number }> {
     let params = new HttpParams().set('limit', limit.toString());
     return this.http.get<{ modulos: ModuloWithLikes[]; total_modulos: number; limit_applied: number }>(`${this.baseUrl}/modulos/most-liked`, { params });
   }
 
-  // Obtener likes de un usuario específico
-  getLikesByUser(usuarioId?: number): Observable<{ data: UserLikesResponse }> {
-    let params = new HttpParams();
+  getLikesByUser(): Observable<{ data: UserLikesResponse }> {
+    const usuarioId = this.getCurrentUserId();
     
-    if (usuarioId) {
-      params = params.set('usuario_id', usuarioId.toString());
-    } else {
-      params = params.set('fingerprint_hash', this.fingerprint);
+    if (!usuarioId) {
+      return throwError(() => new Error('Debes iniciar sesión para ver tus likes'));
     }
 
+    let params = new HttpParams().set('usuario_id', usuarioId.toString());
     return this.http.get<{ data: UserLikesResponse }>(`${this.baseUrl}/user`, { params });
   }
 
-  // Obtener estadísticas de likes por período
   getLikeStats(moduloId: number, startDate: string, endDate: string): Observable<{ data: LikeStats }> {
     let params = new HttpParams()
       .set('start_date', startDate)
@@ -157,17 +147,15 @@ export class LikesService {
     return this.http.get<{ data: LikeStats }>(`${this.baseUrl}/modulo/${moduloId}/stats`, { params });
   }
 
-  // Métodos de conveniencia para el componente actual
-  agregarLike(moduloId: string, usuarioId?: number): Promise<ToggleLikeResponse> {
-    return this.toggleLike(parseInt(moduloId), usuarioId).toPromise() as Promise<ToggleLikeResponse>;
+  agregarLike(moduloId: string): Promise<ToggleLikeResponse> {
+    return this.toggleLike(parseInt(moduloId)).toPromise() as Promise<ToggleLikeResponse>;
   }
 
-  quitarLike(moduloId: string, usuarioId?: number): Promise<ToggleLikeResponse> {
-    return this.toggleLike(parseInt(moduloId), usuarioId).toPromise() as Promise<ToggleLikeResponse>;
+  quitarLike(moduloId: string): Promise<ToggleLikeResponse> {
+    return this.toggleLike(parseInt(moduloId)).toPromise() as Promise<ToggleLikeResponse>;
   }
 
-  // Método para obtener un ID de usuario simulado (para compatibilidad)
-  getUsuarioId(): string {
-    return this.fingerprint;
+  getUsuarioId(): number | null {
+    return this.getCurrentUserId();
   }
 }

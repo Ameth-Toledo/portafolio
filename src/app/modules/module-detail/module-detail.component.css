@@ -74,8 +74,6 @@
   margin-bottom: 0;
 }
 
-/* ========== REPRODUCTOR DE VIDEO PERSONALIZADO ========== */
-
 .video-container {
   margin-bottom: 50px;
   position: relative;
@@ -104,7 +102,6 @@
   pointer-events: auto;
 }
 
-/* Overlay para capturar clicks */
 .video-click-overlay {
   position: absolute;
   top: 0;
@@ -116,7 +113,6 @@
   background: transparent;
 }
 
-/* Controles personalizados */
 .video-controls-overlay {
   position: absolute;
   top: 0;
@@ -160,7 +156,6 @@
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-/* Botón de play central */
 .center-play-button {
   position: absolute;
   top: 50%;
@@ -196,7 +191,6 @@
   margin-left: 3px; 
 }
 
-/* Controles inferiores */
 .controls-bottom {
   position: relative;
   padding: 15px 20px;
@@ -204,7 +198,6 @@
   background: rgba(0, 0, 0, 0.1);
 }
 
-/* Barra de progreso */
 .progress-container {
   position: relative;
   height: 6px;
@@ -256,7 +249,6 @@
   opacity: 1;
 }
 
-/* Barra de controles */
 .controls-bar {
   display: flex;
   align-items: center;
@@ -297,7 +289,6 @@
   height: 24px;
 }
 
-/* Display de tiempo */
 .time-display {
   color: white;
   font-family: 'Roboto Mono', monospace;
@@ -323,7 +314,6 @@
   flex: 1;
 }
 
-/* Control de volumen mejorado */
 .volume-control {
   position: relative;
   display: flex;
@@ -403,7 +393,6 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* Estados de reproducción */
 .video-wrapper.paused .center-play-button {
   opacity: 1;
   visibility: visible;
@@ -415,7 +404,6 @@
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-/* Placeholder del video */
 .video-placeholder {
   position: absolute;
   top: 0;
@@ -440,8 +428,6 @@
   font-size: 1.2rem;
   color: #888;
 }
-
-/* ========== RESTO DE ESTILOS DEL COMPONENTE ========== */
 
 .materials-section {
   margin-bottom: 60px;
@@ -563,7 +549,6 @@
   color: #ffffff;
 }
 
-/* Botones de navegación */
 .button {
   display: block;
   position: relative;
@@ -842,7 +827,6 @@
   gap: 16px;
 }
 
-/* ========== MODAL FINAL ========== */
 .modal-final {
   position: fixed;
   top: 0;
@@ -1020,7 +1004,6 @@
   }
 }
 
-/* ========== SECCIÓN DE COMENTARIOS ========== */
 .comments-section {
   max-width: 1200px;
   margin: 50px auto;
@@ -1145,12 +1128,10 @@
   right: 15px;
   display: flex;
   gap: 8px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.comment-item:hover .comment-actions {
   opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease;
+  z-index: 10;
 }
 
 .action-btn {
@@ -1165,6 +1146,11 @@
   display: flex;
   align-items: center;
   gap: 4px;
+}
+
+.action-btn svg {
+  width: 14px;
+  height: 14px;
 }
 
 .edit-btn:hover {
@@ -1198,18 +1184,27 @@
 .comment-avatar {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #00d4aa, #00a085);
   border-radius: 50%;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.comment-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .comment-avatar svg {
-  width: 20px;
-  height: 20px;
-  color: white;
+  width: 24px;
+  height: 24px;
 }
 
 .comment-author-info {
@@ -1285,7 +1280,6 @@
   color: #666;
 }
 
-/* ========== SISTEMA DE LIKES ========== */
 #heart {
   display: none;
 }
@@ -1405,7 +1399,6 @@
   color: #ef4444;
 }
 
-/* ========== BOTÓN DE PAGO ========== */
 .pay-btn {
   border: 2px solid #22C55E;
   position: relative;
@@ -1537,7 +1530,6 @@
   }
 }
 
-/* ========== MODAL DE MERCADOPAGO ========== */
 .paypal-modal {
   position: fixed;
   top: 0;
@@ -1874,6 +1866,63 @@ body.modal-open {
   }
 }
 
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #333;
+  border-top: 3px solid #10b981;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #888;
+}
+
+.loading-state .spinner {
+  margin-bottom: 20px;
+}
+
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #ef4444;
+  text-align: center;
+}
+
+.error-state h2 {
+  margin-bottom: 15px;
+  color: #ef4444;
+}
+
+.error-state p {
+  margin-bottom: 25px;
+  color: #888;
+}
+
+.video-wrapper:focus-within {
+  outline: 2px solid #10b981;
+  outline-offset: 2px;
+}
+
+.control-btn:focus {
+  outline: 2px solid #10b981;
+  outline-offset: 2px;
+}
+
+.volume-slider:focus {
+  outline: 2px solid #10b981;
+  outline-offset: 2px;
+}
+
 @media (max-width: 767px) {
   .module-section {
     padding: 20px 0;
@@ -2116,6 +2165,7 @@ body.modal-open {
   .comment-actions {
     position: static;
     opacity: 1;
+    visibility: visible;
     justify-content: flex-end;
     margin-bottom: 15px;
     padding-right: 0;
@@ -2188,284 +2238,5 @@ body.modal-open {
 
   .paypal-modal-card {
     border-radius: 16px;
-  }
-
-  .paypal-modal-header {
-    padding: 15px 20px;
-  }
-
-  .paypal-modal-title {
-    font-size: 18px;
-  }
-
-  .paypal-modal-content {
-    padding: 20px;
-  }
-
-  .paypal-description {
-    font-size: 14px;
-    margin-bottom: 15px;
-  }
-
-  .quick-amount-buttons {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-  }
-
-  .quick-amount-btn {
-    padding: 8px 4px;
-  }
-
-  .amount-value {
-    font-size: 14px;
-  }
-
-  .amount-label {
-    font-size: 10px;
-  }
-
-  .selected-value {
-    font-size: 16px;
-  }
-
-  .paypal-close-btn {
-    width: 32px;
-    height: 32px;
-  }
-}
-
-@media (max-width: 480px) {
-  .video-wrapper {
-    border-radius: 8px;
-  }
-
-  .video-iframe {
-    border-radius: 8px;
-  }
-
-  .video-controls-overlay {
-    border-radius: 8px;
-  }
-
-  .controls-bottom {
-    padding: 10px 12px;
-  }
-
-  .controls-bar {
-    gap: 8px;
-  }
-
-  .control-btn {
-    width: 32px;
-    height: 32px;
-    padding: 4px;
-  }
-
-  .control-btn svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .play-pause-btn svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  .time-display {
-    font-size: 11px;
-    min-width: 60px;
-    gap: 2px;
-  }
-
-  .volume-slider-horizontal {
-    width: 50px;
-  }
-
-  .volume-slider-horizontal.show {
-    width: 50px;
-  }
-
-  .volume-control:hover .volume-slider-horizontal {
-    width: 50px;
-  }
-
-  .volume-slider {
-    width: 50px;
-    height: 3px;
-  }
-
-  .center-play-button {
-    width: 50px;
-    height: 50px;
-  }
-
-  .center-play-button svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .progress-container {
-    height: 4px;
-    margin-bottom: 10px;
-  }
-
-  .progress-container:hover {
-    height: 6px;
-  }
-
-  .progress-thumb {
-    width: 12px;
-    height: 12px;
-  }
-
-  .comment-header {
-    gap: 10px;
-  }
-
-  .comment-avatar {
-    width: 32px;
-    height: 32px;
-  }
-
-  .comment-avatar svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .comment-content {
-    margin-left: 42px;
-    font-size: 14px;
-  }
-
-  .edit-input {
-    margin-left: 42px;
-    font-size: 14px;
-  }
-
-  .edit-actions {
-    margin-left: 42px;
-  }
-
-  .comment-actions {
-    gap: 6px;
-  }
-
-  .action-btn {
-    font-size: 10px;
-    padding: 4px 8px;
-  }
-
-  .paypal-modal-title {
-    font-size: 16px;
-  }
-
-  .paypal-modal-content {
-    padding: 15px;
-  }
-
-  .paypal-description {
-    font-size: 13px;
-  }
-
-  .amount-selector label,
-  .custom-amount-section label {
-    font-size: 14px;
-  }
-
-  .custom-amount-input {
-    font-size: 14px;
-    padding: 8px 10px;
-  }
-
-  .currency-symbol,
-  .currency-code {
-    padding: 8px 10px;
-  }
-
-  .selected-amount-card {
-    padding: 10px 14px;
-  }
-
-  .selected-label {
-    font-size: 14px;
-  }
-
-  .selected-value {
-    font-size: 15px;
-  }
-}
-
-.spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid #333;
-  border-top: 3px solid #10b981;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-.loading-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 20px;
-  color: #888;
-}
-
-.loading-state .spinner {
-  margin-bottom: 20px;
-}
-
-.error-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 20px;
-  color: #ef4444;
-  text-align: center;
-}
-
-.error-state h2 {
-  margin-bottom: 15px;
-  color: #ef4444;
-}
-
-.error-state p {
-  margin-bottom: 25px;
-  color: #888;
-}
-
-.video-wrapper:focus-within {
-  outline: 2px solid #10b981;
-  outline-offset: 2px;
-}
-
-.control-btn:focus {
-  outline: 2px solid #10b981;
-  outline-offset: 2px;
-}
-
-.volume-slider:focus {
-  outline: 2px solid #10b981;
-  outline-offset: 2px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .video-controls-overlay,
-  .center-play-button,
-  .control-btn,
-  .progress-thumb,
-  .volume-slider-horizontal {
-    transition: none;
-  }
-  
-  .confetti-piece {
-    animation: none;
-  }
-  
-  .spinner {
-    animation: none;
   }
 }

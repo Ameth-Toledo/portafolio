@@ -7,16 +7,16 @@ import { ContenidoService } from '../../services/contenido/contenido.service';
 import { FormsModule } from '@angular/forms';
 import { TimeFormatPipe } from '../../pipes/time-format.pipe';
 import { ModulosService } from '../../services/modulos/modulos.service';
-import { ComentariosService, Comentario } from '../../services/comentarios/comentarios.service';
-import { LikesService } from '../../services/likes/likes.service';
+import { ComentariosService } from '../../services/comentarios/comentarios.service';
 import { ChatbotComponent } from "../../components/chatbot/chatbot.component";
-import { MercadoPagoService } from '../../services/mercadoPago/mercado-pago.service';
+import { CardModuleDescriptionComponent } from "../../components/card-module-description/card-module-description.component";
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-module-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule, TimeFormatPipe, ChatbotComponent],
-  providers: [ComentariosService, LikesService, MercadoPagoService],
+  imports: [CommonModule, FormsModule, TimeFormatPipe, ChatbotComponent, CardModuleDescriptionComponent],
+  providers: [ComentariosService,],
   templateUrl: './module-detail.component.html',
   styleUrl: './module-detail.component.css'
 })
@@ -86,9 +86,14 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     private contenidoService: ContenidoService,
     private modulosService: ModulosService,
     private comentariosService: ComentariosService,
-    private likesService: LikesService,
-    private mercadoPagoService: MercadoPagoService
+    private authService: AuthService
   ) { }
+
+  getCurrentUserId(): number | null {
+  const user = this.authService.getCurrentUser();
+  console.log('Usuario actual en componente:', user);
+  return user ? user.userId : null;
+}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -103,8 +108,6 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
         this.loading = false;
       }
     });
-
-    this.loadMercadoPagoSDK();
   }
 
   ngAfterViewInit(): void {
@@ -155,7 +158,6 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
           console.log('Módulo cargado:', this.modulo);
           this.setupVideoUrl();
           this.cargarComentarios(idModulo);
-          this.cargarLikes(idModulo);
         } else {
           console.error('No se encontraron contenidos para el módulo:', idModulo);
           this.error = 'No se encontró contenido para este módulo';
@@ -811,23 +813,36 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   cargarComentarios(moduloId: number): void {
-    this.cargandoComentarios = true;
-    this.comentariosService.getComentariosPorModulo(moduloId.toString())
-      .subscribe({
-        next: (actions) => {
-          this.comentarios = actions.map((a: any) => {
-            const data = a.payload.val();
-            const key = a.payload.key;
-            return { key, ...data };
+  this.cargandoComentarios = true;
+  const currentUserId = this.getCurrentUserId();
+  console.log('ID del usuario actual al cargar comentarios:', currentUserId);
+  
+  this.comentariosService.getComentariosPorModulo(moduloId.toString())
+    .subscribe({
+      next: (actions) => {
+        this.comentarios = actions.map((a: any) => {
+          const data = a.payload.val();
+          const key = a.payload.key;
+          
+          // Debug: verificar qué usuario puede editar cada comentario
+          console.log('Comentario:', {
+            key: key,
+            autor: data.autor,
+            usuario_id: data.usuario_id,
+            currentUserId: currentUserId,
+            canEdit: data.canEdit
           });
-          this.cargandoComentarios = false;
-        },
-        error: (err) => {
-          console.error('Error al cargar comentarios:', err);
-          this.cargandoComentarios = false;
-        }
-      });
-  }
+          
+          return { key, ...data };
+        });
+        this.cargandoComentarios = false;
+      },
+      error: (err) => {
+        console.error('Error al cargar comentarios:', err);
+        this.cargandoComentarios = false;
+      }
+    });
+}
 
   agregarComentario(): void {
     if (!this.nuevoComentario.trim() || !this.modulo) return;
@@ -860,7 +875,25 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    this.comentariosService.editarComentario(key, this.textoEditando)
+    // Necesitas obtener el comentario original para tener modulo_id y usuario_id
+    const comentarioOriginal = this.comentarios.find(c => c.key === key);
+    if (!comentarioOriginal) {
+      alert('Error: No se encontró el comentario original');
+      return;
+    }
+
+    // Crear un servicio más específico para editar
+    this.editarComentarioCompleto(key, comentarioOriginal.modulo_id, comentarioOriginal.usuario_id, this.textoEditando);
+  }
+
+  editarComentarioCompleto(key: string, moduloId: number, usuarioId: number, nuevoTexto: string): void {
+    const comentario = {
+      modulo_id: moduloId,
+      usuario_id: usuarioId,
+      texto: nuevoTexto
+    };
+
+    this.comentariosService.editarComentarioCompleto(key, comentario)
       .then(() => {
         this.editandoComentario = null;
         this.textoEditando = '';
@@ -910,136 +943,6 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  cargarLikes(moduloId: number) {
-    this.loadingLikes = true;
-
-    this.likesService.getLikeCount(moduloId).subscribe({
-      next: (response) => {
-        this.likesCount = response.like_count;
-        this.userHasLiked = response.user_liked;
-        this.loadingLikes = false;
-      },
-      error: (err) => {
-        console.error('Error al cargar likes:', err);
-        this.loadingLikes = false;
-      }
-    });
-  }
-
-  toggleLike() {
-    if (!this.modulo || this.loadingLikes) return;
-
-    this.loadingLikes = true;
-    const moduloId = this.modulo.id_modulo;
-
-    this.likesService.toggleLike(moduloId).subscribe({
-      next: (response) => {
-        this.likesCount = response.like_count;
-        this.userHasLiked = response.action === 'liked';
-        this.loadingLikes = false;
-
-        console.log(response.message);
-      },
-      error: (err) => {
-        console.error('Error al cambiar like:', err);
-        alert('Error al cambiar el like');
-        this.loadingLikes = false;
-      }
-    });
-  }
-
-  private async loadMercadoPagoSDK(): Promise<void> {
-    try {
-      await this.mercadoPagoService.loadMercadoPagoScript();
-      this.mercadoPagoLoaded = true;
-      console.log('MercadoPago SDK cargado exitosamente');
-    } catch (error) {
-      console.error('Error cargando MercadoPago SDK:', error);
-    }
-  }
-
-  openMercadoPagoModal(): void {
-    if (!this.mercadoPagoLoaded) {
-      alert('MercadoPago aún se está cargando, por favor espera un momento...');
-      return;
-    }
-    this.showMercadoPagoModal = true;
-
-    setTimeout(() => {
-      this.renderMercadoPagoButton();
-    }, 100);
-  }
-
-  closeMercadoPagoModal(): void {
-    this.showMercadoPagoModal = false;
-    this.selectedAmount = '50.00';
-    this.customAmount = null;
-  }
-
-  private renderMercadoPagoButton(): void {
-    const container = document.getElementById('mercadopago-button-container');
-    if (container) {
-      container.innerHTML = '';
-
-      this.mercadoPagoService.createCustomDonationButton('mercadopago-button-container', this.finalAmount)
-        .then(() => {
-          console.log('Botón de MercadoPago renderizado con monto:', this.finalAmount);
-        })
-        .catch(error => {
-          console.error('Error renderizando botón de MercadoPago:', error);
-          this.renderFallbackButton();
-        });
-    }
-  }
-
-  private renderFallbackButton(): void {
-    const container = document.getElementById('mercadopago-button-container');
-    if (container) {
-      container.innerHTML = `
-        <button class="mercadopago-fallback-btn" onclick="alert('MercadoPago no está disponible en este momento. Por favor intenta más tarde.')">
-          <span>Donar ${this.finalAmount} MXN</span>
-          <small>MercadoPago</small>
-        </button>
-      `;
-    }
-  }
-
-  get finalAmount(): string {
-    if (this.customAmount && this.customAmount >= 10) {
-      return this.customAmount.toFixed(2);
-    }
-    return this.selectedAmount;
-  }
-
-  selectQuickAmount(amount: string): void {
-    this.selectedAmount = amount;
-    this.customAmount = null;
-    setTimeout(() => {
-      this.renderMercadoPagoButton();
-    }, 50);
-  }
-
-  onCustomAmountChange(): void {
-    if (this.customAmount && this.customAmount >= 10 && this.customAmount <= 10000) {
-      this.selectedAmount = this.customAmount.toFixed(2);
-      setTimeout(() => {
-        this.renderMercadoPagoButton();
-      }, 50);
-    } else if (this.customAmount && this.customAmount < 10) {
-      this.customAmount = 10;
-      this.selectedAmount = '10.00';
-      setTimeout(() => {
-        this.renderMercadoPagoButton();
-      }, 50);
-    } else if (this.customAmount && this.customAmount > 10000) {
-      this.customAmount = 10000;
-      this.selectedAmount = '10000.00';
-      setTimeout(() => {
-        this.renderMercadoPagoButton();
-      }, 50);
-    }
-  }
-
   togglePlay(event?: MouseEvent): void {
     if (event && event.target !== this.videoPlayer?.nativeElement) {
       return;
@@ -1077,14 +980,5 @@ export class ModuleDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       document.exitFullscreen();
     }
-  }
-
-  testMercadoPago(): void {
-    console.log('Estado de MercadoPago:', {
-      loaded: this.mercadoPagoLoaded,
-      finalAmount: this.finalAmount,
-      selectedAmount: this.selectedAmount,
-      customAmount: this.customAmount
-    });
   }
 }

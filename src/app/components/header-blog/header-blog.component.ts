@@ -120,7 +120,7 @@ export class HeaderBlogComponent implements OnInit, OnDestroy {
 
   onProfile() {
     this.showUserMenu = false;
-    this.router.navigate(['/profile']);
+    this.router.navigate(['/perfil']);
   }
 
   onBuscar() {

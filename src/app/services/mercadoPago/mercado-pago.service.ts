@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { DonacionesService } from '../donaciones/donaciones.service';
 
 declare global {
   interface Window {
@@ -14,7 +15,7 @@ export class MercadoPagoService {
   private mp: any;
   private isInitialized = false;
 
-  constructor() { }
+  constructor(private donacionesService: DonacionesService) { }
 
   loadMercadoPagoScript(): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -47,7 +48,6 @@ export class MercadoPagoService {
 
   private initializeMercadoPago(): void {
     try {
-      // Verificar que tenemos la clave pública
       if (!environment.mercadoPago?.publicKey) {
         console.error('No se encontró la clave pública de MercadoPago en environment');
         return;
@@ -64,8 +64,13 @@ export class MercadoPagoService {
     }
   }
 
-  // Método simplificado para crear botón personalizado
-  async createCustomDonationButton(containerId: string, amount: string = '50.00'): Promise<void> {
+  async createCustomDonationButton(
+    containerId: string, 
+    amount: string = '50.00',
+    moduloId?: number,
+    onSuccess?: (paymentData: any) => void,
+    onError?: (error: any) => void
+  ): Promise<void> {
     try {
       console.log('Creando botón personalizado de MercadoPago para:', amount);
       
@@ -75,34 +80,28 @@ export class MercadoPagoService {
         return;
       }
 
-      // Limpiar contenido anterior
       container.innerHTML = '';
-
-      // Mostrar loading mientras se procesa
       this.showLoadingButton(container);
 
-      // Verificar que MercadoPago esté disponible
       if (!window.MercadoPago || !this.isInitialized) {
         console.log('MercadoPago no disponible, creando opciones alternativas');
-        this.createPaymentOptionsButton(container, amount);
+        this.createPaymentOptionsButton(container, amount, moduloId, onSuccess, onError);
         return;
       }
 
-      // Intentar crear preferencia si tenemos access token
       if (environment.mercadoPago?.accessToken) {
         try {
-          const preferenceId = await this.createDonationPreference(amount);
-          this.createPreferenceButton(container, preferenceId, amount);
+          const preferenceId = await this.createDonationPreference(amount, moduloId);
+          this.createPreferenceButton(container, preferenceId, amount, moduloId, onSuccess, onError);
         } catch (error) {
           console.error('Error creando preferencia:', error);
-          this.createPaymentOptionsButton(container, amount);
+          this.createPaymentOptionsButton(container, amount, moduloId, onSuccess, onError);
         }
       } else {
         console.log('No hay access token, creando opciones de pago');
-        this.createPaymentOptionsButton(container, amount);
+        this.createPaymentOptionsButton(container, amount, moduloId, onSuccess, onError);
       }
 
-      // Agregar estilos
       this.addCustomButtonStyles();
       
     } catch (error) {
@@ -122,62 +121,74 @@ export class MercadoPagoService {
     `;
   }
 
-  private async createDonationPreference(amount: string): Promise<string> {
-  const timestamp = Date.now();
-  const randomId = Math.floor(Math.random() * 1000);
-  
-  const preferenceData = {
-    items: [
-      {
-        title: `Donación de apoyo - $${amount} MXN`,
-        quantity: 1,
-        currency_id: 'MXN',
-        unit_price: parseFloat(amount)
-      }
-    ],
-    payer: {
-      email: 'shakerzest@gmail.com',
-      name: 'Donador',
-      surname: 'Anónimo'
-    },
-    external_reference: `donation-${timestamp}-${randomId}`,
-    statement_descriptor: 'DONACION APOYO',
-    payment_methods: {
-      excluded_payment_methods: [], 
-      excluded_payment_types: [],   
-      installments: 12              
-    },
-    expires: false,
-    binary_mode: false
-    // Sin auto_return ni back_urls - el usuario se queda en MercadoPago
-  };
+  private async createDonationPreference(amount: string, moduloId?: number): Promise<string> {
+    const timestamp = Date.now();
+    const randomId = Math.floor(Math.random() * 1000);
+    
+    const preferenceData = {
+      items: [
+        {
+          title: `Donación de apoyo - $${amount} MXN`,
+          description: moduloId ? `Apoyo al módulo ${moduloId}` : 'Donación general de apoyo',
+          quantity: 1,
+          currency_id: 'MXN',
+          unit_price: parseFloat(amount)
+        }
+      ],
+      payer: {
+        email: 'shakerzest@gmail.com',
+        name: 'Donador',
+        surname: 'Anónimo'
+      },
+      external_reference: `donation-${timestamp}-${randomId}`,
+      statement_descriptor: 'DONACION APOYO',
+      payment_methods: {
+        excluded_payment_methods: [], 
+        excluded_payment_types: [],   
+        installments: 12              
+      },
+      notification_url: `${environment.apiUrl}/webhooks/mercadopago`,
+      metadata: {
+        modulo_id: moduloId?.toString() || '',
+        donation_type: 'support'
+      },
+      expires: false,
+      binary_mode: false
+    };
 
-  const response = await fetch('https://api.mercadopago.com/checkout/preferences', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${environment.mercadoPago.accessToken}`
-    },
-    body: JSON.stringify(preferenceData)
-  });
+    const response = await fetch('https://api.mercadopago.com/checkout/preferences', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${environment.mercadoPago.accessToken}`
+      },
+      body: JSON.stringify(preferenceData)
+    });
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    console.error('Error response from MercadoPago:', errorData);
-    throw new Error(`Error creating preference: ${response.status} - ${JSON.stringify(errorData)}`);
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Error response from MercadoPago:', errorData);
+      throw new Error(`Error creating preference: ${response.status} - ${JSON.stringify(errorData)}`);
+    }
+
+    const preference = await response.json();
+    console.log('Preferencia creada exitosamente:', preference.id);
+    return preference.id;
   }
 
-  const preference = await response.json();
-  console.log('Preferencia creada exitosamente:', preference.id);
-  return preference.id;
-}
-
-  private createPreferenceButton(container: HTMLElement, preferenceId: string, amount: string): void {
+  private createPreferenceButton(
+    container: HTMLElement, 
+    preferenceId: string, 
+    amount: string,
+    moduloId?: number,
+    onSuccess?: (paymentData: any) => void,
+    onError?: (error: any) => void
+  ): void {
     const checkoutUrl = `https://www.mercadopago.com.mx/checkout/v1/redirect?pref_id=${preferenceId}`;
     
     container.innerHTML = `
       <div class="mercadopago-button-container">
-        <button class="mercadopago-donation-btn primary" onclick="window.open('${checkoutUrl}', '_blank')">
+        <button class="mercadopago-donation-btn primary" id="mp-donation-btn">
           <div class="mp-button-content">
             <div class="mp-logo">
               <svg class="mp-icon" viewBox="0 0 100 100" fill="currentColor">
@@ -210,16 +221,103 @@ export class MercadoPagoService {
         </div>
       </div>
     `;
+
+    // Agregar evento click al botón
+    const donationBtn = document.getElementById('mp-donation-btn');
+    if (donationBtn) {
+      donationBtn.addEventListener('click', () => {
+        this.openPaymentWindow(checkoutUrl, preferenceId, moduloId, onSuccess, onError);
+      });
+    }
   }
 
-  private createPaymentOptionsButton(container: HTMLElement, amount: string): void {
+  private openPaymentWindow(
+    checkoutUrl: string, 
+    preferenceId: string, 
+    moduloId?: number,
+    onSuccess?: (paymentData: any) => void,
+    onError?: (error: any) => void
+  ): void {
+    const paymentWindow = window.open(
+      checkoutUrl, 
+      'mercadopago_payment', 
+      'width=800,height=600,scrollbars=yes,resizable=yes'
+    );
+
+    if (!paymentWindow) {
+      alert('Por favor permite las ventanas emergentes para completar el pago');
+      return;
+    }
+
+    // Verificar el estado del pago periódicamente
+    const checkPaymentStatus = setInterval(() => {
+      if (paymentWindow.closed) {
+        clearInterval(checkPaymentStatus);
+        this.checkPaymentResult(preferenceId, moduloId, onSuccess, onError);
+      }
+    }, 1000);
+
+    // Timeout después de 10 minutos
+    setTimeout(() => {
+      if (!paymentWindow.closed) {
+        clearInterval(checkPaymentStatus);
+        paymentWindow.close();
+        if (onError) {
+          onError({ message: 'Tiempo de pago agotado' });
+        }
+      }
+    }, 600000);
+  }
+
+  private async checkPaymentResult(
+    preferenceId: string,
+    moduloId?: number,
+    onSuccess?: (paymentData: any) => void,
+    onError?: (error: any) => void
+  ) {
+    try {
+      // Aquí deberías hacer una llamada a tu backend para verificar el estado del pago
+      // usando el preferenceId con la API de MercadoPago
+      const response = await fetch(`${environment.apiUrl}/payments/check-status/${preferenceId}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        }
+      });
+
+      if (response.ok) {
+        const paymentData = await response.json();
+        if (paymentData.status === 'approved') {
+          if (onSuccess) {
+            onSuccess(paymentData);
+          }
+        } else if (paymentData.status === 'rejected' || paymentData.status === 'cancelled') {
+          if (onError) {
+            onError({ message: 'Pago rechazado o cancelado' });
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error verificando estado del pago:', error);
+      if (onError) {
+        onError(error);
+      }
+    }
+  }
+
+  private createPaymentOptionsButton(
+    container: HTMLElement, 
+    amount: string,
+    moduloId?: number,
+    onSuccess?: (paymentData: any) => void,
+    onError?: (error: any) => void
+  ): void {
     container.innerHTML = `
       <div class="mercadopago-button-container">
         <div class="payment-options-title">
-          <h4>Opciones de donación - $${amount} MXN</h4>
+          <h4>Opciones de donación - ${amount} MXN</h4>
         </div>
         
-        <button class="mercadopago-donation-btn primary" onclick="window.open('https://www.mercadopago.com.mx', '_blank')">
+        <button class="mercadopago-donation-btn primary" id="mp-generic-btn">
           <div class="mp-button-content">
             <div class="mp-logo">
               <svg class="mp-icon" viewBox="0 0 100 100" fill="currentColor">
@@ -241,8 +339,17 @@ export class MercadoPagoService {
         </div>
       </div>
     `;
+
+    // Agregar evento al botón genérico
+    const genericBtn = document.getElementById('mp-generic-btn');
+    if (genericBtn) {
+      genericBtn.addEventListener('click', () => {
+        window.open('https://www.mercadopago.com.mx', '_blank');
+      });
+    }
   }
 
+  // Eliminado el botón de donación de prueba y corregida la URL de MercadoPago
   private createAlternativeOptions(amount: string): string {
     return `
       <div class="alternative-payment-methods">
@@ -250,7 +357,7 @@ export class MercadoPagoService {
           <span>O también puedes:</span>
         </div>
         
-        <button class="alternative-payment-btn" onclick="window.open('https://pay.mercadopago.com.mx/', '_blank')">
+        <button class="alternative-payment-btn" onclick="window.open('https://www.mercadopago.com.mx/money-in', '_blank')">
           <div class="alt-method-content">
             <span class="alt-method-icon">💳</span>
             <div class="alt-method-text">
@@ -260,22 +367,12 @@ export class MercadoPagoService {
           </div>
         </button>
         
-        <button class="alternative-payment-btn" onclick="navigator.share ? navigator.share({title: 'Donación de apoyo', text: 'Apoya este proyecto con $${amount} MXN', url: window.location.href}) : prompt('Comparte este enlace:', window.location.href)">
+        <button class="alternative-payment-btn" onclick="navigator.share ? navigator.share({title: 'Donación de apoyo', text: 'Apoya este proyecto con ${amount} MXN', url: window.location.href}) : prompt('Comparte este enlace:', window.location.href)">
           <div class="alt-method-content">
             <span class="alt-method-icon">📤</span>
             <div class="alt-method-text">
               <span class="alt-method-title">Compartir</span>
               <span class="alt-method-subtitle">Invita a otros a donar</span>
-            </div>
-          </div>
-        </button>
-        
-        <button class="alternative-payment-btn" onclick="alert('Para otras opciones de donación, contacta directamente al creador del contenido.')">
-          <div class="alt-method-content">
-            <span class="alt-method-icon">💬</span>
-            <div class="alt-method-text">
-              <span class="alt-method-title">Contactar</span>
-              <span class="alt-method-subtitle">Otras formas de apoyo</span>
             </div>
           </div>
         </button>
@@ -290,7 +387,7 @@ export class MercadoPagoService {
     container.innerHTML = `
       <div class="mercadopago-button-container">
         <div class="payment-options-title">
-          <h4>Opciones de donación - $${amount} MXN</h4>
+          <h4>Opciones de donación - ${amount} MXN</h4>
         </div>
         
         <button class="mercadopago-fallback-btn" onclick="window.open('https://www.mercadopago.com.mx', '_blank')">
@@ -308,6 +405,53 @@ export class MercadoPagoService {
         </div>
       </div>
     `;
+  }
+
+  // Método para crear donación directa (sin MercadoPago)
+  async createDirectDonation(
+    usuarioId: number,
+    moduloId: number,
+    amount: string,
+    metodoPago: string = 'directo'
+  ): Promise<any> {
+    try {
+      const donacionData = {
+        usuario_id: usuarioId,
+        modulo_id: moduloId,
+        monto: parseFloat(amount),
+        moneda: 'MXN',
+        estado: 'completed',
+        metodo_pago: metodoPago,
+        transaction_id: `direct-${Date.now()}`,
+        payment_id: `pay-${Date.now()}`
+      };
+
+      return this.donacionesService.createDonacion(donacionData).toPromise();
+    } catch (error) {
+      console.error('Error creando donación directa:', error);
+      throw error;
+    }
+  }
+
+  // Método para verificar el estado de un pago
+  async verifyPaymentStatus(paymentId: string): Promise<any> {
+    try {
+      const response = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${environment.mercadoPago.accessToken}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error verificando pago: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error verificando estado del pago:', error);
+      throw error;
+    }
   }
 
   private addCustomButtonStyles(): void {
@@ -618,7 +762,6 @@ export class MercadoPagoService {
     document.head.appendChild(style);
   }
 
-  // Método de debug mejorado
   debugMercadoPago(): void {
     console.log('=== DEBUG MERCADOPAGO ===');
     console.log('Window.MercadoPago:', !!window.MercadoPago);

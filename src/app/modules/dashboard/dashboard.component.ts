@@ -74,4 +74,9 @@ export class DashboardComponent implements OnInit {
     event.preventDefault();
     this.router.navigate(['dashboard/cursos'])
   }
+
+  onProfile(event: Event) {
+    event.preventDefault();
+    this.router.navigate(['dashboard/profile']);
+  }
 }

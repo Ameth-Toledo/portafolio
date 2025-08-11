@@ -44,4 +44,8 @@ export class UsersService {
     const headers = this.getHeaders();
     return this.http.get<UserProfileResponse>(`${this.apiUrl}/${userId}`, { headers });
   }
+  
+  deleteUser(userId: number): Observable<void> {
+    return this.http.delete<void>(`/api/users/${userId}`);
+  }
 }

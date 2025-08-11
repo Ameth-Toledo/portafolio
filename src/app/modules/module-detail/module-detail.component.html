@@ -57,276 +57,117 @@
     </div>
 
     <div class="module-content">
-<!-- Video container actualizado -->
-<div class="video-container">
-  <div class="video-wrapper" 
-       (mouseenter)="showVideoControls()" 
-       (mouseleave)="hideVideoControlsDelayed()"
-       (mousemove)="showVideoControls()"
-       (click)="handleVideoClick($event)">
-    
-    <!-- iframe para YouTube/Vimeo -->
-    <iframe 
-      *ngIf="safeVideoUrl" 
-      [src]="safeVideoUrl" 
-      class="video-iframe"
-      frameborder="0" 
-      allowfullscreen
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      #videoIframe>
-    </iframe>
+      <!-- Video container actualizado -->
+      <div class="video-container">
+        <div class="video-wrapper" (mouseenter)="showVideoControls()" (mouseleave)="hideVideoControlsDelayed()"
+          (mousemove)="showVideoControls()" (click)="handleVideoClick($event)">
 
-    <!-- Overlay transparente para capturar clics -->
-    <div class="video-click-overlay" 
-         (click)="handleVideoClick($event)">
-    </div>
+          <!-- iframe para YouTube/Vimeo -->
+          <iframe *ngIf="safeVideoUrl" [src]="safeVideoUrl" class="video-iframe" frameborder="0" allowfullscreen
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            #videoIframe>
+          </iframe>
 
-    <!-- Controles personalizados superpuestos -->
-    <div class="video-controls-overlay" 
-         [class.show]="showControls && !isControlsHidden"
-         [class.hidden]="isControlsHidden"
-         (click)="$event.stopPropagation()"
-         (mouseenter)="keepControlsVisible()"
-         (mouseleave)="startHideControlsTimer()">
-     
-      <!-- Botón de play/pause central -->
-      <div class="center-play-button" 
-           *ngIf="!isPlaying && showCenterButton" 
-           (click)="togglePlayYouTube()">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <path fill="currentColor" d="M8 5v14l11-7z" />
-        </svg>
-      </div>
-
-      <!-- Controles inferiores -->
-      <div class="controls-bottom">
-        <!-- Barra de progreso -->
-        <div class="progress-container" (click)="seekVideo($event)">
-          <div class="progress-track"></div>
-          <div class="progress-bar" [style.width.%]="progressPercent"></div>
-          <div class="progress-thumb" [style.left.%]="progressPercent"></div>
-        </div>
-
-        <!-- Controles principales -->
-        <div class="controls-bar">
-          <button class="control-btn play-pause-btn" (click)="togglePlayYouTube()">
-            <svg *ngIf="!isPlaying" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path fill="currentColor" d="M8 5v14l11-7z" />
-            </svg>
-            <svg *ngIf="isPlaying" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path fill="currentColor" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-            </svg>
-          </button>
-
-          <!-- Tiempo actual / duración -->
-          <div class="time-display">
-            <span class="current-time">{{ currentTime | timeFormat }}</span>
-            <span class="time-separator">/</span>
-            <span class="duration-time">{{ duration | timeFormat }}</span>
+          <!-- Overlay transparente para capturar clics -->
+          <div class="video-click-overlay" (click)="handleVideoClick($event)">
           </div>
 
-          <div class="spacer"></div>
+          <!-- Controles personalizados superpuestos -->
+          <div class="video-controls-overlay" [class.show]="showControls && !isControlsHidden"
+            [class.hidden]="isControlsHidden" (click)="$event.stopPropagation()" (mouseenter)="keepControlsVisible()"
+            (mouseleave)="startHideControlsTimer()">
 
-          <!-- Control de volumen con slider horizontal -->
-          <div class="volume-control" 
-               (mouseenter)="showVolumeSlider = true" 
-               (mouseleave)="showVolumeSlider = false">
-            <button class="control-btn volume-btn" (click)="toggleMute()">
-              <svg *ngIf="!isMuted && volume > 0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+            <!-- Botón de play/pause central -->
+            <div class="center-play-button" *ngIf="!isPlaying && showCenterButton" (click)="togglePlayYouTube()">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M8 5v14l11-7z" />
               </svg>
-              <svg *ngIf="!isMuted && volume <= 0.5 && volume > 0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z"/>
-              </svg>
-              <svg *ngIf="isMuted || volume === 0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path fill="currentColor" d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
-              </svg>
-            </button>
-            
-            <!-- Slider horizontal de volumen -->
-            <div class="volume-slider-horizontal" 
-                 [class.show]="showVolumeSlider">
-              <input type="range" 
-                     class="volume-slider" 
-                     min="0" 
-                     max="1" 
-                     step="0.01" 
-                     [(ngModel)]="volume" 
-                     (input)="updateVolume()"
-                     (click)="$event.stopPropagation()">
-            </div>
-          </div>
-
-          <!-- Botón de pantalla completa -->
-          <button class="control-btn fullscreen-btn" (click)="toggleFullscreenYouTube()">
-            <svg *ngIf="!isFullscreen" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path fill="currentColor" d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
-            </svg>
-            <svg *ngIf="isFullscreen" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path fill="currentColor" d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z" />
-            </svg>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Placeholder cuando no hay video -->
-    <div *ngIf="!safeVideoUrl" class="video-placeholder">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff">
-        <path d="M10 16.5l6-4.5-6-4.5v9zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
-      </svg>
-      <p>Video no disponible</p>
-    </div>
-  </div>
-</div>
-    </div>
-  </div>
-
-  <div *ngIf="modulo && !loading && !error" class="card">
-    <div class="card-header">
-      <div class="user-info">
-        <div class="avatar">
-          <img src="perfilAI.png" alt="Foto de perfil" class="avatar-img">
-        </div>
-        <div>
-          <h3 class="title">Ameth Toledo</h3>
-          <p class="username">FullStack Jr Developer</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="content">
-      {{ modulo.descripcion_module }}
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="card-footer">
-      <div class="action-icons">
-        <div class="like-button">
-          <input class="on" id="heart" type="checkbox" [checked]="userHasLiked" (change)="toggleLike()"
-            [disabled]="loadingLikes" />
-          <label class="like" for="heart" [class.disabled]="loadingLikes">
-            <svg class="like-icon" fill-rule="nonzero" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z">
-              </path>
-            </svg>
-            <span class="like-text">{{ loadingLikes ? 'Cargando...' : 'Likes' }}</span>
-          </label>
-          <span class="like-count" [ngClass]="{'one': !userHasLiked, 'two': userHasLiked}">
-            {{ likesCount }}
-          </span>
-        </div>
-
-        <svg class="icon small-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-          stroke-width="2" viewBox="0 0 24 24">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-          <polyline points="17 8 12 3 7 8"></polyline>
-          <line x1="12" x2="12" y1="3" y2="15"></line>
-        </svg>
-      </div>
-
-      <div class="utility-icons">
-        <button class="pay-btn" (click)="openMercadoPagoModal()">
-          <span class="btn-text">Apóyame</span>
-          <div class="icon-container">
-            <svg viewBox="0 0 24 24" class="icon card-icon">
-              <path
-                d="M20,8H4V6H20M20,18H4V12H20M20,4H4C2.89,4 2,4.89 2,6V18C2,19.11 2.89,20 4,20H20C21.11,20 22,19.11 22,18V6C22,4.89 21.11,4 20,4Z"
-                fill="currentColor"></path>
-            </svg>
-            <svg viewBox="0 0 24 24" class="icon payment-icon">
-              <path d="M2,17H22V21H2V17M6.25,7H9V6H6V3H18V6H15V7H17.75L19,17H5L6.25,7M9,10H15V8H9V10M9,13H15V11H9V13Z"
-                fill="currentColor"></path>
-            </svg>
-            <svg viewBox="0 0 24 24" class="icon dollar-icon">
-              <path
-                d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"
-                fill="currentColor"></path>
-            </svg>
-            <svg viewBox="0 0 24 24" class="icon wallet-icon default-icon">
-              <path
-                d="M21,18V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5A2,2 0 0,1 5,3H19A2,2 0 0,1 21,5V6H12C10.89,6 10,6.9 10,8V16A2,2 0 0,0 12,18M12,16H22V8H12M16,13.5A1.5,1.5 0 0,1 14.5,12A1.5,1.5 0 0,1 16,10.5A1.5,1.5 0 0,1 17.5,12A1.5,1.5 0 0,1 16,13.5Z"
-                fill="currentColor"></path>
-            </svg>
-            <svg viewBox="0 0 24 24" class="icon check-icon">
-              <path d="M9,16.17L4.83,12L3.41,13.41L9,19L21,7L19.59,5.59L9,16.17Z" fill="currentColor"></path>
-            </svg>
-          </div>
-        </button>
-      </div>
-
-      <div class="paypal-modal" *ngIf="showMercadoPagoModal">
-        <div class="paypal-modal-overlay" (click)="closeMercadoPagoModal()"></div>
-        <div class="paypal-modal-container">
-          <div class="paypal-modal-card">
-            <div class="paypal-modal-header">
-              <h2 class="paypal-modal-title">☕ ¡Apoya mi trabajo!</h2>
-              <button class="paypal-close-btn" (click)="closeMercadoPagoModal()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </button>
             </div>
 
-            <div class="paypal-modal-content">
-              <p class="paypal-description">
-                Si este contenido te ha sido útil, considera hacer una pequeña donación.
-                Tu apoyo me ayuda a continuar creando tutoriales de calidad 🚀
-              </p>
+            <!-- Controles inferiores -->
+            <div class="controls-bottom">
+              <!-- Barra de progreso -->
+              <div class="progress-container" (click)="seekVideo($event)">
+                <div class="progress-track"></div>
+                <div class="progress-bar" [style.width.%]="progressPercent"></div>
+                <div class="progress-thumb" [style.left.%]="progressPercent"></div>
+              </div>
 
-              <div class="amount-selector">
-                <label for="amount">Cantidades sugeridas:</label>
-                <div class="quick-amount-buttons">
-                  <button *ngFor="let quickAmount of quickAmounts" class="quick-amount-btn"
-                    [class.active]="selectedAmount === quickAmount.value && !customAmount"
-                    (click)="selectQuickAmount(quickAmount.value)">
-                    <span class="amount-value">${{quickAmount.value}}</span>
-                    <span class="amount-label">{{quickAmount.label}}</span>
+              <!-- Controles principales -->
+              <div class="controls-bar">
+                <button class="control-btn play-pause-btn" (click)="togglePlayYouTube()">
+                  <svg *ngIf="!isPlaying" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M8 5v14l11-7z" />
+                  </svg>
+                  <svg *ngIf="isPlaying" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                  </svg>
+                </button>
+
+                <!-- Tiempo actual / duración -->
+                <div class="time-display">
+                  <span class="current-time">{{ currentTime | timeFormat }}</span>
+                  <span class="time-separator">/</span>
+                  <span class="duration-time">{{ duration | timeFormat }}</span>
+                </div>
+
+                <div class="spacer"></div>
+
+                <!-- Control de volumen con slider horizontal -->
+                <div class="volume-control" (mouseenter)="showVolumeSlider = true"
+                  (mouseleave)="showVolumeSlider = false">
+                  <button class="control-btn volume-btn" (click)="toggleMute()">
+                    <svg *ngIf="!isMuted && volume > 0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                      <path fill="currentColor"
+                        d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                    </svg>
+                    <svg *ngIf="!isMuted && volume <= 0.5 && volume > 0" xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24">
+                      <path fill="currentColor"
+                        d="M18.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM5 9v6h4l5 5V4L9 9H5z" />
+                    </svg>
+                    <svg *ngIf="isMuted || volume === 0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                      <path fill="currentColor"
+                        d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
+                    </svg>
                   </button>
+
+                  <!-- Slider horizontal de volumen -->
+                  <div class="volume-slider-horizontal" [class.show]="showVolumeSlider">
+                    <input type="range" class="volume-slider" min="0" max="1" step="0.01" [(ngModel)]="volume"
+                      (input)="updateVolume()" (click)="$event.stopPropagation()">
+                  </div>
                 </div>
-              </div>
 
-              <div class="custom-amount-section">
-                <label for="customAmount">O ingresa tu cantidad:</label>
-                <div class="custom-amount-input-container">
-                  <span class="currency-symbol">$</span>
-                  <input type="number" id="customAmount" class="custom-amount-input" [(ngModel)]="customAmount"
-                    (input)="onCustomAmountChange()" min="10" max="10000" step="1" placeholder="Monto en MXN">
-                  <span class="currency-code">MXN</span>
-                </div>
-                <p class="amount-hint">Mínimo: $10 MXN - Máximo: $10,000 MXN</p>
-              </div>
-
-              <div class="selected-amount-display">
-                <div class="selected-amount-card">
-                  <span class="selected-label">Donación:</span>
-                  <span class="selected-value">${{finalAmount}} MXN</span>
-                </div>
-              </div>
-
-              <div class="paypal-button-wrapper">
-                <div id="mercadopago-button-container" class="paypal-button-container"></div>
-              </div>
-
-              <div class="paypal-security">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2">
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                  <circle cx="12" cy="16" r="1"></circle>
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                </svg>
-                <span>Pago seguro procesado por MercadoPago</span>
+                <!-- Botón de pantalla completa -->
+                <button class="control-btn fullscreen-btn" (click)="toggleFullscreenYouTube()">
+                  <svg *ngIf="!isFullscreen" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path fill="currentColor"
+                      d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
+                  </svg>
+                  <svg *ngIf="isFullscreen" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path fill="currentColor"
+                      d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z" />
+                  </svg>
+                </button>
               </div>
             </div>
+          </div>
+
+          <!-- Placeholder cuando no hay video -->
+          <div *ngIf="!safeVideoUrl" class="video-placeholder">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff">
+              <path
+                d="M10 16.5l6-4.5-6-4.5v9zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+            </svg>
+            <p>Video no disponible</p>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <app-card-module-description [modulo]="modulo"></app-card-module-description>
 
   <div *ngIf="modulo?.repositorio && !loading && !error" class="repository-section">
     <h2 class="section-title">Repositorio del módulo</h2>
@@ -392,73 +233,72 @@
       </div>
 
       <div *ngFor="let comentario of comentarios" class="comment-item">
-        <div class="comment-actions">
-          <button class="action-btn edit-btn" (click)="editarComentario(comentario.key, comentario.texto)"
-            *ngIf="comentario.key !== editandoComentario">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2">
-              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-              <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-            </svg>
-            Editar
-          </button>
-          <button class="action-btn delete-btn" (click)="eliminarComentario(comentario.key)"
-            *ngIf="comentario.key !== editandoComentario">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2">
-              <polyline points="3,6 5,6 21,6"></polyline>
-              <path d="m19,6v14a2,2 0 0,1-2,2H7a2,2 0 0,1-2-2V6m3,0V4a2,2 0 0,1,2-2h4a2,2 0 0,1,2,2v2"></path>
-              <line x1="10" y1="11" x2="10" y2="17"></line>
-              <line x1="14" y1="11" x2="14" y2="17"></line>
-            </svg>
-            Eliminar
-          </button>
-        </div>
+
+        <div class="comment-actions" *ngIf="comentario.canEdit">
+    <button class="action-btn edit-btn" (click)="editarComentario(comentario.key, comentario.texto)"
+      *ngIf="comentario.key !== editandoComentario">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+        <path d="m18.5 2.5 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+      </svg>
+      Editar
+    </button>
+    <button class="action-btn delete-btn" (click)="eliminarComentario(comentario.key)"
+      *ngIf="comentario.key !== editandoComentario">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2">
+        <polyline points="3,6 5,6 21,6"></polyline>
+        <path d="m19,6v14a2,2 0 0,1-2,2H7a2,2 0 0,1-2-2V6m3,0V4a2,2 0 0,1,2-2h4a2,2 0 0,1,2,2v2"></path>
+        <line x1="10" y1="11" x2="10" y2="17"></line>
+        <line x1="14" y1="11" x2="14" y2="17"></line>
+      </svg>
+      Eliminar
+    </button>
+  </div>
 
         <div class="comment-header">
-          <div class="comment-avatar">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-          </div>
-          <div class="comment-author-info">
-            <span class="comment-author">{{comentario.autor}}</span>
-            <span class="comment-date">
-              {{comentario.fecha | date:'mediumDate'}}
-            </span>
-          </div>
-        </div>
+    <div class="comment-avatar">
+      <img [src]="'/avatares/' + (comentario.avatar || 1) + '.png'" 
+           [alt]="comentario.autor"
+           onerror="this.src='/avatares/default-avatar.png'">
+    </div>
+    <div class="comment-author-info">
+      <span class="comment-author">{{comentario.autor}}</span>
+      <span class="comment-date">
+        {{comentario.fecha | date:'mediumDate'}}
+      </span>
+    </div>
+  </div>
 
         <div class="comment-content" *ngIf="comentario.key !== editandoComentario">
-          {{comentario.texto}}
-        </div>
+    {{comentario.texto}}
+  </div>
 
-        <div *ngIf="comentario.key === editandoComentario">
-          <textarea [(ngModel)]="textoEditando" class="edit-input"></textarea>
-          <div class="edit-actions">
-            <button class="action-btn save-btn" (click)="guardarEdicion(comentario.key)"
-              [disabled]="!textoEditando.trim()">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2">
-                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
-                <polyline points="17,21 17,13 7,13 7,21"></polyline>
-                <polyline points="7,3 7,8 15,8"></polyline>
-              </svg>
-              Guardar
-            </button>
-            <button class="action-btn cancel-btn" (click)="cancelarEdicion()">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="15" y1="9" x2="9" y2="15"></line>
-                <line x1="9" y1="9" x2="15" y2="15"></line>
-              </svg>
-              Cancelar
-            </button>
-          </div>
-        </div>
+        <div *ngIf="comentario.key === editandoComentario && comentario.canEdit">
+    <textarea [(ngModel)]="textoEditando" class="edit-input"></textarea>
+    <div class="edit-actions">
+      <button class="action-btn save-btn" (click)="guardarEdicion(comentario.key)"
+        [disabled]="!textoEditando.trim()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2">
+          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+          <polyline points="17,21 17,13 7,13 7,21"></polyline>
+          <polyline points="7,3 7,8 15,8"></polyline>
+        </svg>
+        Guardar
+      </button>
+      <button class="action-btn cancel-btn" (click)="cancelarEdicion()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="15" y1="9" x2="9" y2="15"></line>
+          <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+        Cancelar
+      </button>
+    </div>
+  </div>
       </div>
 
       <div *ngIf="comentarios.length === 0 && !cargandoComentarios" class="no-comments">

@@ -25,12 +25,38 @@
   </div>
 
   <div class="messages-container">
-    <div *ngFor="let message of messages" 
+    <div *ngFor="let message of messages; let i = index" 
          class="message-wrapper"
          [class.user-message]="message.isUser"
          [class.bot-message]="!message.isUser">
       <div class="message-box">
-        <p [innerHTML]="message.text"></p>
+        
+        <!-- Contenido normal del mensaje -->
+        <div class="message-content" 
+             [innerHTML]="message.formattedText || message.text">
+        </div>
+        
+        <!-- Renderizado de bloques de código si existen -->
+        <ng-container *ngIf="message.hasCodeBlocks && message.codeBlocks">
+          <div *ngFor="let codeBlock of message.codeBlocks" class="code-block-container">
+            <div class="code-block-header">
+              <span class="code-language">{{codeBlock.language}}</span>
+              <button class="copy-code-btn" 
+                      (click)="copyCode(codeBlock.code, codeBlock.id)"
+                      [attr.data-code-id]="codeBlock.id">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 4V2C8 1.44772 8.44772 1 9 1H19C19.5523 1 20 1.44772 20 2V12C20 12.5523 19.5523 13 19 13H17V11H18V3H10V4H8Z" fill="currentColor"/>
+                  <path d="M5 5C4.44772 5 4 5.44772 4 6V20C4 20.5523 4.44772 21 5 21H15C15.5523 21 16 20.5523 16 20V6C16 5.44772 15.5523 5 15 5H5Z" fill="currentColor"/>
+                </svg>
+                Copiar
+              </button>
+            </div>
+            <div class="code-block-content">
+              <pre class="code-block-pre">{{codeBlock.code}}</pre>
+            </div>
+          </div>
+        </ng-container>
+        
         <span class="timestamp">{{ message.timestamp | date:'HH:mm' }}</span>
       </div>
     </div>
@@ -54,7 +80,7 @@
         [(ngModel)]="newMessage"
         name="chatMessage"
         (keypress)="onKeyPress($event)"
-        placeholder="Pregúntame lo que quieras..."
+        placeholder="Pregúntame sobre programación..."
         class="message-input"
         [disabled]="isLoading"
         rows="1"
@@ -68,3 +94,164 @@
     </form>
   </div>
 </div>
+
+<!-- Script mejorado para manejar código con tema verde -->
+<script>
+  // Sistema mejorado de copia de código
+  function copyCodeBlock(code, buttonElement) {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(code).then(() => {
+        console.log('Código copiado al portapapeles');
+        showCopySuccess(buttonElement);
+      }).catch(err => {
+        console.error('Error al copiar código:', err);
+        fallbackCopyText(code, buttonElement);
+      });
+    } else {
+      fallbackCopyText(code, buttonElement);
+    }
+  }
+
+  // Feedback visual mejorado para copia
+  function showCopySuccess(buttonElement) {
+    if (buttonElement) {
+      const originalHTML = buttonElement.innerHTML;
+      const originalBg = buttonElement.style.background;
+      
+      buttonElement.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 6L9 17l-5-5"></path>
+        </svg>
+        ¡Copiado!
+      `;
+      buttonElement.style.background = '#15803D';
+      buttonElement.style.borderColor = '#166534';
+      buttonElement.classList.add('copied');
+      
+      setTimeout(() => {
+        buttonElement.innerHTML = originalHTML;
+        buttonElement.style.background = originalBg;
+        buttonElement.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+        buttonElement.classList.remove('copied');
+      }, 2000);
+    }
+  }
+
+  // Función fallback para navegadores antiguos
+  function fallbackCopyText(text, buttonElement) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+      document.execCommand('copy');
+      console.log('Código copiado al portapapeles (fallback)');
+      showCopySuccess(buttonElement);
+    } catch (err) {
+      console.error('Error al copiar código:', err);
+    }
+    
+    document.body.removeChild(textArea);
+  }
+
+  // Observer mejorado para manejar contenido dinámico
+  document.addEventListener('DOMContentLoaded', function() {
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.addedNodes.length > 0) {
+          mutation.addedNodes.forEach(function(node) {
+            if (node.nodeType === 1) {
+              // Procesar placeholders de código
+              const placeholders = node.querySelectorAll ? 
+                node.querySelectorAll('.code-block-placeholder') : [];
+              
+              placeholders.forEach(function(placeholder) {
+                const language = placeholder.getAttribute('data-language') || 'javascript';
+                const codeId = placeholder.id;
+                
+                // Buscar el código correspondiente en el componente
+                const codeText = window.getCodeById ? window.getCodeById(codeId) : '';
+                
+                if (codeText) {
+                  const codeHtml = `
+                    <div class="code-block-container">
+                      <div class="code-block-header">
+                        <span class="code-language">${language}</span>
+                        <button class="copy-code-btn" onclick="copyCodeBlock('${codeText.replace(/'/g, "\\'")}', this)">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 4V2C8 1.44772 8.44772 1 9 1H19C19.5523 1 20 1.44772 20 2V12C20 12.5523 19.5523 13 19 13H17V11H18V3H10V4H8Z" fill="currentColor"/>
+                            <path d="M5 5C4.44772 5 4 5.44772 4 6V20C4 20.5523 4.44772 21 5 21H15C15.5523 21 16 20.5523 16 20V6C16 5.44772 15.5523 5 15 5H5Z" fill="currentColor"/>
+                          </svg>
+                          Copiar
+                        </button>
+                      </div>
+                      <div class="code-block-content">
+                        <pre class="code-block-pre">${codeText}</pre>
+                      </div>
+                    </div>
+                  `;
+                  placeholder.outerHTML = codeHtml;
+                }
+              });
+
+              // Asegurar que todos los elementos de código no escapen
+              const codeElements = node.querySelectorAll ? 
+                node.querySelectorAll('.code-content, .code-block-pre, pre, code') : [];
+              
+              codeElements.forEach(function(element) {
+                element.style.maxWidth = '100%';
+                element.style.overflowX = 'auto';
+                element.style.boxSizing = 'border-box';
+                element.style.wordWrap = 'normal';
+              });
+
+              // Aplicar estilos a contenedores de código
+              const codeContainers = node.querySelectorAll ? 
+                node.querySelectorAll('.code-block, .code-block-container') : [];
+              
+              codeContainers.forEach(function(container) {
+                container.style.width = '100%';
+                container.style.maxWidth = '100%';
+                container.style.overflow = 'hidden';
+                container.style.boxSizing = 'border-box';
+              });
+            }
+          });
+        }
+      });
+    });
+
+    // Observar el contenedor de mensajes
+    const messagesContainer = document.querySelector('.messages-container');
+    if (messagesContainer) {
+      observer.observe(messagesContainer, {
+        childList: true,
+        subtree: true
+      });
+    }
+
+    // Procesar elementos existentes
+    const existingCodeBlocks = document.querySelectorAll('.code-content, .code-block-pre, pre, code');
+    existingCodeBlocks.forEach(function(element) {
+      element.style.maxWidth = '100%';
+      element.style.overflowX = 'auto';
+      element.style.boxSizing = 'border-box';
+    });
+  });
+
+  // Función global para obtener código por ID (se conecta con Angular)
+  window.getCodeById = function(codeId) {
+    // Esta función será sobrescrita por el componente Angular
+    return '';
+  };
+
+  // Función mejorada para copiar código
+  window.copyCodeBlock = function(code, buttonElement) {
+    copyCodeBlock(code, buttonElement);
+  };
+</script>

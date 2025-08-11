@@ -54,7 +54,7 @@
                 </li>
 
                 <li class="nav-link">
-                    <a routerLink="/perfil">
+                    <a (click)="onProfile($event)">
                         <i class='bx bx-user icon'></i>
                         <span class="text nav-text">Perfil</span>
                     </a>
@@ -71,13 +71,6 @@
                     <a routerLink="/donaciones">
                         <i class='bx bx-donate-heart icon'></i>
                         <span class="text nav-text">Donaciones</span>
-                    </a>
-                </li>
-
-                <li class="nav-link">
-                    <a routerLink="/configuracion">
-                        <i class='bx bx-cog icon'></i>
-                        <span class="text nav-text">Configuración</span>
                     </a>
                 </li>
             </ul>

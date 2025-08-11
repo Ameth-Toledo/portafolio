@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Contenido } from '../../models/contenido';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContenidoService {
-
-  private baseUrl = 'http://localhost:8080/contenido';
+  
+  private baseUrl = `${environment.apiUrl}/contenido`;
 
   constructor(private http: HttpClient) { }
 
