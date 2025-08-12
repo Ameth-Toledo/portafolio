@@ -86,8 +86,7 @@ export class PerfilComponent implements OnInit {
   getRoleName(roleId: number): string {
     const roles: {[key: number]: string} = {
       1: 'Administrador',
-      2: 'Usuario',
-      3: 'Instructor'
+      2: 'Alumno'
     };
     return roles[roleId] || 'Usuario';
   }

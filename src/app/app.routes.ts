@@ -22,6 +22,7 @@ import { ModulesDashboardComponent } from './modules/modules-dashboard/modules-d
 import { InicioDashboardComponent } from './modules/inicio-dashboard/inicio-dashboard.component';
 import { ProfileComponent } from './modules/profile/profile.component';
 import { PerfilComponent } from './modules/perfil/perfil.component';
+import { ModuleDetailDashboardComponent } from './modules/module-detail-dashboard/module-detail-dashboard.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '', pathMatch: 'full' },
@@ -44,6 +45,7 @@ export const routes: Routes = [
         { path: 'comentarios', component: ComentariosComponent },
         { path: 'cursos', component: CursosDashboardComponent },
         { path: 'modules', component: ModulesDashboardComponent },
+        { path: 'module/detail', component: ModuleDetailDashboardComponent },
         { path: 'inicio', component: InicioDashboardComponent },
         { path: 'profile', component: ProfileComponent }
     ] },

@@ -20,11 +20,29 @@ export class ContenidoService {
 
   getContenidoByModulo(id_modulo: number): Observable<Contenido[]> {
     return this.http.get<Contenido[]>(this.baseUrl).pipe(
-      map(contenidos => contenidos.filter(contenido => contenido.id_modulo === id_modulo))
+      map(contenidos => {
+        if (!contenidos || !Array.isArray(contenidos)) {
+          console.log('Contenidos es null/undefined o no es array:', contenidos);
+          return [];
+        }
+        return contenidos.filter(contenido => contenido.id_modulo === id_modulo);
+      })
     );
   }
 
   getContenidoById(id: number): Observable<Contenido> {
     return this.http.get<Contenido>(`${this.baseUrl}/${id}`);
+  }
+
+  createContenido(contenido: Partial<Contenido>): Observable<Contenido> {
+    return this.http.post<Contenido>(this.baseUrl, contenido);
+  }
+
+  updateContenido(contenido: Contenido): Observable<Contenido> {
+    return this.http.put<Contenido>(`${this.baseUrl}/${contenido.id}`, contenido);
+  }
+
+  deleteContenido(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${id}`);
   }
 }

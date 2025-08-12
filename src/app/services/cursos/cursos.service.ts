@@ -8,6 +8,7 @@ interface TotalCursosResponse {
   message: string;
   total_cursos: number;
 }
+
 @Injectable({
   providedIn: 'root'
 })
@@ -40,7 +41,8 @@ export class CursosService {
   }
 
   updateCurso(curso: Curso): Observable<Curso> {
-    return this.http.put<Curso>(`${this.apiUrl}/${curso.id}`, curso);
+    const { id, ...cursoData } = curso; 
+    return this.http.put<Curso>(`${this.apiUrl}/${id}`, cursoData);
   }
 
   deleteCurso(id: number): Observable<void> {

@@ -22,13 +22,13 @@ import { CardModuleDashboardComponent } from "../../components/card-module-dashb
 })
 export class ModulesDashboardComponent implements OnInit, OnDestroy {
   @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
-  
+
   modulos: Modulo[] = [];
   filteredModulos: Modulo[] = [];
   cursoId: number = 0;
   nombreCurso: string = '';
   curso: Curso | null = null;
-  
+
   recognition: any;
   isListening = false;
   cargando = false;
@@ -38,6 +38,9 @@ export class ModulesDashboardComponent implements OnInit, OnDestroy {
   showErrorModal = false;
   errorMessage = '';
   isSaving = false;
+
+  isEditMode = false;
+  moduloEditandoId: number | null = null;
 
   nuevoModulo = {
     titulo: '',
@@ -80,7 +83,7 @@ export class ModulesDashboardComponent implements OnInit, OnDestroy {
     this.route.queryParams.subscribe(params => {
       this.cursoId = +params['cursoId'] || 0;
       this.nombreCurso = params['nombreCurso'] || '';
-      
+
       if (this.cursoId) {
         this.cargarDatosCurso();
         this.cargarModulos();
@@ -103,11 +106,10 @@ export class ModulesDashboardComponent implements OnInit, OnDestroy {
   cargarDatosCurso(): void {
     this.cursosService.getCursoById(this.cursoId).subscribe({
       next: (response: any) => {
-        // La API devuelve un objeto con la propiedad 'curso'
         this.curso = response.curso || response;
         this.nombreCurso = this.curso?.nombre || this.nombreCurso;
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error al cargar datos del curso:', err);
       }
     });
@@ -117,14 +119,13 @@ export class ModulesDashboardComponent implements OnInit, OnDestroy {
     this.cargando = true;
     this.modulosService.getModulosByCursoId(this.cursoId).subscribe({
       next: (modulos) => {
-        // Filtrar los módulos para asegurar que solo se muestren los del curso seleccionado
         this.modulos = modulos.filter(modulo => modulo.id_curso === this.cursoId);
         this.filteredModulos = [...this.modulos];
         this.cargando = false;
-        
+
         console.log(`Cargados ${this.modulos.length} módulos para el curso ${this.cursoId}`);
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error al cargar módulos:', err);
         this.modulos = [];
         this.filteredModulos = [];
@@ -145,28 +146,22 @@ export class ModulesDashboardComponent implements OnInit, OnDestroy {
 
   buscarModulos(termino: string): void {
     if (!termino.trim()) {
-      // Si no hay término de búsqueda, mostrar todos los módulos del curso actual
       this.filteredModulos = [...this.modulos];
       return;
     }
 
-    // Primero filtrar localmente entre los módulos ya cargados del curso
     this.filteredModulos = this.modulos.filter(modulo =>
       modulo.titulo.toLowerCase().includes(termino.toLowerCase()) ||
       modulo.descripcion.toLowerCase().includes(termino.toLowerCase())
     );
 
-    // Opcionalmente, también hacer búsqueda en el servidor para más precisión
-    // pero asegurándose de que solo devuelva módulos del curso actual
     if (this.cursoId) {
       this.modulosService.searchModulosByNombreAndCurso(termino, this.cursoId).subscribe({
         next: (modulos) => {
-          // Doble verificación: filtrar por curso ID
           this.filteredModulos = modulos.filter(modulo => modulo.id_curso === this.cursoId);
         },
-        error: (err) => {
+        error: (err: any) => {
           console.error('Error al buscar módulos:', err);
-          // En caso de error, mantener el filtrado local
           this.filteredModulos = this.modulos.filter(modulo =>
             modulo.titulo.toLowerCase().includes(termino.toLowerCase()) ||
             modulo.descripcion.toLowerCase().includes(termino.toLowerCase())
@@ -201,12 +196,20 @@ export class ModulesDashboardComponent implements OnInit, OnDestroy {
   }
 
   navigateToModuleDetail(moduloId: number): void {
-    this.router.navigate(['modulo/detail'], { 
-      queryParams: { 
+    console.log('Navegando al detalle del módulo:', moduloId);
+    console.log('Parámetros de navegación:', {
+      id_modulo: moduloId,
+      cursoId: this.cursoId,
+      nombreCurso: this.nombreCurso
+    });
+
+    // Actualizar la ruta para usar la nueva ruta del dashboard
+    this.router.navigate(['dashboard/module/detail'], {
+      queryParams: {
         id_modulo: moduloId,
         cursoId: this.cursoId,
-        nombreCurso: this.nombreCurso  
-      } 
+        nombreCurso: this.nombreCurso
+      }
     });
   }
 
@@ -226,35 +229,64 @@ export class ModulesDashboardComponent implements OnInit, OnDestroy {
       descripcion: ''
     };
     this.isSaving = false;
+    this.isEditMode = false;
+    this.moduloEditandoId = null;
   }
 
   onSubmit(): void {
     if (this.isValidForm() && !this.isSaving) {
       this.isSaving = true;
-      
+
       const moduloData = {
-        ...this.nuevoModulo,
+        titulo: this.nuevoModulo.titulo.trim(),
+        imagen_portada: this.nuevoModulo.imagen_portada.trim(),
+        descripcion: this.nuevoModulo.descripcion.trim(),
         id_curso: this.cursoId
       };
 
-      this.modulosService.createModulo(moduloData).subscribe({
-        next: (moduloCreado) => {
-          // Verificar que el módulo creado pertenece al curso actual antes de agregarlo
-          if (moduloCreado.id_curso === this.cursoId) {
-            this.modulos.push(moduloCreado);
-            this.filteredModulos = [...this.modulos];
+      if (this.isEditMode && this.moduloEditandoId) {
+        const moduloCompleto = {
+          id: this.moduloEditandoId,
+          ...moduloData
+        };
+
+        this.modulosService.updateModulo(moduloCompleto).subscribe({
+          next: (moduloActualizado) => {
+            const index = this.modulos.findIndex(m => m.id === this.moduloEditandoId);
+            if (index !== -1) {
+              this.modulos[index] = moduloActualizado;
+              this.filteredModulos = [...this.modulos];
+            }
+
+            this.closeModal();
+            this.showSuccessModal = true;
+          },
+          error: (error: any) => {
+            console.error('Error al actualizar módulo:', error);
+            this.errorMessage = error.error?.message || 'Error al actualizar el módulo. Por favor, intenta de nuevo.';
+            this.showErrorModal = true;
+            this.isSaving = false;
           }
-          this.closeModal();
-          this.showSuccessModal = true;
-          this.isSaving = false;
-        },
-        error: (error) => {
-          console.error('Error al crear módulo:', error);
-          this.errorMessage = error.error?.message || 'Error al crear el módulo. Por favor, intenta de nuevo.';
-          this.showErrorModal = true;
-          this.isSaving = false;
-        }
-      });
+        });
+      } else {
+        this.modulosService.createModulo(moduloData).subscribe({
+          next: (moduloCreado) => {
+            if (moduloCreado.id_curso === this.cursoId) {
+              this.modulos.push(moduloCreado);
+              this.filteredModulos = [...this.modulos];
+            }
+            
+            this.closeModal();
+            this.showSuccessModal = true;
+          },
+          error: (error: any) => {
+            console.error('Error al crear módulo:', error);
+            this.errorMessage = error.error?.message || 'Error al crear el módulo. Por favor, intenta de nuevo.';
+            this.showErrorModal = true;
+            this.isSaving = false;
+          }
+        });
+      }
     }
   }
 
@@ -278,5 +310,35 @@ export class ModulesDashboardComponent implements OnInit, OnDestroy {
   recargarModulos(): void {
     this.closeErrorModal();
     this.cargarModulos();
+  }
+
+  openEditModalModulo(moduloData: any): void {
+    this.isEditMode = true;
+    this.moduloEditandoId = moduloData.id;
+
+    this.nuevoModulo = {
+      titulo: moduloData.titulo,
+      imagen_portada: moduloData.imagen_portada,
+      descripcion: moduloData.descripcion
+    };
+
+    this.isModalOpen = true;
+  }
+
+  eliminarModulo(id: number): void {
+    if (confirm('¿Estás seguro de que quieres eliminar este módulo? Esta acción también eliminará todo su contenido y no se puede deshacer.')) {
+      this.modulosService.deleteModulo(id).subscribe({
+        next: () => {
+          this.modulos = this.modulos.filter(m => m.id !== id);
+          this.filteredModulos = this.filteredModulos.filter(m => m.id !== id);
+          console.log('Módulo eliminado exitosamente');
+        },
+        error: (error: any) => {
+          console.error('Error al eliminar módulo:', error);
+          this.errorMessage = 'Error al eliminar el módulo. Por favor, intenta de nuevo.';
+          this.showErrorModal = true;
+        }
+      });
+    }
   }
 }

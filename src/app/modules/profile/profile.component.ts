@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { UsersService } from '../../services/users/users.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 interface UserProfile {
   id: number;
@@ -26,102 +27,105 @@ interface UserProfileResponse {
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit {
-  user: UserProfile | null = null;
-  isLoading: boolean = true;
-  error: string | null = null;
-
-  // Estadísticas simuladas (puedes conectarlas a tu API)
-  stats = {
-    cursosCompletados: 0,
-    diasActividad: 4,
-    nivelProgreso: 'Principiante',
-    puntosTotales: 0
-  };
-
-  constructor(
-    private usersService: UsersService,
-    private router: Router
-  ) {}
-
-  ngOnInit(): void {
-    this.loadUserProfile();
-  }
-
-  loadUserProfile(): void {
-    // Simulando datos del usuario (reemplaza con tu llamada real a la API)
-    const userData: UserProfileResponse = {
-      "user": {
-        "apellido_materno": "Toledo",
-        "apellido_paterno": "Mendez", 
-        "avatar": 2,
-        "email": "233363@ids.upchiapas.edu.mx",
-        "fecha_registro": "2025-08-06T12:00:50.925791Z",
-        "id": 1,
-        "nombres": "Ameth de Jesus",
-        "rol_id": 1
-      }
-    };
-
-    // Simular carga
-    setTimeout(() => {
-      this.user = userData.user;
-      this.isLoading = false;
-    }, 1000);
-
-    // Para usar con tu servicio real, descomenta esto:
-    /*
-    this.usersService.getUserProfile(1).subscribe({
-      next: (response: UserProfileResponse) => {
-        this.user = response.user;
-        this.isLoading = false;
-      },
-      error: (error) => {
-        this.error = 'Error al cargar el perfil';
-        this.isLoading = false;
-        console.error('Error loading profile:', error);
-      }
-    });
-    */
-  }
-
-  get fullName(): string {
-    if (!this.user) return '';
-    return `${this.user.nombres} ${this.user.apellido_paterno} ${this.user.apellido_materno}`;
-  }
-
-  get userInitials(): string {
-    if (!this.user) return '';
-    const nombres = this.user.nombres.split(' ');
-    const initials = nombres.map(n => n[0]).join('') + this.user.apellido_paterno[0];
-    return initials.toUpperCase();
-  }
-
-  get formattedDate(): string {
-    if (!this.user) return '';
-    const date = new Date(this.user.fecha_registro);
-    return date.toLocaleDateString('es-ES', { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    });
-  }
-
-  get userRoleText(): string {
-    if (!this.user) return '';
-    return this.user.rol_id === 1 ? 'Estudiante' : 'Profesor';
-  }
-
-  sendToHome(event: Event): void {
-    event.preventDefault();
-    this.router.navigate(['/home']);
-  }
-
-  editProfile(): void {
-    this.router.navigate(['/profile/edit']);
-  }
-
-  onBuscar(searchTerm: string): void {
-    // Implementar lógica de búsqueda si es necesario
-    console.log('Búsqueda:', searchTerm);
-  }
+ user: UserProfile | null = null;
+   isLoading: boolean = true;
+   error: string | null = null;
+   defaultAvatar: string = 'assets/avatares/default.png';
+ 
+   constructor(
+     private usersService: UsersService,
+     private authService: AuthService,
+     private router: Router,
+   ) {}
+ 
+   ngOnInit(): void {
+     this.loadUserProfile();
+   }
+ 
+   loadUserProfile(): void {
+     const currentUser = this.authService.getCurrentUser();
+     
+     if (!currentUser || !currentUser.userId) {
+       this.error = 'No se pudo obtener la información del usuario';
+       this.isLoading = false;
+       return;
+     }
+ 
+     const userId = currentUser.userId;
+     this.usersService.getUserProfile(userId).subscribe({
+       next: (response: UserProfileResponse) => {
+         this.user = response.user;
+         this.isLoading = false;
+       },
+       error: (error: Error) => {
+         this.error = 'Error al cargar el perfil del usuario';
+         this.isLoading = false;
+         console.error('Error loading profile:', error);
+       }
+     });
+   }
+ 
+   getAvatarPath(): string {
+     if (!this.user) return this.defaultAvatar;
+     const avatarPath = `avatares/${this.user.avatar}.png`;
+     return avatarPath;
+   }
+ 
+   handleImageError(event: Event): void {
+     const imgElement = event.target as HTMLImageElement;
+     imgElement.src = this.defaultAvatar;
+   }
+ 
+   getRoleName(roleId: number): string {
+     const roles: {[key: number]: string} = {
+       1: 'Administrador',
+       2: 'Alumno'
+     };
+     return roles[roleId] || 'Usuario';
+   }
+ 
+   get name(): string {
+     return this.user?.nombres || '';
+   }
+ 
+   get fullName(): string {
+     if (!this.user) return '';
+     return `${this.user.nombres} ${this.user.apellido_paterno} ${this.user.apellido_materno}`;
+   }
+ 
+   get formattedDate(): string {
+     if (!this.user) return '';
+     const date = new Date(this.user.fecha_registro);
+     return date.toLocaleDateString('es-ES', { 
+       year: 'numeric', 
+       month: 'long', 
+       day: 'numeric' 
+     });
+   }
+ 
+   sendToHome(event: Event): void {
+     event.preventDefault();
+     this.router.navigate(['dashboard/inicio']);
+   }
+ 
+   editProfile(): void {
+     this.router.navigate(['/profile/edit']);
+   }
+ 
+   confirmDeleteAccount(): void {
+     if (confirm('¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.')) {
+       if (this.user) {
+         this.usersService.deleteUser(this.user.id).subscribe({
+           next: () => {
+             this.authService.logout();
+             this.router.navigate(['/login']);
+           },
+           error: (error: Error) => {
+             this.error = 'Error al eliminar la cuenta';
+             console.error('Error deleting account:', error);
+           }
+         });
+       }
+     }
+   }
 }

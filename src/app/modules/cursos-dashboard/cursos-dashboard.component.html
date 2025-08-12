@@ -52,7 +52,9 @@
       [duracion]="curso.duracion"
       [tecnologia]="curso.tecnologia"
       [fecha]="curso.fecha"
-      [imagen]="curso.imagen">
+      [imagen]="curso.imagen"
+      (editarCurso)="openEditModal(curso)"
+      (eliminarCurso)="eliminarCurso(curso.id)">
     </app-card-curso-dashboard>
   </div>
 
@@ -76,7 +78,6 @@
     </div>
   </div>
 
-  <!-- Modal Agregar Curso -->
   <div class="modal-overlay" *ngIf="isModalOpen" (click)="closeModal()">
     <div class="modal-content add-course-modal" (click)="$event.stopPropagation()">
       <div class="modal-header">
@@ -86,7 +87,7 @@
               <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z" fill="currentColor"/>
             </svg>
           </div>
-          <h2>Crear Nuevo Curso</h2>
+          <h2>{{ isEditMode ? 'Editar Curso' : 'Crear Nuevo Curso' }}</h2>
         </div>
         <button class="modal-close" (click)="closeModal()">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -96,7 +97,7 @@
       </div>
 
       <div class="modal-body">
-        <form (ngSubmit)="onSubmit()" class="modal-form">
+        <form (ngSubmit)="onSubmit()" class="modal-form" #cursoForm="ngForm">
           <div class="form-section">
             <h3 class="section-title">Información Básica</h3>
             
@@ -106,11 +107,12 @@
                 <input 
                   type="text" 
                   id="nombre" 
-                  [(ngModel)]="nuevoCurso.nombre" 
+                  [(ngModel)]="curso.nombre" 
                   name="nombre" 
                   required
                   class="form-input"
-                  placeholder="Ej: Desarrollo Web con React">
+                  placeholder="Ej: Desarrollo Web con React"
+                  #nombreInput="ngModel">
                 <div class="input-icon">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -127,12 +129,13 @@
                 <div class="select-wrapper">
                   <select 
                     id="nivel" 
-                    [(ngModel)]="nuevoCurso.nivel" 
+                    [(ngModel)]="curso.nivel" 
                     name="nivel" 
                     required
-                    class="form-select">
+                    class="form-select"
+                    #nivelSelect="ngModel">
                     <option value="" disabled>Selecciona un nivel</option>
-                    <option *ngFor="let nivel of niveles" [value]="nivel">{{ nivel }}</option>
+                    <option *ngFor="let nivelOption of niveles" [value]="nivelOption">{{ nivelOption }}</option>
                   </select>
                   <div class="select-arrow">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -148,11 +151,12 @@
                   <input 
                     type="text" 
                     id="tecnologia" 
-                    [(ngModel)]="nuevoCurso.tecnologia" 
+                    [(ngModel)]="curso.tecnologia" 
                     name="tecnologia" 
                     required
                     class="form-input"
-                    placeholder="Ej: React.js, Python, Node.js">
+                    placeholder="Ej: React.js, Python, Node.js"
+                    #tecnologiaInput="ngModel">
                   <div class="input-icon">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <polygon points="12,2 15.09,8.26 22,9 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9 8.91,8.26" stroke="currentColor" stroke-width="2" fill="none"/>
@@ -169,11 +173,12 @@
                   <input 
                     type="text" 
                     id="duracion" 
-                    [(ngModel)]="nuevoCurso.duracion" 
+                    [(ngModel)]="curso.duracion" 
                     name="duracion" 
                     required
                     class="form-input"
-                    placeholder="Ej: 8 semanas, 40 horas">
+                    placeholder="Ej: 8 semanas, 40 horas"
+                    #duracionInput="ngModel">
                   <div class="input-icon">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
@@ -189,11 +194,12 @@
                   <input 
                     type="text" 
                     id="fecha" 
-                    [(ngModel)]="nuevoCurso.fecha" 
+                    [(ngModel)]="curso.fecha" 
                     name="fecha" 
                     required
                     class="form-input"
-                    placeholder="Ej: 15 de Septiembre 2025">
+                    placeholder="Ej: 15 de Septiembre 2025"
+                    #fechaInput="ngModel">
                   <div class="input-icon">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
@@ -216,11 +222,12 @@
                 <input 
                   type="url" 
                   id="imagen" 
-                  [(ngModel)]="nuevoCurso.imagen" 
+                  [(ngModel)]="curso.imagen" 
                   name="imagen" 
                   required
                   class="form-input"
-                  placeholder="https://ejemplo.com/imagen-del-curso.jpg">
+                  placeholder="https://ejemplo.com/imagen-del-curso.jpg"
+                  #imagenInput="ngModel">
                 <div class="input-icon">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
@@ -236,12 +243,13 @@
               <div class="textarea-wrapper">
                 <textarea 
                   id="descripcion" 
-                  [(ngModel)]="nuevoCurso.descripcion" 
+                  [(ngModel)]="curso.descripcion" 
                   name="descripcion" 
                   required
                   rows="4"
                   class="form-textarea"
-                  placeholder="Describe el contenido, objetivos de aprendizaje y lo que los estudiantes lograrán al completar este curso..."></textarea>
+                  placeholder="Describe el contenido, objetivos de aprendizaje y lo que los estudiantes lograrán al completar este curso..."
+                  #descripcionTextarea="ngModel"></textarea>
                 <div class="textarea-icon">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M14 2H6A2 2 0 0 0 4 4V20A2 2 0 0 0 6 22H18A2 2 0 0 0 20 20V8L14 2Z" stroke="currentColor" stroke-width="2"/>
@@ -265,7 +273,7 @@
             <button 
               type="submit" 
               class="btn-save" 
-              [disabled]="!isValidForm() || isSaving">
+              [disabled]="!cursoForm.valid || isSaving">
               <div class="btn-content">
                 <div class="btn-spinner" *ngIf="isSaving">
                   <div class="spinner-mini"></div>
@@ -275,7 +283,7 @@
                   <polyline points="17,21 17,13 7,13 7,21" stroke="currentColor" stroke-width="2"/>
                   <polyline points="7,3 7,8 15,8" stroke="currentColor" stroke-width="2"/>
                 </svg>
-                <span>{{ isSaving ? 'Creando Curso...' : 'Crear Curso' }}</span>
+                <span>{{ isSaving ? (isEditMode ? 'Actualizando...' : 'Creando Curso...') : (isEditMode ? 'Actualizar Curso' : 'Crear Curso') }}</span>
               </div>
             </button>
           </div>
@@ -284,7 +292,6 @@
     </div>
   </div>
 
-  <!-- Modal de Éxito -->
   <div class="modal-overlay success-overlay" *ngIf="showSuccessModal" (click)="closeSuccessModal()">
     <div class="modal-content success-modal" (click)="$event.stopPropagation()">
       <div class="modal-body">
@@ -295,8 +302,8 @@
               <polyline points="22,4 12,14.01 9,11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
-          <h2>¡Curso Creado Exitosamente!</h2>
-          <p>El curso ha sido agregado correctamente a la plataforma. Los estudiantes ya pueden encontrarlo y matricularse.</p>
+          <h2>¡Curso {{ isEditMode ? 'Actualizado' : 'Creado' }} Exitosamente!</h2>
+          <p>El curso ha sido {{ isEditMode ? 'actualizado' : 'agregado' }} correctamente a la plataforma.</p>
           
           <div class="success-actions">
             <button class="btn-success-primary" (click)="closeSuccessModal()">
@@ -312,7 +319,6 @@
     </div>
   </div>
 
-  <!-- Modal de Error -->
   <div class="modal-overlay error-overlay" *ngIf="showErrorModal" (click)="closeErrorModal()">
     <div class="modal-content error-modal" (click)="$event.stopPropagation()">
       <div class="modal-body">
@@ -334,7 +340,7 @@
               </svg>
               Cerrar
             </button>
-            <button class="btn-error-primary" (click)="recargarCursos()">
+            <button class="btn-error-primary" (click)="closeErrorModal(); cargarCursos()">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <polyline points="23,4 23,10 17,10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M20.49,15A9,9,0,1,1,5.64,5.64L23,10" stroke="currentColor" stroke-width="2"/>

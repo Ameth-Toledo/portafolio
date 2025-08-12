@@ -1,11 +1,10 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-card-module-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule],
   templateUrl: './card-module-dashboard.component.html',
   styleUrl: './card-module-dashboard.component.css'
 })
@@ -20,14 +19,6 @@ export class CardModuleDashboardComponent {
   @Output() deleteModule = new EventEmitter<number>();
   
   showDeleteModal = false;
-  showEditModal = false;
-  isSaving = false;
-  
-  editData = {
-    titulo: '',
-    imagen_portada: '',
-    descripcion: ''
-  };
 
   onCardClick(): void {
     if (this.moduloId > 0) {
@@ -49,34 +40,12 @@ export class CardModuleDashboardComponent {
   }
 
   openEditModal(): void {
-    this.editData = {
+    const moduleData = {
+      id: this.moduloId,
       titulo: this.title,
       imagen_portada: this.imageUrl,
       descripcion: this.description
     };
-    this.showEditModal = true;
-  }
-
-  closeEditModal(): void {
-    this.showEditModal = false;
-  }
-
-  onEditSubmit(): void {
-    if (this.isEditFormValid() && !this.isSaving) {
-      this.isSaving = true;
-      const updatedData = {
-        ...this.editData,
-        id: this.moduloId
-      };
-      this.editModule.emit(updatedData);
-    }
-  }
-
-  isEditFormValid(): boolean {
-    return !!(
-      this.editData.titulo.trim() &&
-      this.editData.imagen_portada.trim() &&
-      this.editData.descripcion.trim()
-    );
+    this.editModule.emit(moduleData);
   }
 }

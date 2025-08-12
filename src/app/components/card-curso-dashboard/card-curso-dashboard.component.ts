@@ -21,8 +21,8 @@ export class CardCursoDashboardComponent {
   @Input() imagen: string = '';
   
   @Output() cardClick = new EventEmitter<number>();
-  @Output() editCourse = new EventEmitter<any>();
-  @Output() deleteCourse = new EventEmitter<number>();
+  @Output() editarCurso = new EventEmitter<any>();
+  @Output() eliminarCurso = new EventEmitter<number>();
   
   showDeleteModal = false;
   showEditModal = false;
@@ -58,13 +58,12 @@ export class CardCursoDashboardComponent {
   }
 
   confirmDelete(): void {
-    this.deleteCourse.emit(this.id);
+    this.eliminarCurso.emit(this.id);
     this.closeDeleteModal();
   }
 
   openEditModal(): void {
-    // Cargar datos actuales en el formulario de edición
-    this.editData = {
+    const cursoCompleto = {
       id: this.id,
       nombre: this.nombre,
       descripcion: this.descripcion,
@@ -74,7 +73,8 @@ export class CardCursoDashboardComponent {
       fecha: this.fecha,
       imagen: this.imagen
     };
-    this.showEditModal = true;
+
+    this.editarCurso.emit(cursoCompleto);
   }
 
   closeEditModal(): void {
@@ -84,8 +84,7 @@ export class CardCursoDashboardComponent {
   onEditSubmit(): void {
     if (this.isEditFormValid() && !this.isSaving) {
       this.isSaving = true;
-      this.editCourse.emit(this.editData);
-      // El padre deberá manejar el cierre del modal después de guardar
+      this.editarCurso.emit(this.editData);
     }
   }
 

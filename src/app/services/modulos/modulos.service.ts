@@ -11,12 +11,12 @@ export class ModulosService {
 
   private apiUrl = `${environment.apiUrl}/modulos`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   createModulo(moduloData: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}`, moduloData);
   }
-  
+
   getModulos(): Observable<Modulo[]> {
     return this.http.get<Modulo[]>(this.apiUrl);
   }
@@ -41,5 +41,14 @@ export class ModulosService {
       .set('titulo', nombre)
       .set('id_curso', cursoId.toString());
     return this.http.get<Modulo[]>(this.apiUrl, { params });
+  }
+
+  updateModulo(modulo: any): Observable<any> {
+    const { id, ...moduloData } = modulo;
+    return this.http.put<any>(`${this.apiUrl}/${id}`, moduloData);
+  }
+
+  deleteModulo(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`);
   }
 }
