@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { environment } from '../../../environments/environment';
 
@@ -19,6 +20,11 @@ interface UserProfileResponse {
   user: UserProfile;
 }
 
+interface AllUsersResponse {
+  total: number;
+  users: UserProfile[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -33,7 +39,7 @@ export class UsersService {
   private getHeaders(): HttpHeaders {
     const user = this.authService.getCurrentUser();
     const token = user?.token || '';
-    
+
     return new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
@@ -44,8 +50,26 @@ export class UsersService {
     const headers = this.getHeaders();
     return this.http.get<UserProfileResponse>(`${this.apiUrl}/${userId}`, { headers });
   }
-  
+
+  getAllUsers(): Observable<UserProfile[]> {
+    const headers = this.getHeaders();
+    return this.http.get<AllUsersResponse>(`${this.apiUrl}`, { headers })
+      .pipe(map(response => response.users));
+  }
+
+  getUsersByRole(rolId: number): Observable<UserProfile[]> {
+    return this.getAllUsers().pipe(
+      map(users => users.filter(user => user.rol_id === rolId))
+    );
+  }
+
   deleteUser(userId: number): Observable<void> {
-    return this.http.delete<void>(`/api/users/${userId}`);
+    const headers = this.getHeaders();
+    return this.http.delete<void>(`${this.apiUrl}/${userId}`, { headers });
+  }
+
+  updateUserProfile(userId: number, userData: UserProfile): Observable<UserProfileResponse> {
+    const headers = this.getHeaders();
+    return this.http.put<UserProfileResponse>(`${this.apiUrl}/${userId}`, userData, { headers });
   }
 }

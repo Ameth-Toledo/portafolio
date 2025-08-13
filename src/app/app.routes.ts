@@ -23,6 +23,9 @@ import { InicioDashboardComponent } from './modules/inicio-dashboard/inicio-dash
 import { ProfileComponent } from './modules/profile/profile.component';
 import { PerfilComponent } from './modules/perfil/perfil.component';
 import { ModuleDetailDashboardComponent } from './modules/module-detail-dashboard/module-detail-dashboard.component';
+import { UsuariosComponent } from './modules/usuarios/usuarios.component';
+import { DonacionesComponent } from './modules/donaciones/donaciones.component';
+import { LikesComponent } from './modules/likes/likes.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '', pathMatch: 'full' },
@@ -47,7 +50,10 @@ export const routes: Routes = [
         { path: 'modules', component: ModulesDashboardComponent },
         { path: 'module/detail', component: ModuleDetailDashboardComponent },
         { path: 'inicio', component: InicioDashboardComponent },
-        { path: 'profile', component: ProfileComponent }
+        { path: 'profile', component: ProfileComponent },
+        { path: 'users', component: UsuariosComponent },
+        { path: 'donaciones', component: DonacionesComponent },
+        { path: 'likes', component: LikesComponent },
     ] },
     { path: '**', component: NotfoundComponent }
 ];

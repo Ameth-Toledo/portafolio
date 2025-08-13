@@ -41,11 +41,11 @@
   color: #666;
 }
 
-.comentarios-container {
+.usuarios-container {
   padding: 0 20px;
 }
 
-.no-comentarios {
+.no-usuarios {
   text-align: center;
   padding: 40px;
   font-size: 18px;
@@ -55,7 +55,7 @@
   border: 1px solid #e9ecef;
 }
 
-.comment-card {
+.user-card {
   background: #1A1A1A;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -65,12 +65,12 @@
   transition: all 0.3s ease;
 }
 
-.comment-card:hover {
+.user-card:hover {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   transform: translateY(-2px);
 }
 
-.comment-header {
+.user-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -97,31 +97,31 @@
   gap: 3px;
 }
 
-.author-name {
+.user-name {
   font-size: 18px;
   font-weight: 600;
   color: #FFF;
   margin: 0;
 }
 
-.comment-date {
+.user-email {
+  font-size: 14px;
+  color: #4A9EFF;
+  margin: 0;
+  text-decoration: none;
+}
+
+.user-email:hover {
+  text-decoration: underline;
+}
+
+.user-date {
   font-size: 12px;
   color: #687C84;
   margin: 0;
 }
 
-.comment-body {
-  padding-left: 75px;
-}
-
-.comment-text {
-  font-size: 14px;
-  line-height: 1.6;
-  color: #FFF;
-  margin: 0;
-  word-wrap: break-word;
-}
-
+/* Delete button styles */
 .button {
   width: 50px;
   height: 50px;
@@ -259,23 +259,27 @@
     font-size: 32px;
   }
   
-  .comentarios-container {
+  .usuarios-container {
     padding: 0 10px;
   }
   
-  .comment-card {
+  .user-card {
     padding: 15px;
   }
   
-  .comment-header {
+  .user-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
   }
   
-  .comment-body {
+  .user-body {
     padding-left: 0;
     margin-top: 10px;
+  }
+  
+  .user-info-grid {
+    grid-template-columns: 1fr;
   }
   
   .button {

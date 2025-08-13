@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 
 export interface Like {
@@ -9,6 +10,31 @@ export interface Like {
   usuario_id?: number;
   fingerprint_hash?: string;
   fecha: string;
+}
+
+// Nueva interfaz con información extendida
+export interface LikeWithUserInfo {
+  id: number;
+  modulo_id: number;
+  modulo_titulo: string;
+  usuario_id?: number;
+  usuario_nombre?: string;
+  usuario_apellido?: string;
+  fingerprint_hash?: string;
+  fecha: string;
+}
+
+// Interfaz actualizada para módulos
+export interface ModuloWithLikes {
+  modulo_id: number;
+  modulo_titulo: string; // Nuevo campo
+  like_count: number;
+}
+
+// Nueva interfaz para opciones del selector
+export interface ModuloOption {
+  id: number;
+  titulo: string;
 }
 
 export interface LikeCountResponse {
@@ -23,15 +49,10 @@ export interface ToggleLikeResponse {
   message: string;
 }
 
-export interface ModuloWithLikes {
-  modulo_id: number;
-  like_count: number;
-}
-
 export interface UserLikesResponse {
   usuario_id?: number;
   fingerprint_hash?: string;
-  likes: Like[];
+  likes: LikeWithUserInfo[]; // Actualizado para usar la nueva interfaz
   total_likes: number;
 }
 
@@ -47,11 +68,50 @@ export interface HourlyLikeStat {
 
 export interface LikeStats {
   modulo_id: number;
+  modulo_titulo: string; // Nuevo campo
   start_date: string;
   end_date: string;
   total_likes: number;
   daily_stats: DailyLikeStat[];
   top_hours: HourlyLikeStat[];
+}
+
+// Interfaces para las respuestas del backend
+interface BackendResponse<T> {
+  data?: T;
+  error: boolean;
+  message: string;
+}
+
+interface BackendModulosOptionsResponse {
+  data: {
+    modulos: ModuloOption[];
+    total: number;
+  };
+  error: boolean;
+  message: string;
+}
+
+interface BackendMostLikedResponse {
+  modulos: ModuloWithLikes[];
+  total_modulos: number;
+  limit_applied: number;
+}
+
+interface BackendModuleLikesResponse {
+  modulo_id: number;
+  likes: Like[];
+  total: number;
+}
+
+interface BackendDetailedLikesResponse {
+  data: {
+    modulo_id: number;
+    likes: LikeWithUserInfo[];
+    total: number;
+  };
+  error: boolean;
+  message: string;
 }
 
 @Injectable({
@@ -119,15 +179,32 @@ export class LikesService {
     return this.http.get<LikeCountResponse>(`${this.baseUrl}/modulo/${moduloId}`, { params });
   }
 
-  getLikesPorModulo(moduloId: number): Observable<{ modulo_id: number; likes: Like[]; total: number }> {
-    return this.http.get<{ modulo_id: number; likes: Like[]; total: number }>(`${this.baseUrl}/modulo/${moduloId}/all`);
+  // Corregido para usar el endpoint detailed que incluye info del usuario
+  getLikesPorModulo(moduloId: number): Observable<{ modulo_id: number; likes: LikeWithUserInfo[]; total: number }> {
+    return this.http.get<BackendDetailedLikesResponse>(`${this.baseUrl}/modulo/${moduloId}/detailed`).pipe(
+      map(response => {
+        console.log('Respuesta detailed del backend:', response);
+        
+        if (response.error) {
+          throw new Error(response.message || 'Error al obtener likes del módulo');
+        }
+        
+        return {
+          modulo_id: response.data.modulo_id,
+          likes: response.data.likes || [],
+          total: response.data.total
+        };
+      })
+    );
   }
 
+  // Corregido para manejar la respuesta real del backend
   getMostLikedModulos(limit: number = 10): Observable<{ modulos: ModuloWithLikes[]; total_modulos: number; limit_applied: number }> {
     let params = new HttpParams().set('limit', limit.toString());
-    return this.http.get<{ modulos: ModuloWithLikes[]; total_modulos: number; limit_applied: number }>(`${this.baseUrl}/modulos/most-liked`, { params });
+    return this.http.get<BackendMostLikedResponse>(`${this.baseUrl}/modulos/most-liked`, { params });
   }
 
+  // Actualizado para usar la nueva interfaz
   getLikesByUser(): Observable<{ data: UserLikesResponse }> {
     const usuarioId = this.getCurrentUserId();
     
@@ -145,6 +222,23 @@ export class LikesService {
       .set('end_date', endDate);
 
     return this.http.get<{ data: LikeStats }>(`${this.baseUrl}/modulo/${moduloId}/stats`, { params });
+  }
+
+  // ✅ CORREGIDO: Manejar la estructura real de respuesta del backend
+  getAllModulos(): Observable<{ modulos: ModuloOption[] }> {
+    return this.http.get<BackendModulosOptionsResponse>(`${this.baseUrl}/modulos/options`).pipe(
+      map(response => {
+        console.log('Respuesta completa del backend:', response);
+        
+        if (response.error) {
+          throw new Error(response.message || 'Error al obtener módulos');
+        }
+        
+        return {
+          modulos: response.data?.modulos || []
+        };
+      })
+    );
   }
 
   agregarLike(moduloId: string): Promise<ToggleLikeResponse> {

@@ -75,7 +75,6 @@ export class ComentariosService {
                   modulo_id: comentario.modulo_id,
                   usuario_id: comentario.usuario_id,
                   avatar: comentario.avatar,
-                  // Agregar flag para saber si el usuario actual puede editar/eliminar
                   canEdit: canEdit
                 })
               }
@@ -97,11 +96,11 @@ export class ComentariosService {
   }
 
   agregarComentario(moduloId: string, texto: string): Promise<void> {
-    const currentUserId = this.getCurrentUserId(); // Usar el usuario actual
+    const currentUserId = this.getCurrentUserId();
     
     const comentario: CreateComentarioRequest = {
       modulo_id: parseInt(moduloId),
-      usuario_id: currentUserId, // Ahora usa el usuario real logueado
+      usuario_id: currentUserId,
       texto: texto
     };
 

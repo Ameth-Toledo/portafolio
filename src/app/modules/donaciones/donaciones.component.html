@@ -1,0 +1,200 @@
+<section class="home">
+  <div class="header">
+    <h1 class="text">Donaciones</h1>
+    <div class="header-info">
+      <span class="user-count" *ngIf="!loading">{{ totalItems }} donaciones total</span>
+    </div>
+  </div>
+
+  <!-- Loading state -->
+  <div *ngIf="loading" class="loading">
+    Cargando donaciones...
+  </div>
+
+  <!-- Stats cards -->
+  <div *ngIf="!loading" class="stats-container">
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class='bx bx-money'></i>
+      </div>
+      <div class="stat-info">
+        <h3 class="stat-value">{{ formatAmount(totalMonto) }}</h3>
+        <p class="stat-label">Total Recaudado</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class='bx bx-chart'></i>
+      </div>
+      <div class="stat-info">
+        <h3 class="stat-value">{{ formatAmount(promedioDonacion) }}</h3>
+        <p class="stat-label">Promedio por Donación</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class='bx bx-calendar'></i>
+      </div>
+      <div class="stat-info">
+        <h3 class="stat-value">{{ donacionesHoy }}</h3>
+        <p class="stat-label">Donaciones Hoy</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class='bx bx-group'></i>
+      </div>
+      <div class="stat-info">
+        <h3 class="stat-value">{{ totalItems }}</h3>
+        <p class="stat-label">Total Donaciones</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Donations container -->
+  <div *ngIf="!loading" class="donaciones-container">
+    <div *ngIf="allDonaciones.length === 0" class="no-donaciones">
+      No hay donaciones disponibles.
+    </div>
+
+    <!-- Pagination info -->
+    <div *ngIf="totalItems > 0" class="pagination-info">
+      Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }} - 
+      {{ Math.min(currentPage * itemsPerPage, totalItems) }} de {{ totalItems }} donaciones
+    </div>
+
+    <!-- Donation cards -->
+    <div *ngFor="let donacion of donaciones" class="donation-card">
+      <div class="donation-header">
+        <div class="donation-info">
+          <div class="donation-amount">
+            <h3 class="amount">{{ formatAmount(donacion.monto, donacion.moneda) }}</h3>
+            <span class="estado" [class]="getEstadoClass(donacion.estado)">
+              {{ getEstadoTexto(donacion.estado) }}
+            </span>
+          </div>
+          <div class="donation-details">
+            <p class="donation-date">
+              <i class='bx bx-calendar'></i>
+              {{ formatDate(donacion.fecha_pago || '') }}
+            </p>
+            <p class="payment-method">
+              <i class='bx bx-credit-card'></i>
+              {{ donacion.metodo_pago || 'No especificado' }}
+            </p>
+          </div>
+        </div>
+        
+        <!-- Delete button -->
+        <button 
+          class="button"
+          (click)="eliminarDonacion(donacion)"
+          title="Eliminar donación">
+          <svg viewBox="0 0 448 512" class="svgIcon">
+            <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="donation-body">
+        <div class="donation-info-grid">
+          <div class="info-item">
+            <span class="label">Donante:</span>
+            <span class="value">
+              <span *ngIf="donacion.usuario_nombre; else fallbackUsuario" class="donor-name">
+                {{ donacion.usuario_nombre }}
+              </span>
+              <ng-template #fallbackUsuario>
+                <span class="fallback-text">Usuario ID: {{ donacion.usuario_id }}</span>
+              </ng-template>
+            </span>
+          </div>
+          
+          <!-- Módulo con título -->
+          <div class="info-item">
+            <span class="label">Módulo:</span>
+            <span class="value">
+              <span *ngIf="donacion.modulo_titulo; else fallbackModulo" class="module-title">
+                {{ donacion.modulo_titulo }}
+              </span>
+              <ng-template #fallbackModulo>
+                <span class="fallback-text">Módulo ID: {{ donacion.modulo_id }}</span>
+              </ng-template>
+            </span>
+          </div>
+
+          <!-- Curso -->
+          <div class="info-item" *ngIf="donacion.curso_nombre">
+            <span class="label">Curso:</span>
+            <span class="value course-name">{{ donacion.curso_nombre }}</span>
+          </div>
+          
+          <div class="info-item" *ngIf="donacion.transaction_id">
+            <span class="label">Transaction ID:</span>
+            <span class="value transaction-id">{{ donacion.transaction_id }}</span>
+          </div>
+          
+          <div class="info-item" *ngIf="donacion.payment_id">
+            <span class="label">Payment ID:</span>
+            <span class="value payment-id">{{ donacion.payment_id }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination controls -->
+    <div *ngIf="totalPages > 1" class="pagination-container">
+      <div class="pagination">
+        <!-- Previous button -->
+        <button 
+          class="pagination-btn prev"
+          [disabled]="currentPage === 1"
+          (click)="previousPage()">
+          ‹ Anterior
+        </button>
+
+        <!-- First page -->
+        <button 
+          *ngIf="getPageNumbers()[0] > 1"
+          class="pagination-btn"
+          (click)="goToPage(1)">
+          1
+        </button>
+        
+        <!-- Ellipsis if needed -->
+        <span *ngIf="getPageNumbers()[0] > 2" class="pagination-ellipsis">...</span>
+
+        <!-- Page numbers -->
+        <button 
+          *ngFor="let page of getPageNumbers()"
+          class="pagination-btn"
+          [class.active]="page === currentPage"
+          (click)="goToPage(page)">
+          {{ page }}
+        </button>
+
+        <!-- Ellipsis if needed -->
+        <span *ngIf="getPageNumbers()[getPageNumbers().length - 1] < totalPages - 1" class="pagination-ellipsis">...</span>
+        
+        <!-- Last page -->
+        <button 
+          *ngIf="getPageNumbers()[getPageNumbers().length - 1] < totalPages"
+          class="pagination-btn"
+          (click)="goToPage(totalPages)">
+          {{ totalPages }}
+        </button>
+
+        <!-- Next button -->
+        <button 
+          class="pagination-btn next"
+          [disabled]="currentPage === totalPages"
+          (click)="nextPage()">
+          Siguiente ›
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

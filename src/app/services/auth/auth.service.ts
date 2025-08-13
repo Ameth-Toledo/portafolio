@@ -172,7 +172,6 @@ export class AuthService {
 
   getCurrentUser(): User | null {
     const user = this.currentUserSubject.value;
-    console.log('getCurrentUser() retorna:', user);
     return user;
   }
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderBlogComponent } from "../../components/header-blog/header-blog.component";
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UsersService } from '../../services/users/users.service';
 import { AuthService } from '../../services/auth/auth.service';
@@ -25,18 +26,23 @@ interface UserProfileResponse {
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [HeaderBlogComponent, CommonModule],
+  imports: [HeaderBlogComponent, CommonModule, FormsModule],
   templateUrl: './perfil.component.html',
   styleUrls: ['./perfil.component.css']
 })
 export class PerfilComponent implements OnInit {
   user: UserProfile | null = null;
+  editableUser: UserProfile | null = null;
   isLoading: boolean = true;
+  isEditing: boolean = false;
+  isSaving: boolean = false;
   error: string | null = null;
-  defaultAvatar: string = 'assets/avatares/default.png';
+  defaultAvatar: string = 'avatares/default-avatar.png';
 
   cursos: Curso[] = [];
   cursosFiltrados: Curso[] = [];
+  
+  availableAvatars: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   constructor(
     private usersService: UsersService,
@@ -72,9 +78,10 @@ export class PerfilComponent implements OnInit {
     });
   }
 
-  getAvatarPath(): string {
-    if (!this.user) return this.defaultAvatar;
-    const avatarPath = `avatares/${this.user.avatar}.png`;
+  getAvatarPath(avatarId?: number): string {
+    const avatar = avatarId || this.user?.avatar;
+    if (!avatar) return this.defaultAvatar;
+    const avatarPath = `avatares/${avatar}.png`;
     return avatarPath;
   }
 
@@ -100,6 +107,11 @@ export class PerfilComponent implements OnInit {
     return `${this.user.nombres} ${this.user.apellido_paterno} ${this.user.apellido_materno}`;
   }
 
+  get editableFullName(): string {
+    if (!this.editableUser) return '';
+    return `${this.editableUser.nombres} ${this.editableUser.apellido_paterno} ${this.editableUser.apellido_materno}`;
+  }
+
   get formattedDate(): string {
     if (!this.user) return '';
     const date = new Date(this.user.fecha_registro);
@@ -115,8 +127,55 @@ export class PerfilComponent implements OnInit {
     this.router.navigate(['/blog']);
   }
 
+  // Nuevos métodos para edición inline
   editProfile(): void {
-    this.router.navigate(['/profile/edit']);
+    if (!this.user) return;
+    
+    this.editableUser = { ...this.user };
+    this.isEditing = true;
+    this.error = null;
+  }
+
+  cancelEdit(): void {
+    this.isEditing = false;
+    this.editableUser = null;
+    this.error = null;
+  }
+
+  saveProfile(): void {
+    if (!this.editableUser || this.isSaving) return;
+
+    // Validaciones básicas
+    if (!this.editableUser.nombres.trim()) {
+      this.error = 'El nombre es requerido';
+      return;
+    }
+    if (!this.editableUser.apellido_paterno.trim()) {
+      this.error = 'El apellido paterno es requerido';
+      return;
+    }
+    if (!this.editableUser.email.trim()) {
+      this.error = 'El email es requerido';
+      return;
+    }
+
+    this.isSaving = true;
+    this.error = null;
+
+    this.usersService.updateUserProfile(this.editableUser.id, this.editableUser).subscribe({
+      next: (response: UserProfileResponse) => {
+        this.user = response.user;
+        this.isEditing = false;
+        this.editableUser = null;
+        this.isSaving = false;
+        // Opcional: mostrar mensaje de éxito
+      },
+      error: (error: Error) => {
+        this.error = 'Error al actualizar el perfil';
+        this.isSaving = false;
+        console.error('Error updating profile:', error);
+      }
+    });
   }
 
   confirmDeleteAccount(): void {
@@ -136,6 +195,7 @@ export class PerfilComponent implements OnInit {
     }
   }
 
+  // Métodos para búsqueda de cursos (conservados)
   onBuscar(termino: string): void {
     if (!termino) {
       this.cursosFiltrados = [...this.cursos];

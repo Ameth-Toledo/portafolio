@@ -1,52 +1,49 @@
 <section class="home">
   <div class="header">
-    <h1 class="text">Comentarios</h1>
+    <h1 class="text">Usuarios</h1>
     <div class="header-info">
-      <span class="user-count" *ngIf="!loading">{{ totalItems }} comentarios total</span>
+      <span class="user-count" *ngIf="!loading">{{ totalItems }} usuarios total</span>
     </div>
   </div>
   
   <div *ngIf="loading" class="loading">
-    Cargando comentarios...
+    Cargando usuarios...
   </div>
 
-  <div *ngIf="!loading" class="comentarios-container">
-    <div *ngIf="allComentarios.length === 0" class="no-comentarios">
-      No hay comentarios disponibles.
+  <div *ngIf="!loading" class="usuarios-container">
+    <div *ngIf="allUsuarios.length === 0" class="no-usuarios">
+      No hay usuarios disponibles.
     </div>
 
     <div *ngIf="totalItems > 0" class="pagination-info">
       Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }} - 
-      {{ Math.min(currentPage * itemsPerPage, totalItems) }} de {{ totalItems }} comentarios
+      {{ Math.min(currentPage * itemsPerPage, totalItems) }} de {{ totalItems }} usuarios
     </div>
 
-    <div *ngFor="let comentario of comentarios" class="comment-card">
-      <div class="comment-header">
+    <div *ngFor="let usuario of usuarios" class="user-card">
+      <div class="user-header">
         <div class="user-info">
           <img 
             class="avatar" 
-            [src]="'avatares/' + comentario.avatar + '.png'"
-            [alt]="formatUserName(comentario)"
+            [src]="'avatares/' + usuario.avatar + '.png'"
+            [alt]="formatUserName(usuario)"
             (error)="onAvatarError($event)"
           />
           <div class="user-details">
-            <h3 class="author-name">{{ formatUserName(comentario) }}</h3>
-            <p class="comment-date">{{ comentario.fecha | date:'dd/MM/yyyy HH:mm' }}</p>
+            <h3 class="user-name">{{ formatUserName(usuario) }}</h3>
+            <p class="user-email">{{ usuario.email }}</p>
+            <p class="user-date">Registrado: {{ formatDate(usuario.fecha_registro) }}</p>
           </div>
         </div>
         
         <button 
           class="button"
-          (click)="eliminarComentario(comentario)"
-          title="Eliminar comentario">
+          (click)="eliminarUsuario(usuario)"
+          title="Eliminar usuario">
           <svg viewBox="0 0 448 512" class="svgIcon">
             <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
           </svg>
         </button>
-      </div>
-      
-      <div class="comment-body">
-        <p class="comment-text">{{ comentario.texto }}</p>
       </div>
     </div>
 

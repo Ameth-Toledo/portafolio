@@ -42,9 +42,10 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  logout(): void {
+  logout(event: Event): void {
+    event.preventDefault();
     this.authService.logout();
-    this.router.navigate(['login']);
+    this.router.navigate(['/login']);
   }
 
   private loadUserPreferences(): void {
@@ -78,5 +79,20 @@ export class DashboardComponent implements OnInit {
   onProfile(event: Event) {
     event.preventDefault();
     this.router.navigate(['dashboard/profile']);
+  }
+
+  onUsers(event: Event) {
+    event.preventDefault();
+    this.router.navigate(['dashboard/users'])
+  }
+
+  onDonaciones(event: Event) {
+    event.preventDefault();
+    this.router.navigate(['dashboard/donaciones'])
+  }
+
+  onLikes(event: Event) {
+    event.preventDefault();
+    this.router.navigate(['dashboard/likes'])
   }
 }

@@ -1,0 +1,301 @@
+<section class="home">
+    <div class="header">
+        <h1 class="text">Likes</h1>
+        <div class="header-info">
+            <span class="total-likes">{{ totalLikesOverall }} likes totales</span>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-container">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class='bx bx-heart'></i>
+            </div>
+            <div class="stat-info">
+                <h3 class="stat-value">{{ totalLikesOverall }}</h3>
+                <p class="stat-label">Total de Likes</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class='bx bx-trending-up'></i>
+            </div>
+            <div class="stat-info">
+                <h3 class="stat-value">{{ mostLikedModules.length }}</h3>
+                <p class="stat-label">Módulos con Likes</p>
+            </div>
+        </div>
+
+        <div class="stat-card" *ngIf="userLikes">
+            <div class="stat-icon">
+                <i class='bx bx-like icon'></i>
+            </div>
+            <div class="stat-info">
+                <h3 class="stat-value">{{ userLikes.total_likes }}</h3>
+                <p class="stat-label">Mis Likes</p>
+            </div>
+        </div>
+
+        <div class="stat-card" *ngIf="moduleStats">
+            <div class="stat-icon">
+                <i class='bx bx-bar-chart'></i>
+            </div>
+            <div class="stat-info">
+                <h3 class="stat-value">{{ getAverageLikesPerDay() }}</h3>
+                <p class="stat-label">Promedio Diario</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Container -->
+    <div class="content-container">
+
+        <!-- Most Liked Modules Section -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2>Módulos Más Populares</h2>
+                <div class="form-group inline">
+                    <label for="limitSelect">Mostrar:</label>
+                    <select id="limitSelect" [(ngModel)]="mostLikedLimit" (ngModelChange)="onMostLikedLimitChange()"
+                        class="form-control">
+                        <option value="5">5 módulos</option>
+                        <option value="10">10 módulos</option>
+                        <option value="15">15 módulos</option>
+                        <option value="20">20 módulos</option>
+                    </select>
+                </div>
+            </div>
+
+            <div *ngIf="loadingMostLiked" class="loading">
+                Cargando módulos populares...
+            </div>
+
+            <div *ngIf="!loadingMostLiked" class="modules-grid">
+                <div *ngFor="let module of mostLikedModules; let i = index" class="module-card">
+                    <div class="module-rank">{{ i + 1 }}</div>
+                    <div class="module-info">
+                        <h4 class="module-title">{{ module.modulo_titulo }}</h4>
+                        <div class="module-likes">
+                            <i class='bx bx-heart'></i>
+                            <span>{{ module.like_count }} likes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Module Likes Detail Section -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2>Likes por Módulo</h2>
+                <div class="form-group inline">
+                    <label for="moduleSelect">Módulo:</label>
+                    <div *ngIf="loadingModuloOptions" class="loading-inline">
+                        Cargando módulos...
+                    </div>
+                    <select *ngIf="!loadingModuloOptions" id="moduleSelect" [(ngModel)]="selectedModuleId"
+                        (ngModelChange)="onModuleIdChange()" class="form-control">
+                        <option value="" disabled>Seleccione un módulo</option>
+                        <option *ngFor="let modulo of moduloOptions" [value]="modulo.id">
+                            {{ modulo.titulo }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div *ngIf="loadingModuleLikes" class="loading">
+                Cargando likes del módulo...
+            </div>
+
+            <div *ngIf="!loadingModuleLikes && selectedModuleId" class="module-likes-section">
+                <div class="section-info">
+                    <p>Total de likes en {{ getModuloTitleById(selectedModuleId) }}: <strong>{{ totalModuleLikes
+                            }}</strong></p>
+                    <div *ngIf="totalModuleLikes > 0" class="pagination-info">
+                        Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }} -
+                        {{ Math.min(currentPage * itemsPerPage, totalModuleLikes) }} de {{ totalModuleLikes }} likes
+                    </div>
+                </div>
+
+                <div *ngIf="paginatedModuleLikes.length === 0" class="no-data">
+                    No hay likes para este módulo.
+                </div>
+
+                <div *ngIf="paginatedModuleLikes.length > 0" class="likes-table">
+                    <div class="table-header">
+                        <div class="table-col">Usuario</div>
+                        <div class="table-col">Fecha</div>
+                        <div class="table-col">Tipo</div>
+                    </div>
+
+                    <div *ngFor="let like of paginatedModuleLikes" class="table-row">
+                        <div class="table-col">
+                            <span *ngIf="like.usuario_id; else anonymousUser">
+                                {{ getUserDisplayName(like) }}
+                            </span>
+                            <ng-template #anonymousUser>
+                                <span class="anonymous">Usuario Anónimo</span>
+                                <small class="fingerprint" *ngIf="like.fingerprint_hash">
+                                    {{ like.fingerprint_hash.substring(0, 8) }}...
+                                </small>
+                            </ng-template>
+                        </div>
+                        <div class="table-col">{{ formatDate(like.fecha) }}</div>
+                        <div class="table-col">
+                            <span *ngIf="like.usuario_id" class="user-type registered">Registrado</span>
+                            <span *ngIf="!like.usuario_id" class="user-type anonymous">Anónimo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pagination for Module Likes -->
+                <div *ngIf="totalPages > 1" class="pagination-container">
+                    <div class="pagination">
+                        <button class="pagination-btn prev" [disabled]="currentPage === 1" (click)="previousPage()">
+                            ‹ Anterior
+                        </button>
+
+                        <button *ngFor="let page of getPageNumbers()" class="pagination-btn"
+                            [class.active]="page === currentPage" (click)="goToPage(page)">
+                            {{ page }}
+                        </button>
+
+                        <button class="pagination-btn next" [disabled]="currentPage === totalPages"
+                            (click)="nextPage()">
+                            Siguiente ›
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Likes Section -->
+        <div class="section-card" *ngIf="userLikes">
+            <div class="section-header">
+                <h2>Mis Likes</h2>
+            </div>
+
+            <div *ngIf="loadingUserLikes" class="loading">
+                Cargando tus likes...
+            </div>
+
+            <div *ngIf="!loadingUserLikes && userLikes" class="user-likes-section">
+                <div class="user-likes-info">
+                    <p>Has dado like a <strong>{{ userLikes.total_likes }}</strong> módulos</p>
+                </div>
+
+                <div *ngIf="userLikes.likes.length === 0" class="no-data">
+                    No has dado like a ningún módulo aún.
+                </div>
+
+                <div *ngIf="userLikes.likes.length > 0" class="user-likes-grid">
+                    <div *ngFor="let like of userLikes.likes" class="like-card">
+                        <div class="like-info">
+                            <h4>{{ like.modulo_titulo }}</h4>
+                            <p class="like-date">{{ formatDate(like.fecha) }}</p>
+                        </div>
+                        <div class="like-icon">
+                            <i class='bx bxs-heart'></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Module Statistics Section -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2>Estadísticas por Módulo</h2>
+            </div>
+
+            <div class="stats-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="statsModuleId">Módulo:</label>
+                        <div *ngIf="loadingModuloOptions" class="loading-inline">
+                            Cargando módulos...
+                        </div>
+                        <select *ngIf="!loadingModuloOptions" id="statsModuleId" [(ngModel)]="statsModuleId"
+                            class="form-control">
+                            <option value="" disabled>Seleccione un módulo</option>
+                            <option *ngFor="let modulo of moduloOptions" [value]="modulo.id">
+                                {{ modulo.titulo }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="statsStartDate">Fecha Inicio:</label>
+                        <input id="statsStartDate" type="date" [(ngModel)]="statsStartDate" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="statsEndDate">Fecha Fin:</label>
+                        <input id="statsEndDate" type="date" [(ngModel)]="statsEndDate" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <button type="button" (click)="onStatsFormSubmit()" class="btn btn-primary"
+                            [disabled]="loadingModuleStats || !statsModuleId">
+                            {{ loadingModuleStats ? 'Cargando...' : 'Consultar' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="loadingModuleStats" class="loading">
+                Cargando estadísticas...
+            </div>
+
+            <div *ngIf="!loadingModuleStats && moduleStats" class="stats-results">
+                <div class="stats-summary">
+                    <div class="stat-item">
+                        <span class="stat-label">Total de Likes:</span>
+                        <span class="stat-value">{{ moduleStats.total_likes }}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Promedio Diario:</span>
+                        <span class="stat-value">{{ getAverageLikesPerDay() }}</span>
+                    </div>
+                    <div class="stat-item" *ngIf="getPeakHour()">
+                        <span class="stat-label">Hora Pico:</span>
+                        <span class="stat-value">{{ formatHour(getPeakHour()!.hour) }}</span>
+                    </div>
+                    <div class="stat-item" *ngIf="getBestDayFormatted()">
+                        <span class="stat-label">Mejor Día:</span>
+                        <span class="stat-value">{{ getBestDayFormatted() }}</span>
+                    </div>
+                </div>
+
+                <!-- Daily Stats Chart Simulation -->
+                <div class="chart-section" *ngIf="moduleStats.daily_stats.length > 0">
+                    <h4>Likes por Día</h4>
+                    <div class="simple-chart">
+                        <div *ngFor="let stat of moduleStats.daily_stats" class="chart-bar">
+                            <div class="bar" [style.height.%]="(stat.like_count / moduleStats.total_likes) * 100"></div>
+                                <span class="bar-label">{{ formatDateOnly(stat.date) }}</span>
+                                <span class="bar-value">{{ stat.like_count }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hourly Stats -->
+                <div class="chart-section" *ngIf="moduleStats.top_hours.length > 0">
+                    <h4>Horas Más Activas</h4>
+                    <div class="hourly-stats">
+                        <div *ngFor="let hourStat of moduleStats.top_hours" class="hour-stat">
+                            <span class="hour">{{ formatHour(hourStat.hour) }}</span>
+                            <div class="hour-bar">
+                                <div class="bar-fill"
+                                    [style.width.%]="(hourStat.like_count / moduleStats.total_likes) * 100"></div>
+                            </div>
+                            <span class="hour-count">{{ hourStat.like_count }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

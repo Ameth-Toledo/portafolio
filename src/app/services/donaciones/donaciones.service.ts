@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
+// donaciones.service.ts - Actualización de la interface
 export interface Donacion {
   id?: number;
   usuario_id: number;
@@ -11,9 +12,15 @@ export interface Donacion {
   moneda: string;
   estado: string;
   metodo_pago: string;
-  transaction_id?: string;
-  payment_id?: string;
-  fecha_pago?: string;
+  transaction_id: string;
+  payment_id: string;
+  fecha_pago: string;
+  
+  // Campos adicionales para mostrar nombres
+  usuario_nombre?: string;
+  usuario_apellidos?: string;
+  modulo_titulo?: string;
+  curso_nombre?: string;
 }
 
 export interface CreateDonacionRequest {

@@ -47,13 +47,6 @@
                 </li>
 
                 <li class="nav-link">
-                    <a routerLink="/notificaciones">
-                        <i class='bx bx-bell icon'></i>
-                        <span class="text nav-text">Notificaciones</span>
-                    </a>
-                </li>
-
-                <li class="nav-link">
                     <a (click)="onProfile($event)">
                         <i class='bx bx-user icon'></i>
                         <span class="text nav-text">Perfil</span>
@@ -61,16 +54,23 @@
                 </li>
 
                 <li class="nav-link">
-                    <a routerLink="/usuarios">
+                    <a (click)="onUsers($event)">
                         <i class='bx bx-group icon'></i>
                         <span class="text nav-text">Usuarios</span>
                     </a>
                 </li>
 
                 <li class="nav-link">
-                    <a routerLink="/donaciones">
+                    <a (click)="onDonaciones($event)">
                         <i class='bx bx-donate-heart icon'></i>
                         <span class="text nav-text">Donaciones</span>
+                    </a>
+                </li>
+
+                <li class="nav-link">
+                    <a (click)="onLikes($event)">
+                        <i class='bx bx-like icon'></i>
+                        <span class="text nav-text">Likes</span>
                     </a>
                 </li>
             </ul>
@@ -78,7 +78,7 @@
 
         <div class="bottom-content">            
             <li class="">
-                <a href="#" (click)="logout()">
+                <a href="#" (click)="logout($event)">
                     <i class='bx bx-log-out icon'></i>
                     <span class="text nav-text">Logout</span>
                 </a>
