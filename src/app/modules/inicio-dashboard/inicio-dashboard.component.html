@@ -1,5 +1,94 @@
 <section class="home">
   <div class="header">
     <h1 class="text">Bienvenido Ameth</h1>
+    <div class="header-info">
+      <div class="total-likes">
+        Dashboard Principal
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    Cargando estadísticas...
+  </div>
+
+  <div *ngIf="error && !loading" class="error-message">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error" class="stats-container">
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class='bx bx-group'></i>
+      </div>
+      <div class="stat-info">
+        <p class="stat-value">{{ formatNumber(stats.totalUsers) }}</p>
+        <p class="stat-label">Total Usuarios</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class='bx bx-book-open'></i>
+      </div>
+      <div class="stat-info">
+        <p class="stat-value">{{ formatNumber(stats.totalCursos) }}</p>
+        <p class="stat-label">Total Cursos</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class='bx bx-heart'></i>
+      </div>
+      <div class="stat-info">
+        <p class="stat-value">{{ formatNumber(stats.totalLikes) }}</p>
+        <p class="stat-label">Total Likes</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class='bx bx-donate-heart'></i>
+      </div>
+      <div class="stat-info">
+        <p class="stat-value">{{ formatNumber(stats.totalDonations) }}</p>
+        <p class="stat-label">Total Donaciones</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class='bx bx-money'></i>
+      </div>
+      <div class="stat-info">
+        <p class="stat-value">{{ formatCurrency(stats.totalAmount) }}</p>
+        <p class="stat-label">Total Recaudado</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class='bx bx-line-chart'></i>
+      </div>
+      <div class="stat-info">
+        <p class="stat-value">{{ formatCurrency(stats.totalDonations > 0 ? stats.totalAmount / stats.totalDonations : 0) }}</p>
+        <p class="stat-label">Promedio por Donación</p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && !error" class="content-container">
+    <div class="section-card">
+      <div class="section-header">
+        <h2>Resumen del Sistema</h2>
+      </div>
+      <div class="section-info">
+        <p>El sistema cuenta actualmente con <strong>{{ formatNumber(stats.totalUsers) }}</strong> usuarios registrados.</p>
+        <p>Se han creado <strong>{{ formatNumber(stats.totalCursos) }}</strong> cursos en total.</p>
+        <p>Los usuarios han dado <strong>{{ formatNumber(stats.totalLikes) }}</strong> likes en todos los módulos.</p>
+        <p>Se han realizado <strong>{{ formatNumber(stats.totalDonations) }}</strong> donaciones por un total de <strong>{{ formatCurrency(stats.totalAmount) }}</strong>.</p>
+      </div>
+    </div>
   </div>
 </section>

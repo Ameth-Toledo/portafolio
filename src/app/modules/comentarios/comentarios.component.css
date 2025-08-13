@@ -26,7 +26,7 @@
 }
 
 .user-count {
-  background: #125245;
+  background: #22C55E;
   color: white;
   padding: 8px 16px;
   border-radius: 20px;
@@ -194,7 +194,7 @@
   background: #1A1A1A;
   padding: 12px;
   border-radius: 12px;
-  border: 1px solid #125245;
+  border: 1px solid #22C55E;
 }
 
 .pagination-btn {

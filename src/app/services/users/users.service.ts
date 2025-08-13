@@ -25,6 +25,11 @@ interface AllUsersResponse {
   users: UserProfile[];
 }
 
+interface TotalUsersResponse {
+  message: string;
+  total: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -55,6 +60,11 @@ export class UsersService {
     const headers = this.getHeaders();
     return this.http.get<AllUsersResponse>(`${this.apiUrl}`, { headers })
       .pipe(map(response => response.users));
+  }
+
+  getTotalUsers(): Observable<TotalUsersResponse> {
+    const headers = this.getHeaders();
+    return this.http.get<TotalUsersResponse>(`${this.apiUrl}/total`, { headers });
   }
 
   getUsersByRole(rolId: number): Observable<UserProfile[]> {
