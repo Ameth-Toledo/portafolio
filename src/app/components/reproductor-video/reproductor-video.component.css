@@ -1,0 +1,449 @@
+.video-container {
+  margin-bottom: 50px;
+  position: relative;
+}
+
+.video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  background: #000;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
+.video-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 12px;
+  background: #000;
+  pointer-events: auto;
+}
+
+.video-click-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  cursor: pointer;
+  background: transparent;
+}
+
+.video-controls-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 60%,
+    rgba(0, 0, 0, 0.1) 80%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+  border-radius: 12px;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.video-controls-overlay.show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+}
+
+.video-wrapper:hover .video-controls-overlay:not(.hidden) {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+}
+
+.video-controls-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.center-play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  pointer-events: all;
+  z-index: 15;
+  opacity: 1;
+  visibility: visible;
+}
+
+.center-play-button:hover {
+  background: rgba(16, 185, 129, 0.9);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.center-play-button svg {
+  width: 32px;
+  height: 32px;
+  color: white;
+  margin-left: 3px; 
+}
+
+.controls-bottom {
+  position: relative;
+  padding: 15px 20px;
+  pointer-events: all;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.progress-container {
+  position: relative;
+  height: 6px;
+  margin-bottom: 15px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: height 0.3s ease;
+}
+
+.progress-container:hover {
+  height: 8px;
+}
+
+.progress-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(to right, #10b981, #059669);
+  border-radius: 3px;
+  transition: width 0.1s ease;
+}
+
+.progress-thumb {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 14px;
+  background: #10b981;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.progress-container:hover .progress-thumb {
+  opacity: 1;
+}
+
+.controls-bar {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  pointer-events: all;
+}
+
+.control-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.control-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.control-btn:hover {
+  color: #10b981;
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.1);
+}
+
+.play-pause-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+.time-display {
+  color: white;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 14px;
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.current-time, .duration-time {
+  font-variant-numeric: tabular-nums;
+}
+
+.time-separator {
+  opacity: 0.7;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.volume-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.volume-btn {
+  flex-shrink: 0;
+}
+
+.volume-slider-horizontal {
+  position: relative;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  transform: translateX(-10px);
+  width: 0;
+  overflow: hidden;
+}
+
+.volume-slider-horizontal.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  width: 80px;
+  margin-left: 5px;
+}
+
+.volume-control:hover .volume-slider-horizontal {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  width: 80px;
+  margin-left: 5px;
+}
+
+.volume-slider {
+  width: 80px;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.volume-slider:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  background: #10b981;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+  background: #059669;
+  transform: scale(1.1);
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: #10b981;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.video-wrapper.paused .center-play-button {
+  opacity: 1;
+  visibility: visible;
+}
+
+.video-wrapper.playing .center-play-button {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.video-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  background: #1a1a1a;
+}
+
+.video-placeholder svg {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 20px;
+}
+
+.video-placeholder p {
+  font-size: 1.2rem;
+  color: #888;
+}
+
+/* Accesibilidad */
+.video-wrapper:focus-within {
+  outline: 2px solid #10b981;
+  outline-offset: 2px;
+}
+
+.control-btn:focus {
+  outline: 2px solid #10b981;
+  outline-offset: 2px;
+}
+
+.volume-slider:focus {
+  outline: 2px solid #10b981;
+  outline-offset: 2px;
+}
+
+/* Responsive Design */
+@media (max-width: 767px) {
+  .video-container {
+    margin-bottom: 30px;
+  }
+
+  .video-controls-overlay {
+    border-radius: 12px;
+  }
+
+  .controls-bottom {
+    padding: 12px 15px;
+  }
+
+  .controls-bar {
+    gap: 10px;
+  }
+
+  .time-display {
+    font-size: 12px;
+    min-width: 70px;
+  }
+
+  .volume-control {
+    gap: 6px;
+  }
+
+  .volume-slider-horizontal {
+    width: 60px;
+  }
+
+  .volume-slider-horizontal.show {
+    width: 60px;
+  }
+
+  .volume-control:hover .volume-slider-horizontal {
+    width: 60px;
+  }
+
+  .volume-slider {
+    width: 60px;
+  }
+
+  .control-btn {
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+  }
+
+  .control-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .play-pause-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .center-play-button {
+    width: 60px;
+    height: 60px;
+  }
+
+  .center-play-button svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .video-placeholder svg {
+    width: 60px;
+    height: 60px;
+  }
+
+  .video-placeholder p {
+    font-size: 1rem;
+  }
+}
