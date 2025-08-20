@@ -25,6 +25,7 @@ import { Curso } from '../../models/curso';
 export class CoursesComponent {
   cursos: Curso[] = [];
   cursosFiltrados: Curso[] = [];
+  cargandoCursos: boolean = false;
 
   constructor (
     private router: Router,
@@ -40,12 +41,17 @@ export class CoursesComponent {
   }
 
   cargarCursos() {
+    this.cargandoCursos = true;
     this.cursosService.getCursos().subscribe({
       next: (cursos) => {
         this.cursos = cursos;
         this.cursosFiltrados = [...cursos];
+        this.cargandoCursos = false;
       },
-      error: (err) => console.error('Error al cargar cursos', err)
+      error: (err) => {
+        console.error('Error al cargar cursos', err);
+        this.cargandoCursos = false;
+      }
     });
   }
 
@@ -55,11 +61,16 @@ export class CoursesComponent {
       return;
     }
     
+    this.cargandoCursos = true;
     this.cursosService.searchCursosByNombre(termino).subscribe({
       next: (cursos) => {
         this.cursosFiltrados = cursos;
+        this.cargandoCursos = false;
       },
-      error: (err) => console.error('Error al buscar cursos', err)
+      error: (err) => {
+        console.error('Error al buscar cursos', err);
+        this.cargandoCursos = false;
+      }
     });
   }
 
