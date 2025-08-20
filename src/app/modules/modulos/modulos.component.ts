@@ -11,6 +11,7 @@ import { Modulo } from '../../models/modulo';
 import { Curso } from '../../models/curso';
 import { RedesSocialesComponent } from "../../components/redes-sociales/redes-sociales.component";
 import { ChatbotComponent } from "../../components/chatbot/chatbot.component";
+import { LikesService } from '../../services/likes/likes.service';
 
 @Component({
   selector: 'app-modulos',
@@ -37,7 +38,8 @@ export class ModulosComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private animationService: AnimationService,
     private modulosService: ModulosService,
-    private cursosService: CursosService
+    private cursosService: CursosService,
+    private likesService: LikesService
   ) {
     const { webkitSpeechRecognition } = window as any;
     if (webkitSpeechRecognition) {
