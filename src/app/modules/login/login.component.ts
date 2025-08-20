@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { AuthService } from '../../services/auth/auth.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   email: string = '';
   password: string = '';
   rememberMe: boolean = false;
@@ -29,6 +29,50 @@ export class LoginComponent {
     private router: Router,
     private authService: AuthService
   ) {}
+
+  ngOnInit() {
+    this.loadSavedCredentials();
+  }
+
+  private loadSavedCredentials() {
+    try {
+      const savedCredentials = localStorage.getItem('savedCredentials');
+      
+      if (savedCredentials) {
+        const credentials = JSON.parse(savedCredentials);
+        
+        if (credentials.email && credentials.password) {
+          this.email = credentials.email;
+          this.password = credentials.password;
+          this.rememberMe = true;
+          
+          console.log('Credenciales cargadas desde localStorage');
+        }
+      }
+    } catch (error) {
+      console.error('Error al cargar credenciales guardadas:', error);
+      localStorage.removeItem('savedCredentials');
+    }
+  }
+
+  private saveCredentials() {
+    if (this.rememberMe) {
+      try {
+        const credentials = {
+          email: this.email,
+          password: this.password
+        };
+        
+        localStorage.setItem('savedCredentials', JSON.stringify(credentials));
+        console.log('Credenciales guardadas en localStorage');
+      } catch (error) {
+        console.error('Error al guardar credenciales:', error);
+      }
+    } else {
+      localStorage.removeItem('savedCredentials');
+      console.log('Credenciales eliminadas del localStorage');
+    }
+  }
 
   togglePassword() {
     this.showPassword = !this.showPassword;
@@ -83,6 +127,8 @@ export class LoginComponent {
           return;
         }
 
+        this.saveCredentials();
+        
         this.authService.saveUserData(userData, this.rememberMe);
         
         this.loggedUserName = userData.name;
@@ -95,6 +141,13 @@ export class LoginComponent {
         this.handleLoginError(error);
       }
     });
+  }
+
+  onRememberMeChange() {
+    if (!this.rememberMe) {
+      localStorage.removeItem('savedCredentials');
+      console.log('Credenciales eliminadas por desmarcado de recordarme');
+    }
   }
 
   private handleLoginError(error: any) {
@@ -141,5 +194,13 @@ export class LoginComponent {
   onRegister(event: Event) {
     event.preventDefault();
     this.router.navigate(['register']);
+  }
+
+  clearSavedCredentials() {
+    localStorage.removeItem('savedCredentials');
+    this.email = '';
+    this.password = '';
+    this.rememberMe = false;
+    console.log('Credenciales limpiadas manualmente');
   }
 }
