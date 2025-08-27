@@ -167,16 +167,57 @@ header .image-text .profession {
     border-radius: 6px;
     text-decoration: none;
     transition: all 0.3s ease;
+    position: relative;
 }
 
 .sidebar li a:hover {
     cursor: pointer;
     background-color: #22C55E;
+    transform: translateX(3px);
 }
 
 .sidebar li a:hover .icon,
 .sidebar li a:hover .text {
     color: #0A0A0A;
+}
+
+.sidebar .nav-link a.active {
+    background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+    border-left: 4px solid #15803D;
+    box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+    position: relative;
+}
+
+.sidebar .nav-link a.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background: linear-gradient(to bottom, #15803D, #22C55E);
+    border-radius: 0 3px 3px 0;
+}
+
+.sidebar .nav-link a.active .icon,
+.sidebar .nav-link a.active .text {
+    color: #0A0A0A;
+    font-weight: 600;
+}
+
+.sidebar .nav-link a.active {
+    animation: subtle-pulse 2s infinite;
+}
+
+@keyframes subtle-pulse {
+    0% { box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3); }
+    50% { box-shadow: 0 4px 20px rgba(34, 197, 94, 0.4); }
+    100% { box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3); }
+}
+
+.sidebar .nav-link a.active:hover {
+    background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+    transform: none;
 }
 
 .sidebar .menu-bar {
@@ -233,11 +274,16 @@ header .image-text .profession {
     list-style: none;
 }
 
-.nav-link a.active {
-    background-color: #695CFE;
+.bottom-content a {
+    border-radius: 6px;
+    transition: all 0.3s ease;
 }
 
-.nav-link a.active .icon,
-.nav-link a.active .text {
-    color: #0A0A0A;
+.bottom-content a:hover {
+    background-color: #EF4444;
+}
+
+.bottom-content a:hover .icon,
+.bottom-content a:hover .text {
+    color: #FFF;
 }

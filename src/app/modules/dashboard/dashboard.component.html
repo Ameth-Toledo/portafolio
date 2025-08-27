@@ -26,49 +26,63 @@
 
             <ul class="menu-links">
                 <li class="nav-link">
-                    <a (click)="onInicio($event)">
+                    <a (click)="onInicio($event)" 
+                       data-route="inicio"
+                       [class.active]="isRouteActive('inicio')">
                         <i class='bx bx-home-alt icon'></i>
                         <span class="text nav-text">Inicio</span>
                     </a>
                 </li>
                 
                 <li class="nav-link">
-                    <a (click)="onCursos($event)">
+                    <a (click)="onCursos($event)" 
+                       data-route="cursos"
+                       [class.active]="isRouteActive('cursos')">
                         <i class='bx bx-book-alt icon'></i>
                         <span class="text nav-text">Cursos</span>
                     </a>
                 </li>
 
                 <li class="nav-link">
-                    <a (click)="onComents($event)">
+                    <a (click)="onComents($event)" 
+                       data-route="comentarios"
+                       [class.active]="isRouteActive('comentarios')">
                         <i class='bx bx-comment-detail icon'></i>
                         <span class="text nav-text">Comentarios</span>
                     </a>
                 </li>
 
                 <li class="nav-link">
-                    <a (click)="onProfile($event)">
+                    <a (click)="onProfile($event)" 
+                       data-route="profile"
+                       [class.active]="isRouteActive('profile')">
                         <i class='bx bx-user icon'></i>
                         <span class="text nav-text">Perfil</span>
                     </a>
                 </li>
 
                 <li class="nav-link">
-                    <a (click)="onUsers($event)">
+                    <a (click)="onUsers($event)" 
+                       data-route="users"
+                       [class.active]="isRouteActive('users')">
                         <i class='bx bx-group icon'></i>
                         <span class="text nav-text">Usuarios</span>
                     </a>
                 </li>
 
                 <li class="nav-link">
-                    <a (click)="onDonaciones($event)">
+                    <a (click)="onDonaciones($event)" 
+                       data-route="donaciones"
+                       [class.active]="isRouteActive('donaciones')">
                         <i class='bx bx-donate-heart icon'></i>
                         <span class="text nav-text">Donaciones</span>
                     </a>
                 </li>
 
                 <li class="nav-link">
-                    <a (click)="onLikes($event)">
+                    <a (click)="onLikes($event)" 
+                       data-route="likes"
+                       [class.active]="isRouteActive('likes')">
                         <i class='bx bx-like icon'></i>
                         <span class="text nav-text">Likes</span>
                     </a>

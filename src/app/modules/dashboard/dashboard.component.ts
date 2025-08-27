@@ -1,7 +1,9 @@
 import { Component, OnInit, OnDestroy, ElementRef, Renderer2, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
+import { filter } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,9 +12,11 @@ import { AuthService } from '../../services/auth/auth.service';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
   public sidebarClosed = true;
+  public currentRoute = '';
+  private routerSubscription: Subscription = new Subscription();
 
   constructor(
     private elementRef: ElementRef,
@@ -23,6 +27,55 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUserPreferences();
+    this.subscribeToRouterEvents();
+  }
+
+  ngOnDestroy(): void {
+    this.routerSubscription.unsubscribe();
+  }
+
+  private subscribeToRouterEvents(): void {
+    this.routerSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.currentRoute = event.url;
+        this.updateActiveMenuItems();
+      });
+
+    this.currentRoute = this.router.url;
+    setTimeout(() => this.updateActiveMenuItems(), 0);
+  }
+
+  private updateActiveMenuItems(): void {
+    const allLinks = this.elementRef.nativeElement.querySelectorAll('.nav-link a');
+    allLinks.forEach((link: HTMLElement) => {
+      this.renderer.removeClass(link, 'active');
+    });
+
+    let activeSelector = '';
+    
+    if (this.currentRoute.includes('/dashboard/inicio')) {
+      activeSelector = '[data-route="inicio"]';
+    } else if (this.currentRoute.includes('/dashboard/cursos')) {
+      activeSelector = '[data-route="cursos"]';
+    } else if (this.currentRoute.includes('/dashboard/comentarios')) {
+      activeSelector = '[data-route="comentarios"]';
+    } else if (this.currentRoute.includes('/dashboard/profile')) {
+      activeSelector = '[data-route="profile"]';
+    } else if (this.currentRoute.includes('/dashboard/users')) {
+      activeSelector = '[data-route="users"]';
+    } else if (this.currentRoute.includes('/dashboard/donaciones')) {
+      activeSelector = '[data-route="donaciones"]';
+    } else if (this.currentRoute.includes('/dashboard/likes')) {
+      activeSelector = '[data-route="likes"]';
+    }
+
+    if (activeSelector) {
+      const activeLink = this.elementRef.nativeElement.querySelector(activeSelector);
+      if (activeLink) {
+        this.renderer.addClass(activeLink, 'active');
+      }
+    }
   }
 
   toggleSidebar(): void {
@@ -94,5 +147,9 @@ export class DashboardComponent implements OnInit {
   onLikes(event: Event) {
     event.preventDefault();
     this.router.navigate(['dashboard/likes'])
+  }
+
+  isRouteActive(route: string): boolean {
+    return this.currentRoute.includes(`/dashboard/${route}`);
   }
 }
