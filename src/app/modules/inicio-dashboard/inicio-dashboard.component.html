@@ -72,22 +72,91 @@
         <i class='bx bx-line-chart'></i>
       </div>
       <div class="stat-info">
-        <p class="stat-value">{{ formatCurrency(stats.totalDonations > 0 ? stats.totalAmount / stats.totalDonations : 0) }}</p>
+        <p class="stat-value">{{ formatCurrency(stats.totalDonations > 0 ? stats.totalAmount / stats.totalDonations : 0)
+          }}</p>
         <p class="stat-label">Promedio por Donación</p>
       </div>
     </div>
   </div>
 
   <div *ngIf="!loading && !error" class="content-container">
+    <div class="section-card" *ngIf="topModules && topModules.length > 0">
+      <div class="section-header">
+        <h2>Módulos Más Populares</h2>
+        <span class="section-subtitle">Por cantidad de likes</span>
+      </div>
+      <div class="module-list">
+        <div class="module-item" *ngFor="let module of topModules; let i = index">
+          <div class="module-rank">{{ i + 1 }}</div>
+          <div class="module-info">
+            <h3 class="module-title">{{ module.modulo_titulo || 'Módulo sin título' }}</h3>
+            <div class="module-stats">
+              <span class="likes-count">
+                <i class='bx bx-heart'></i> {{ module.like_count }} likes
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card" *ngIf="recentDonations && recentDonations.length > 0">
+      <div class="section-header">
+        <h2>Donaciones Recientes</h2>
+        <span class="section-subtitle">Últimas contribuciones</span>
+      </div>
+      <div class="donation-list">
+        <div class="donation-item" *ngFor="let donation of recentDonations">
+          <div class="donation-avatar">
+            <i class='bx bx-user'></i>
+          </div>
+          <div class="donation-info">
+            <h3 class="donation-user">{{ donation.usuario_nombre || 'Usuario' }} {{ donation.usuario_apellidos || '' }}
+            </h3>
+            <p class="donation-module">Para: {{ donation.modulo_titulo || 'Módulo' }}</p>
+          </div>
+          <div class="donation-amount">
+            {{ formatCurrency(donation.monto) }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card" *ngIf="recentComments && recentComments.length > 0">
+      <div class="section-header">
+        <h2>Comentarios Recientes</h2>
+        <span class="section-subtitle">Interacción de usuarios</span>
+      </div>
+      <div class="comment-list">
+        <div class="comment-item" *ngFor="let comment of recentComments">
+          <div class="comment-avatar">
+            <img *ngIf="comment.avatar" [src]="getAvatarUrl(comment.avatar)" alt="Avatar" class="avatar-img">
+            <i *ngIf="!comment.avatar" class='bx bx-user'></i>
+          </div>
+          <div class="comment-content">
+            <div class="comment-header">
+              <span class="comment-author">{{ comment.autor || 'Usuario' }}</span>
+              <span class="comment-date">{{ formatDate(comment.fecha) }}</span>
+            </div>
+            <p class="comment-text">{{ comment.texto }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="section-card">
       <div class="section-header">
         <h2>Resumen del Sistema</h2>
       </div>
       <div class="section-info">
-        <p>El sistema cuenta actualmente con <strong>{{ formatNumber(stats.totalUsers) }}</strong> usuarios registrados.</p>
+        <p>El sistema cuenta actualmente con <strong>{{ formatNumber(stats.totalUsers) }}</strong> usuarios registrados.
+        </p>
         <p>Se han creado <strong>{{ formatNumber(stats.totalCursos) }}</strong> cursos en total.</p>
         <p>Los usuarios han dado <strong>{{ formatNumber(stats.totalLikes) }}</strong> likes en todos los módulos.</p>
-        <p>Se han realizado <strong>{{ formatNumber(stats.totalDonations) }}</strong> donaciones por un total de <strong>{{ formatCurrency(stats.totalAmount) }}</strong>.</p>
+        <p>Se han realizado <strong>{{ formatNumber(stats.totalDonations) }}</strong> donaciones por un total de
+          <strong>{{ formatCurrency(stats.totalAmount) }}</strong>.</p>
+        <p>El promedio por donación es de <strong>{{ formatCurrency(stats.totalDonations > 0 ? stats.totalAmount /
+            stats.totalDonations : 0) }}</strong>.</p>
       </div>
     </div>
   </div>

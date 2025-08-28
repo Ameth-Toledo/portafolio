@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
-// donaciones.service.ts - Actualización de la interface
 export interface Donacion {
   id?: number;
   usuario_id: number;
@@ -174,9 +173,7 @@ export class DonacionesService {
     return this.createDonacion(donacionData);
   }
 
-  // Método para validar el estado del pago
   validatePaymentStatus(paymentId: string): Observable<any> {
-    // Este endpoint deberías implementarlo en tu backend para validar con MercadoPago
     return this.http.get(`${this.apiUrl}/validate-payment/${paymentId}`, {
       headers: this.getHeaders()
     }).pipe(

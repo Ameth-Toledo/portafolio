@@ -44,8 +44,14 @@
               </button>
             </div>
 
-            <div class="module-title-inline">
-              <h1>{{ modulo.titulo }}</h1>
+            <div class="module-title-with-image">
+              <div class="module-title-inline">
+                <h1>{{ modulo.titulo }}</h1>
+              </div>
+
+              <div class="module-image-right" *ngIf="modulo?.imagen_portada">
+                <img [src]="'/icons/' + modulo.imagen_portada + '.svg'" [alt]="modulo.titulo" class="module-icon-right">
+              </div>
             </div>
           </div>
 
@@ -56,16 +62,13 @@
       </div>
     </div>
 
-    <!-- Contenedor principal para video/card-description y comentarios lado a lado -->
     <div class="main-content-container" *ngIf="modulo && !loading && !error">
       <div class="left-content">
-        <!-- Video si existe -->
         <div class="video-container" *ngIf="modulo.video_url">
           <div class="module-content">
             <app-reproductor-video [videoUrl]="modulo.video_url"></app-reproductor-video>
           </div>
         </div>
-        <!-- Placeholder si no hay video -->
         <div class="module-content" *ngIf="!modulo.video_url">
           <div class="no-video-placeholder">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#666">

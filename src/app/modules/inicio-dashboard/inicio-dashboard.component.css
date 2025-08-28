@@ -206,3 +206,156 @@
     gap: 15px;
   }
 }
+/* Agregar estos estilos al CSS existente */
+
+.section-subtitle {
+  color: #687C84;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.module-list,
+.donation-list,
+.comment-list {
+  padding: 0;
+}
+
+.module-item,
+.donation-item,
+.comment-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #2d2d2d;
+}
+
+.module-item:last-child,
+.donation-item:last-child,
+.comment-item:last-child {
+  border-bottom: none;
+}
+
+.module-rank {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #22C55E;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.module-info {
+  flex: 1;
+}
+
+.module-title {
+  margin: 0 0 5px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #FFF;
+}
+
+.module-stats {
+  display: flex;
+  align-items: center;
+}
+
+.likes-count {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #687C84;
+  font-size: 14px;
+}
+
+.donation-avatar,
+.comment-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #22C55E;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.donation-info {
+  flex: 1;
+}
+
+.donation-user {
+  margin: 0 0 3px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #FFF;
+}
+
+.donation-module {
+  margin: 0;
+  font-size: 14px;
+  color: #687C84;
+}
+
+.donation-amount {
+  font-weight: bold;
+  color: #22C55E;
+  font-size: 16px;
+}
+
+.comment-content {
+  flex: 1;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.comment-author {
+  font-weight: 600;
+  color: #FFF;
+  font-size: 14px;
+}
+
+.comment-date {
+  color: #687C84;
+  font-size: 12px;
+}
+
+.comment-text {
+  margin: 0;
+  color: #CCC;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .module-item,
+  .donation-item,
+  .comment-item {
+    padding: 12px 15px;
+  }
+  
+  .comment-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+  }
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
