@@ -1,8 +1,7 @@
 export const environment = {
   production: false,
   
-  apiUrl: 'https://amethdev.onrender.com',
-  wsUrl: 'wss://amethdev.onrender.com/ws/notifications',
+  apiUrl: 'https://amethdev.onrender.com', 
   
   firebaseConfig: {
     apiKey: "AIzaSyAogEOxxJUc9QIlKlpMqwsBSWQDQcRXWao",
