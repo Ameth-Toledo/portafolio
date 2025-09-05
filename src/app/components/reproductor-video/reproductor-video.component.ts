@@ -21,8 +21,8 @@ export class ReproductorVideoComponent implements OnInit, AfterViewInit, OnDestr
   private youtubeApiReady = false;
   
   safeVideoUrl: SafeResourceUrl | null = null;
-  showCenterButton = true;
-  isPlaying = false;
+  showCenterButton = false;
+  isPlaying = true;
   isMuted = false;
   showControls = true;
   progressPercent = 0;
@@ -55,6 +55,7 @@ export class ReproductorVideoComponent implements OnInit, AfterViewInit, OnDestr
 
     if (this.videoPlayer) {
       this.videoPlayer.nativeElement.volume = this.volume;
+      this.videoPlayer.nativeElement.autoplay = true;
       this.videoPlayer.nativeElement.addEventListener('loadedmetadata', () => {
         this.duration = this.videoPlayer.nativeElement.duration;
       });
@@ -121,7 +122,7 @@ export class ReproductorVideoComponent implements OnInit, AfterViewInit, OnDestr
       'showinfo': '0',           // Oculta información del video
       'iv_load_policy': '3',     // Oculta anotaciones
       'cc_load_policy': '0',     // Oculta subtítulos automáticos
-      'autoplay': '0',           // No reproduce automáticamente
+      'autoplay': '1',           // Reproduce automáticamente
       'playsinline': '1',        // Reproduce inline en móviles
       'enablejsapi': '1',        // Habilita API JavaScript
       'origin': window.location.origin,
@@ -134,7 +135,7 @@ export class ReproductorVideoComponent implements OnInit, AfterViewInit, OnDestr
   private buildVimeoEmbedUrl(videoId: string): string {
     const params = new URLSearchParams({
       'controls': '0',           // Oculta controles de Vimeo
-      'autoplay': '0',
+      'autoplay': '1',
       'loop': '0',
       'title': '0',              // Oculta título
       'byline': '0',             // Oculta autor
