@@ -1,0 +1,297 @@
+.certifications-section {
+    background: #1a1a1a;
+    padding: 100px 60px;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.6;
+}
+
+.certifications-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 107, 107, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(132, 204, 22, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.certifications-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.certifications-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 120px;
+    margin-bottom: 80px;
+}
+
+.certifications-title {
+    font-size: 72px;
+    font-weight: 800;
+    color: #F8F8F9;
+    line-height: 1.1;
+    flex: 1;
+    background: linear-gradient(135deg, #fff 0%, #a1a1aa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.certifications-description {
+    font-size: 18px;
+    color: #a1a1aa;
+    line-height: 1.7;
+    max-width: 420px;
+    flex: 1;
+}
+
+.certifications-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 35px;
+}
+
+.certification-card {
+    cursor: pointer;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    position: relative;
+    transition: all 0.4s ease;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.certification-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-8px);
+}
+
+.certification-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.certification-card:nth-child(1) .certification-image {
+    background: linear-gradient(135deg, #7877c6 0%, #5a4fcf 100%);
+}
+
+.certification-card:nth-child(2) .certification-image {
+    background: #FFFFFF;
+}
+
+.certification-card:nth-child(3) .certification-image {
+    background: #000000;
+}
+
+.certification-card:nth-child(4) .certification-image {
+    background: #000000;
+}
+
+.certification-card:nth-child(5) .certification-image {
+    background: #000000;
+}
+
+.certification-card:nth-child(6) .certification-image {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+.certification-image img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.certification-content {
+    flex: 1;
+}
+
+.certification-tag {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+}
+
+.certification-card:nth-child(1) .certification-tag {
+    background: rgba(120, 119, 198, 0.2);
+    color: #a5a3ff;
+}
+
+.certification-card:nth-child(2) .certification-tag {
+    background: rgba(255, 107, 107, 0.2);
+    color: #ffa5a5;
+}
+
+.certification-card:nth-child(3) .certification-tag {
+    background: rgba(132, 204, 22, 0.2);
+    color: #bef264;
+}
+
+.certification-card:nth-child(4) .certification-tag {
+    background: rgba(168, 85, 247, 0.2);
+    color: #c084fc;
+}
+
+.certification-card:nth-child(5) .certification-tag {
+    background: rgba(6, 182, 212, 0.2);
+    color: #67e8f9;
+}
+
+.certification-card:nth-child(6) .certification-tag {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+}
+
+.certification-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 8px;
+    line-height: 1.3;
+}
+
+.certification-desc {
+    font-size: 15px;
+    color: #a1a1aa;
+    line-height: 1.6;
+    margin: 0;
+}
+
+@media (max-width: 767px) {
+    .certifications-section {
+        padding: 60px 20px;
+    }
+    
+    .certifications-header {
+        flex-direction: column;
+        gap: 30px;
+        margin-bottom: 40px;
+    }
+    
+    .certifications-title {
+        font-size: 42px;
+    }
+    
+    .certifications-description {
+        max-width: 100%;
+    }
+    
+    .certifications-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+    
+    .certification-card {
+        padding: 30px;
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .certification-image {
+        width: 60px;
+        height: 60px;
+    }
+
+    .certification-image img {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .certification-title {
+        font-size: 20px;
+    }
+
+    .certification-desc {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .certifications-section {
+        padding: 80px 40px;
+    }
+    
+    .certifications-header {
+        gap: 60px;
+        margin-bottom: 60px;
+    }
+    
+    .certifications-title {
+        font-size: 56px;
+    }
+    
+    .certifications-description {
+        max-width: 350px;
+    }
+    
+    .certifications-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .certification-card {
+        padding: 35px;
+        gap: 20px;
+    }
+
+    .certification-image {
+        width: 70px;
+        height: 70px;
+    }
+
+    .certification-image img {
+        width: 35px;
+        height: 35px;
+    }
+
+    .certification-title {
+        font-size: 22px;
+    }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+    .certifications-section {
+        padding: 90px 50px;
+    }
+    
+    .certifications-header {
+        gap: 80px;
+    }
+    
+    .certifications-title {
+        font-size: 64px;
+    }
+    
+    .certification-card {
+        padding: 35px;
+    }
+}
+
+@media (min-width: 1280px) {
+}

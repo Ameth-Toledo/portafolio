@@ -6,11 +6,12 @@ import { WorkSectionComponent } from "../../components/work-section/work-section
 import { AbouthMeComponent } from "../../components/abouth-me/abouth-me.component";
 import { BlogComponent } from "../../components/blog/blog.component";
 import { ContactComponent } from "../../components/contact/contact.component";
+import { CertificationsComponent } from "../../components/certifications/certifications.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [HeaderComponent, HeroComponent, WorkSectionComponent, AbouthMeComponent, BlogComponent, ContactComponent],
+  imports: [HeaderComponent, HeroComponent, WorkSectionComponent, AbouthMeComponent, BlogComponent, ContactComponent, CertificationsComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
