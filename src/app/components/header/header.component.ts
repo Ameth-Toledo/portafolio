@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -11,11 +12,14 @@ import { CommonModule } from '@angular/common';
 export class HeaderComponent {
   menuAbierto = false;
 
-  scrollTo(sectionId: string): void {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+  constructor(private router: Router) {}
+
+  navegarYCerrar(event: Event, fragment: string): void {
+    event.preventDefault();
+    this.cerrarMenu();
+    
+    // Navegar con el fragmento
+    this.router.navigate([], { fragment: fragment });
   }
 
   toggleMenu(): void {
