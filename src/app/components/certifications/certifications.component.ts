@@ -15,7 +15,7 @@ export class CertificationsComponent implements OnInit, AfterViewInit {
 
   private certificationPDFs: { [key: string]: string } = {
     'figma': '/pdf/UI-UXCertificado.pdf',
-    'java': '/pdf/CV-AmethToledo.pdf', // Cambiar por el PDF correcto cuando lo tengas
+    'os': '/pdf/SistemasOperativos.pdf',
     'aws-architecting': '/pdf/AWS_Academy_Graduate___AWS_Academy_Cloud_Architecting.pdf',
     'aws-developing': '/pdf/AWS_Academy_Graduate___AWS_Academy_Cloud_Developing.pdf',
     'aws-foundations': '/pdf/AWS_Academy_Graduate___AWS_Academy_Cloud_Foundations.pdf',
