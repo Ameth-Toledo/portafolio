@@ -39,19 +39,19 @@
 <div class="code-examples-container">
   <h1 class="tip">Configuración de Nginx para despliegue</h1>
   <p class="subtitle-buenas-practicas-frontend">
-    ahora regresamos a nuestra consola de EC2 y nos iremos la siguiente ruta <strong>/var/www/html/</strong> para ver el index.html de nginx.
+    Ahora regresamos a nuestra consola de EC2 y nos iremos a la siguiente ruta <strong>/var/www/html/</strong> para ver el index.html de Nginx.
   </p>
 
   <app-comand-copy comand="cd /var/www/html/"></app-comand-copy>
 
   <p class="subtitle-buenas-practicas-frontend">
-    con <strong>ls</strong> vamos a ver el archivo <strong>index.nginx-debian.html</strong>, ese archivo lo vamos a borrar y sera reemplazado por el index.html de nuestra app web, vamos a borrarlo, les dejo el comando:
+    Con <strong>ls</strong> vamos a ver el archivo <strong>index.nginx-debian.html</strong>, ese archivo lo vamos a borrar y será reemplazado por el index.html de nuestra app web, vamos a borrarlo, les dejo el comando:
   </p>
 
   <app-comand-copy comand="sudo rm -r index.nginx-debian.html"></app-comand-copy>
  
   <p class="subtitle-buenas-practicas-frontend">
-    luego regresamos a filezilla y vamos a transferir nuestros archivos de la carpeta dist, para ello buscamo de lado izquierdo nuestra carpeta, y arrastramos solamente <strong>dist</strong> a la carpeta llamada <strong>ubuntu</strong> que esta de lado derecho, ya nadamas esperamos.
+    Luego regresamos a FileZilla y vamos a transferir nuestros archivos de la carpeta dist, para ello buscamos del lado izquierdo nuestra carpeta, y arrastramos solamente <strong>dist</strong> a la carpeta llamada <strong>ubuntu</strong> que está del lado derecho, ya nada más esperamos.
   </p>
 
   <app-images 
@@ -60,15 +60,15 @@
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
-    Nos regresamos a la consola de EC2 y ejecutamos <strong>ls</strong> para ver que este la carpeta dist en el home.
+    Nos regresamos a la consola de EC2 y ejecutamos <strong>ls</strong> para ver que esté la carpeta dist en el home.
 
-    <br>Luego de que ya verificamos de que si esta el directorio, vamos a entrar como super usuario para no tener que estar escribiendo sudo a cada rato, para ellos ejecutamos el siguiente comando:
+    <br>Luego de que ya verificamos que sí está el directorio, vamos a entrar como super usuario para no tener que estar escribiendo sudo a cada rato, para ello ejecutamos el siguiente comando:
   </p>
 
   <app-comand-copy comand="sudo su"></app-comand-copy>
 
   <p class="subtitle-buenas-practicas-frontend">
-    Ahora vamos a mover nuestros archivos a la carperta /var/www/html, para ellos primero entraremos a la carpeta dist y luego moveremos cada archivo y carpeta que tenga adentro con el siguiente comando:
+    Ahora vamos a mover nuestros archivos a la carpeta /var/www/html, para ello primero entraremos a la carpeta dist y luego moveremos cada archivo y carpeta que tenga adentro con el siguiente comando:
   </p>
 
   <app-comand-copy comand="cp -R archivo.txt /var/www/html/"></app-comand-copy>
@@ -79,9 +79,9 @@
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
-    Una ves que hayamos movido todos los archivos ya estaria listo para visualizarse en la web. Copiamos nuestra IP la pegamos en una nueva ventana y nos mostrara nuestra pragina web.
+    Una vez que hayamos movido todos los archivos ya estaría listo para visualizarse en la web. Copiamos nuestra IP la pegamos en una nueva ventana y nos mostrará nuestra página web.
     <br><br>
-    Ahora hay un problema, si recargamos la pagina web, nos dara error 404, esto se debe a que nginx no esta serviendo en el html de nuestra web, ngnix no va a encontrar la ruta y va a mandar el error, vamos a solucionarlo en el siguiente paso.
+    Ahora hay un problema, si recargamos la página web, nos dará error 404, esto se debe a que Nginx no está sirviendo en el HTML de nuestra web, Nginx no va a encontrar la ruta y va a mandar el error, vamos a solucionarlo en el siguiente paso.
   </p>
 
   <app-images 
@@ -90,9 +90,9 @@
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend" id="config">
-    Nos dirigiremos a la carpeta de configuración de Nginx (<code>sites-enabled</code>) que aqui es donde se encuentra nuestro sistema servicio web.
+    Nos dirigiremos a la carpeta de configuración de Nginx (<code>sites-enabled</code>) que aquí es donde se encuentra nuestro servicio web.
     <br>
-    vamos a ejecutar el siguiente comando:
+    Vamos a ejecutar el siguiente comando:
   </p>
 
   <app-comand-copy comand="cd /etc/nginx/sites-enabled/
@@ -100,14 +100,14 @@
   </app-comand-copy>
 
   <p class="subtitle-buenas-practicas-frontend">
-    Nos va a mandar a la configuracion de sitios de nginx, si ejecutamos <strong>ls</strong> vamos a encontrar un archivo llamado default, este archivo contiene el proxy para servir en index.
-    vamos a ejecutar el siguiente comando para editarlo:
+    Nos va a mandar a la configuración de sitios de Nginx, si ejecutamos <strong>ls</strong> vamos a encontrar un archivo llamado default, este archivo contiene el proxy para servir en index.
+    Vamos a ejecutar el siguiente comando para editarlo:
   </p>
 
-  <app-comand-copy comand="nano defatult"></app-comand-copy>
+  <app-comand-copy comand="nano default"></app-comand-copy>
 
   <p class="subtitle-buenas-practicas-frontend">
-    Nos desplazaremos hacia abajo hasta encontrar <strong>location</strong>, borramos esa parte de configuracion y la reemplazamos por la siguiente información:
+    Nos desplazaremos hacia abajo hasta encontrar <strong>location</strong>, borramos esa parte de configuración y la reemplazamos por la siguiente información:
   </p>
 
   <app-comand-copy comand="location / {
@@ -120,7 +120,7 @@
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
-    luego de hacer eso, guardamos el archivo con los nuevos cambios que realizamos y ejecutamos el comando <strong>exit</strong> y nos regresamos el home con <strong>cd</strong>
+    Luego de hacer eso, guardamos el archivo con los nuevos cambios que realizamos y ejecutamos el comando <strong>exit</strong> y nos regresamos al home con <strong>cd</strong>
   </p>
 
   <app-comand-copy comand="exit
@@ -128,7 +128,7 @@
   </app-comand-copy>
 
   <p class="subtitle-buenas-practicas-frontend">
-    Ahora vamos a reiniciar el servicio de nginx para aplicar correctamente los cambios, una ves reiniciado confirmamos de que el serivicio este corriendo.
+    Ahora vamos a reiniciar el servicio de Nginx para aplicar correctamente los cambios, una vez reiniciado confirmamos que el servicio esté corriendo.
   </p>
 
   <app-comand-copy comand="sudo service nginx restart
@@ -141,7 +141,7 @@
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
-    Ahora nos regresamos a la ventana en donde pegamos la IP y recargamos la pagina y ya nos deveria de mostrar correctamente nuestra web, sin error 404 y podemos irnos a cualquier ruta y va a funcionar.
+    Ahora nos regresamos a la ventana en donde pegamos la IP y recargamos la página y ya nos debería mostrar correctamente nuestra web, sin error 404 y podemos irnos a cualquier ruta y va a funcionar.
   </p>
 
   <app-images 
@@ -150,7 +150,7 @@
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
-    Si por alguna razon les llegara a dar un <strong>error de servidor (error 500)</strong> volveremos a dirijinos a la carpeta de configuración de nginx regresaremos a al paso de configuracion del servicio web <a class="volver" (click)="scrollToConfig()">click para volver</a>
+    Si por alguna razón les llegara a dar un <strong>error de servidor (error 500)</strong> volveremos a dirigirnos a la carpeta de configuración de Nginx regresaremos al paso de configuración del servicio web <a class="volver" (click)="scrollToConfig()">clic para volver</a>
     <br><br>
     Pero antes copia esto:
   </p>
@@ -161,7 +161,7 @@
   </app-comand-copy>
 
   <p class="subtitle-buenas-practicas-frontend">
-    Se va a reemplzar el &#64; por el $ para algunos servicios si funciona con el primer codigo, pero si falla tenemos que dejarlo con el signo de pesos. Una ves que hayas corrigido esto y hecho los demas paso, es muy importante volver a hacer todo y seguir los pasos para que funcione correctamente, si ya hiciste todo de nuevo y reiniciaste el servicio ya puedes volver a recargar tu IP y deberia de funcionar correctamente.
+    Se va a reemplazar el &#64; por el $ para algunos servicios sí funciona con el primer código, pero si falla tenemos que dejarlo con el signo de pesos. Una vez que hayas corregido esto y hecho los demás pasos, es muy importante volver a hacer todo y seguir los pasos para que funcione correctamente, si ya hiciste todo de nuevo y reiniciaste el servicio ya puedes volver a recargar tu IP y debería funcionar correctamente.
   </p>
 
   <app-images 

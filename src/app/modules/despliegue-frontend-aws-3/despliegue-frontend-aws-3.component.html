@@ -39,11 +39,11 @@
 <div class="code-examples-container">
   <h1 class="tip">Configuración de puertos</h1>
   <p class="subtitle-buenas-practicas-frontend">
-    Vamos a gestionar los grupos de seguridad para poder habilitar los puertos correspondientes, que este caso para despliegue de front solo son 3 (SSH, HTTP, HTTPS).
+    Vamos a gestionar los grupos de seguridad para poder habilitar los puertos correspondientes, que en este caso para despliegue de front solo son 3 (SSH, HTTP, HTTPS).
 
     <br><br>
-    Seleccionamos nuestra instancia y en la parte de abajo nos apareceran varias opciones, buscamos la opcion que dice <strong>Seguridad</strong>, nos desplazamos hacia abajo y encontraremos la seccion de <strong>Grupos de seguridad</strong>, damos click sobre el enlace y nos 
-    abrira otra vista en donde veremos los puertos abiertos, por defecto solo estara abierto el de ssh.
+    Seleccionamos nuestra instancia y en la parte de abajo nos aparecerán varias opciones, buscamos la opción que dice <strong>Seguridad</strong>, nos desplazamos hacia abajo y encontraremos la sección de <strong>Grupos de seguridad</strong>, damos clic sobre el enlace y nos 
+    abrirá otra vista en donde veremos los puertos abiertos, por defecto solo estará abierto el de SSH.
   </p>
 
   <app-images 
@@ -52,9 +52,9 @@
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
-    Ahora vamos a dar click sobre la opcion de <strong>Editar reglas de entrada</strong>, nos va a abrir otra vista en donde nos dara la opcion de agregar mas puertos con su origen correspondiente que este caso manejaremos el origen <strong style="color: #40a9da;">0.0.0.0/0</strong>.
+    Ahora vamos a dar clic sobre la opción de <strong>Editar reglas de entrada</strong>, nos va a abrir otra vista en donde nos dará la opción de agregar más puertos con su origen correspondiente que en este caso manejaremos el origen <strong style="color: #40a9da;">0.0.0.0/0</strong>.
     <br><br>
-    Damos click en <strong>Agregar regla</strong> y buscamos el protocolo, primero vamos a configurar el de http, el numero de puerto es el 80.
+    Damos clic en <strong>Agregar regla</strong> y buscamos el protocolo, primero vamos a configurar el de HTTP, el número de puerto es el 80.
   </p>
 
   <app-images 
@@ -63,9 +63,9 @@
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
-    En Origen vamos a seleccionar Anywhere y quedaria configurada el primer protocolo <strong>HTTP</strong>.
+    En Origen vamos a seleccionar Anywhere y quedaría configurado el primer protocolo <strong>HTTP</strong>.
     <br>
-    Ahora vamos a configurar el protocolo https, este protocolo corre en el puerto numero 443, hacemos el mismo proceso de configuración. 
+    Ahora vamos a configurar el protocolo HTTPS, este protocolo corre en el puerto número 443, hacemos el mismo proceso de configuración. 
   </p>
 
   <app-images 
@@ -74,9 +74,9 @@
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
-    Una ves de que ya hayamos abierto los puertos, daremos click en <strong>Guardar reglas</strong>. 
+    Una vez que ya hayamos abierto los puertos, daremos clic en <strong>Guardar reglas</strong>. 
     <br>
-    Nos mostrara el mensaje de exito una ves que hayamos guardado los cambios y ahora en la lista ya apareceran los puertos que configuramos.
+    Nos mostrará el mensaje de éxito una vez que hayamos guardado los cambios y ahora en la lista ya aparecerán los puertos que configuramos.
   </p>
 
   <app-images 
@@ -85,7 +85,7 @@
   </app-images>
 
   <p class="subtitle-buenas-practicas-frontend">
-    Ve a la siguiente pagina para continuar con el despliegue.
+    Ve a la siguiente página para continuar con el despliegue.
   </p>
 </div>
 
