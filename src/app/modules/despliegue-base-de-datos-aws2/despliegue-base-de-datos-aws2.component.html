@@ -1,0 +1,113 @@
+<section class="welcome-section">
+    <div class="welcome-container">
+        <div class="nav-container">
+            <button class="button" (click)="sendToHome($event)">
+                <div class="button-box">
+                    <span class="button-elem">
+                        <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z">
+                            </path>
+                        </svg>
+                    </span>
+                    <span class="button-elem">
+                        <svg viewBox="0 0 46 40">
+                            <path
+                                d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z">
+                            </path>
+                        </svg>
+                    </span>
+                </div>
+            </button>
+
+            <h1 class="title-front">Despliegue de Base de Datos en AWS EC2 y MySQL 💪🔥</h1>
+        </div>
+
+        <p class="frontend-description">
+            La configuración y gestión de bases de datos en AWS EC2 permite almacenar, consultar y administrar
+            información
+            de manera segura y eficiente en entornos de producción. Este proceso incluye la instalación del motor de
+            base de datos,
+            la creación y configuración de usuarios, la gestión de permisos y respaldos, así como la optimización del
+            rendimiento
+            para garantizar la disponibilidad y la integridad de los datos.
+        </p>
+
+        <div class="tech-cards-container">
+            <app-card-tecnology title="MySQL"></app-card-tecnology>
+            <app-card-tecnology title="PosgreSQL"></app-card-tecnology>
+            <app-card-tecnology title="Cassandra"></app-card-tecnology>
+            <app-card-tecnology title="NoSQL"></app-card-tecnology>
+            <app-card-tecnology title="MongoDB"></app-card-tecnology>
+        </div>
+    </div>
+</section>
+
+<div class="code-examples-container">
+    <h1 class="tip">Configuración de IP Elastica</h1>
+    <p class="subtitle-buenas-practicas-frontend">
+        A continuación, vamos a abrir los puertos necesarios para correr el servidor de <strong>MySQL</strong>. 
+        Abriremos el puerto <strong>3306</strong>, que es donde se ejecuta <strong>MySQL Aurora</strong>. 
+        Nos dirigimos al menú inferior y seleccionamos la opción de <strong>Seguridad</strong>. 
+        Luego, desplazamos un poco hacia abajo y vamos a <strong>Grupos de seguridad</strong>. 
+        Damos clic en el enlace y se abrirá otra ventana, donde haremos clic en <strong>Editar reglas de entrada</strong>.
+    </p>
+
+    <app-images imageSrc="blog/mysql/mysql4.png" imageSrc2="blog/mysql/mysql5.png">
+    </app-images>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Después vamos a dar clic en <strong>Agregar regla</strong> y en tipo vamos a seleccionar <strong>MySQL Aurora</strong> en origen vamos a seleccionar <strong>0.0.0.0/0</strong> para que se accesible a todas las conexiones remotas.
+        Damos clic en <strong>Guardar reglas</strong> y nos llevara a la interfaz de donde estan todos los puertos abiertos y ya veremos el puerto 3306 abierto, ahora si ya podemos actualizar e instalar MySQL.
+    </p>
+
+    <app-images imageSrc="blog/mysql/mysql6.png" imageSrc2="blog/mysql/mysql7.png">
+    </app-images>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Ahora haremos clic sobre el botón que dice <strong>Conectar</strong> y se abrirá la consola de <strong>EC2</strong>. 
+        Esto nos va a abrir la consolar ahi vamos a ejecutar el siguiente comando:
+    </p>
+
+    <app-comand-copy comand="sudo apt update && sudo apt upgrade -y"></app-comand-copy>
+
+    <app-images imageSrc="blog/mysql/mysql8.png" imageSrc2="blog/mysql/mysql9.png">
+    </app-images>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        ahora vamos a instalar <strong>MySQL Server</strong> para posteriormente verificar la instalación del server de mysql, vamos a ejecutar los siguientes comandos:
+    </p>
+
+    <app-comand-copy comand="sudo apt install mysql-server -y"></app-comand-copy>
+
+    <p class="subtitle-buenas-practicas-frontend">Ahora verificamos la instalación del server con el comando:</p>
+
+    <app-comand-copy comand="mysql --version"></app-comand-copy>
+
+    <app-images imageSrc="blog/mysql/mysql10.png" imageSrc2="blog/mysql/mysql11.png">
+    </app-images>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Ve a la siguiente página para continuar con el despliegue.
+    </p>
+</div>
+
+<div class="button-outer-container">
+  <div class="button-container">
+    <button class="learn-more-btn prev-btn" (click)="sendToDeployAWS($event)">
+      <span class="learn-more-circle" aria-hidden="true">
+        <span class="learn-more-icon arrow-left"></span>
+      </span>
+      <span class="learn-more-text">Anterior</span>
+    </button>
+    
+    <button class="learn-more-btn next-btn" (click)="sendToDeployAWS2($event)">
+      <span class="learn-more-circle" aria-hidden="true">
+        <span class="learn-more-icon arrow-right"></span>
+      </span>
+      <span class="learn-more-text">Siguiente</span>
+    </button>
+  </div>
+</div>
+
+<app-tecnologias></app-tecnologias>

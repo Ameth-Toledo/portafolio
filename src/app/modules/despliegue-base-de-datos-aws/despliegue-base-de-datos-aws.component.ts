@@ -1,24 +1,24 @@
 import { Component } from '@angular/core';
-import { TecnologiasComponent } from "../../components/tecnologias/tecnologias.component";
-import { CardTecnologyComponent } from "../../components/card-tecnology/card-tecnology.component";
 import { AnimationService } from '../../services/animation/animation.service';
-import { Router } from '@angular/router';
-import { ImagesComponent } from "../../components/images/images.component";
 import { ViewportScroller } from '@angular/common';
+import { Router } from '@angular/router';
+import { CardTecnologyComponent } from "../../components/card-tecnology/card-tecnology.component";
+import { ImagesComponent } from "../../components/images/images.component";
+import { TecnologiasComponent } from "../../components/tecnologias/tecnologias.component";
 
 @Component({
-  selector: 'app-despliegue-frontend-aws',
+  selector: 'app-despliegue-base-de-datos-aws',
   standalone: true,
-  imports: [TecnologiasComponent, CardTecnologyComponent, ImagesComponent],
-  templateUrl: './despliegue-frontend-aws.component.html',
-  styleUrl: './despliegue-frontend-aws.component.css'
+  imports: [CardTecnologyComponent, ImagesComponent, TecnologiasComponent],
+  templateUrl: './despliegue-base-de-datos-aws.component.html',
+  styleUrl: './despliegue-base-de-datos-aws.component.css'
 })
-export class DespliegueFrontendAwsComponent {
-  constructor (
-    private router : Router,
+export class DespliegueBaseDeDatosAwsComponent {
+  constructor(
+    private router: Router,
     private animationService: AnimationService,
     private viewportScroller: ViewportScroller
-  ) {}
+  ) { }
 
   ngOnInit() {
     setTimeout(() => {
@@ -26,7 +26,7 @@ export class DespliegueFrontendAwsComponent {
     }, 50);
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void { }
 
   sendToHome(event: Event) {
     event.preventDefault();
@@ -35,14 +35,14 @@ export class DespliegueFrontendAwsComponent {
 
   sendToDeployAWS2(event: Event) {
     event.preventDefault();
-    this.router.navigate(['despliegue/front/aws/ec2/id=2']).then(() => {
+    this.router.navigate(['despliegue/bd/aws/ec2/id=2']).then(() => {
       this.viewportScroller.scrollToPosition([0, 0]);
     });
   }
 
   sendToDeployAWS(event: Event) {
     event.preventDefault();
-    this.router.navigate(['despliegue/front/aws/ec2']).then(() => {
+    this.router.navigate(['despliegue/bd/aws/ec2']).then(() => {
       this.viewportScroller.scrollToPosition([0, 0]);
     });
   }
