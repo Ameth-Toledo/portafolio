@@ -29,6 +29,9 @@ import { LikesComponent } from './modules/likes/likes.component';
 import { DespliegueBaseDeDatosAwsComponent } from './modules/despliegue-base-de-datos-aws/despliegue-base-de-datos-aws.component';
 import { DespliegueBaseDeDatosAws1Component } from './modules/despliegue-base-de-datos-aws1/despliegue-base-de-datos-aws1.component';
 import { DespliegueBaseDeDatosAws2Component } from './modules/despliegue-base-de-datos-aws2/despliegue-base-de-datos-aws2.component';
+import { DespliegueBaseDeDatosAws3Component } from './modules/despliegue-base-de-datos-aws3/despliegue-base-de-datos-aws3.component';
+import { DespliegueBaseDeDatosAws4Component } from './modules/despliegue-base-de-datos-aws4/despliegue-base-de-datos-aws4.component';
+import { DespliegueBaseDeDatosAws5Component } from './modules/despliegue-base-de-datos-aws5/despliegue-base-de-datos-aws5.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '', pathMatch: 'full' },
@@ -45,6 +48,9 @@ export const routes: Routes = [
     { path: 'despliegue/bd/aws/ec2', component: DespliegueBaseDeDatosAwsComponent },
     { path: 'despliegue/bd/aws/ec2/id=2', component: DespliegueBaseDeDatosAws1Component },
     { path: 'despliegue/bd/aws/ec2/id=3', component: DespliegueBaseDeDatosAws2Component},
+    { path: 'despliegue/bd/aws/ec2/id=4', component: DespliegueBaseDeDatosAws3Component },
+    { path: 'despliegue/bd/aws/ec2/id=5', component: DespliegueBaseDeDatosAws4Component },
+    { path: 'despliegue/bd/aws/ec2/id=6', component: DespliegueBaseDeDatosAws5Component },
 
     { path: 'blog', component: CoursesComponent },
     { path: 'modulos', component: ModulosComponent, canActivate: [UserGuard] },

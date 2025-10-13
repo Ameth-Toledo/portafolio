@@ -44,45 +44,64 @@
 </section>
 
 <div class="code-examples-container">
-    <h1 class="tip">Configuración de IP Elastica</h1>
+    <h1 class="tip">Configuración de las Opciones de Seguridad</h1>
     <p class="subtitle-buenas-practicas-frontend">
-        A continuación, vamos a crear nuestra <strong>IP elástica</strong> para luego conectarnos a Workbench.
-        En el menú del lado izquierdo nos dirigimos a la sección de <strong>Direcciones IP elásticas</strong>. 
-        Ahí encontraremos todas las IP elásticas que hayamos creado. En mi caso, aparece una llamada 
-        <strong>BD Ejemplo</strong>; a ustedes les aparecerá vacío. 
-        Vamos a crear una nueva dirección IP haciendo clic en el botón 
-        <strong>Asignar dirección IP elástica</strong>.
+        A continuación, vamos a ingresar a la terminal de <strong>MySQL Client</strong> o <strong>Server</strong> para configurar la seguridad de nuestra base de datos. 
+        Para ello, necesitamos ser <strong>root</strong> y acceder a nuestra terminal de MySQL. 
+        Ejecutaremos el siguiente comando:
     </p>
 
-    <app-images imageSrc="blog/mysql/mysql12.png" imageSrc2="blog/mysql/mysql13.png">
+    <app-comand-copy comand="sudo mysql -u root -p"></app-comand-copy>
+
+    <app-images imageSrc="blog/mysql/mysql22-despuesdesudo nano3.png" imageSrc2="blog/mysql/mysql22.png">
     </app-images>
 
     <p class="subtitle-buenas-practicas-frontend">
-        Se abrirá otra ventana; no modificamos nada, solo daremos clic en el botón <strong>Asignar</strong>. 
-        Luego nos regresará a la vista donde se encuentran las <strong>IP elásticas</strong>.  
-        Ahora vamos a asignarle un nombre para identificar la IP.  
-        Una vez asignado el nombre, haremos clic en el botón verde que dice 
-        <strong>Asociar esta dirección IP elástica</strong>.
+        Una vez que hemos ingresado a la terminal, vamos a crear nuestra base de datos. 
+        En mi caso, pondré <strong>ejemplo</strong>, pero ustedes deben usar el nombre correcto de su base de datos.
     </p>
 
-    <app-images imageSrc="blog/mysql/mysql14.png" imageSrc2="blog/mysql/mysql15.png">
+    <app-comand-copy language="mysql" comand="CREATE DATABASE ejemplo;"></app-comand-copy>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Una vez que hayamos creado nuestra base de datos, vamos a crear un usuario para poder acceder a ella. 
+        Ejecutaremos el siguiente comando:
+    </p>
+
+    <app-comand-copy language="mysql" comand="CREATE USER 'usuario'@'%' IDENTIFIED BY 'contraseña-segura';"></app-comand-copy>
+
+    <app-images imageSrc="blog/mysql/mysql23.png" imageSrc2="blog/mysql/mysql24.png">
     </app-images>
 
     <p class="subtitle-buenas-practicas-frontend">
-        Una vez que hagamos clic en el botón <strong>Asociar la dirección IP elástica</strong>, se abrirá otra ventana. 
-        En la parte que dice <strong>Instancia</strong>, desplegaremos el menú y buscaremos nuestra instancia 
-        donde instalamos <strong>MySQL</strong>.
+        Ahora vamos a otorgar todos los privilegios del usuario recién creado sobre nuestra base de datos. 
+        Esto permitirá que el usuario pueda realizar cualquier operación (crear, leer, actualizar y eliminar datos) dentro de la base de datos <strong>ejemplo</strong>.
     </p>
 
-    <app-images imageSrc="blog/mysql/mysql16.png" imageSrc2="blog/mysql/mysql17.png">
+    <app-comand-copy language="mysql" comand="GRANT ALL PRIVILEGES ON ejemplo.* TO 'usuario'@'%';"></app-comand-copy>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Ahora vamos a actualizar los privilegios para que los cambios realizados, como la creación del usuario y la asignación de permisos, se apliquen inmediatamente. 
+        Para ello, ejecutamos el siguiente comando:
+    </p>
+
+    <app-comand-copy language="mysql" comand="FLUSH PRIVILEGES;"></app-comand-copy>
+
+    <app-images imageSrc="blog/mysql/mysql25.png" imageSrc2="blog/mysql/mysql26.png">
     </app-images>
 
     <p class="subtitle-buenas-practicas-frontend">
-        Todo lo demás lo dejamos igual. Ahora sí, simplemente hacemos clic en el botón amarillo que dice <strong>Asociado</strong>. 
-        Luego regresamos a la sección de <strong>Instancias</strong>. y la ip ahora ya cambio.
+        Ahora vamos a salir de la terminal de MySQL, ya que hemos terminado de configurar los usuarios y privilegios. 
+        Para ello, ejecutamos el siguiente comando:
     </p>
 
-    <app-images imageSrc="blog/mysql/mysql18.png" imageSrc2="blog/mysql/mysql19.png">
+    <app-comand-copy language="mysql" comand="EXIT;"></app-comand-copy>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Ahora, únicamente regresamos a la terminal de nuestra instancia <strong>EC2</strong> para continuar con los siguientes pasos.
+    </p>
+
+    <app-images imageSrc="blog/mysql/mysql27.png" imageSrc2="blog/mysql/mysql36.png">
     </app-images>
 
     <p class="subtitle-buenas-practicas-frontend">

@@ -44,45 +44,39 @@
 </section>
 
 <div class="code-examples-container">
-    <h1 class="tip">Configuración de IP Elastica</h1>
+    <h1 class="tip">Configuración de MySQL para Acceso Remoto</h1>
     <p class="subtitle-buenas-practicas-frontend">
-        A continuación, vamos a crear nuestra <strong>IP elástica</strong> para luego conectarnos a Workbench.
-        En el menú del lado izquierdo nos dirigimos a la sección de <strong>Direcciones IP elásticas</strong>. 
-        Ahí encontraremos todas las IP elásticas que hayamos creado. En mi caso, aparece una llamada 
-        <strong>BD Ejemplo</strong>; a ustedes les aparecerá vacío. 
-        Vamos a crear una nueva dirección IP haciendo clic en el botón 
-        <strong>Asignar dirección IP elástica</strong>.
+        A continuación, vamos a modificar el archivo <strong>.cnf</strong> de MySQL para permitir las conexiones desde cualquier host. 
+        Para ello, ejecutaremos el siguiente comando:
     </p>
 
-    <app-images imageSrc="blog/mysql/mysql12.png" imageSrc2="blog/mysql/mysql13.png">
+    <app-comand-copy comand="sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf"></app-comand-copy>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Ahora vamos a desplazarnos hacia abajo hasta encontrar la línea <strong>bind-address</strong>. 
+        Vamos a reemplazar el valor <strong>127.0.0.1</strong> por <strong>0.0.0.0</strong> para permitir conexiones desde cualquier IP.  
+        De tal manera que debe quedar así:  
+        <strong>bind-address = 0.0.0.0</strong>
+    </p>
+
+    <app-images imageSrc="blog/mysql/mysql20.png" imageSrc2="blog/mysql/mysql21.png">
     </app-images>
 
     <p class="subtitle-buenas-practicas-frontend">
-        Se abrirá otra ventana; no modificamos nada, solo daremos clic en el botón <strong>Asignar</strong>. 
-        Luego nos regresará a la vista donde se encuentran las <strong>IP elásticas</strong>.  
-        Ahora vamos a asignarle un nombre para identificar la IP.  
-        Una vez asignado el nombre, haremos clic en el botón verde que dice 
-        <strong>Asociar esta dirección IP elástica</strong>.
+        Ahora vamos a reiniciar el servicio de <strong>MySQL</strong> para que los cambios del host se apliquen correctamente. 
+        Para ello, ejecutaremos el siguiente comando:
     </p>
 
-    <app-images imageSrc="blog/mysql/mysql14.png" imageSrc2="blog/mysql/mysql15.png">
-    </app-images>
-
+    <app-comand-copy comand="sudo systemctl restart mysql"></app-comand-copy>
+    
     <p class="subtitle-buenas-practicas-frontend">
-        Una vez que hagamos clic en el botón <strong>Asociar la dirección IP elástica</strong>, se abrirá otra ventana. 
-        En la parte que dice <strong>Instancia</strong>, desplegaremos el menú y buscaremos nuestra instancia 
-        donde instalamos <strong>MySQL</strong>.
+        Verificamos que el servicio esté activo para evitar errores al momento de conectarnos con <strong>Workbench</strong>. 
+        Para ello, ejecutaremos el siguiente comando:
     </p>
 
-    <app-images imageSrc="blog/mysql/mysql16.png" imageSrc2="blog/mysql/mysql17.png">
-    </app-images>
+    <app-comand-copy comand="sudo systemctl status mysql"></app-comand-copy>
 
-    <p class="subtitle-buenas-practicas-frontend">
-        Todo lo demás lo dejamos igual. Ahora sí, simplemente hacemos clic en el botón amarillo que dice <strong>Asociado</strong>. 
-        Luego regresamos a la sección de <strong>Instancias</strong>. y la ip ahora ya cambio.
-    </p>
-
-    <app-images imageSrc="blog/mysql/mysql18.png" imageSrc2="blog/mysql/mysql19.png">
+    <app-images imageSrc="blog/mysql/mysql22-despuesdesudo nano.png" imageSrc2="blog/mysql/mysql22-despuesdesudo nano2.png">
     </app-images>
 
     <p class="subtitle-buenas-practicas-frontend">

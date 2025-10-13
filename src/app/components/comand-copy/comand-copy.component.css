@@ -79,6 +79,78 @@
     text-align: left;
 }
 
+.code-highlighted {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    line-height: 1.6;
+    color: #D4D4D4 !important;
+}
+
+/* Estilos para SQL/MySQL */
+.code-highlighted ::ng-deep .sql-keyword {
+    color: #569CD6;
+    font-weight: bold;
+}
+
+.code-highlighted ::ng-deep .sql-keywordEspecial {
+    color: #E9950C;
+    font-weight: bold;
+}
+
+.code-highlighted ::ng-deep .sql-string {
+    color: #CE9178;
+}
+
+.code-highlighted ::ng-deep .sql-number {
+    color: #B5CEA8;
+}
+
+.code-highlighted ::ng-deep .sql-comment {
+    color: #6A9955;
+    font-style: italic;
+}
+
+.code-highlighted ::ng-deep .sql-function {
+    color: #E9950C;
+}
+
+/* Estilos para JavaScript */
+.code-highlighted ::ng-deep .js-keyword {
+    color: #C586C0;
+    font-weight: bold;
+}
+
+.code-highlighted ::ng-deep .js-string {
+    color: #CE9178;
+}
+
+.code-highlighted ::ng-deep .js-number {
+    color: #B5CEA8;
+}
+
+.code-highlighted ::ng-deep .js-comment {
+    color: #6A9955;
+    font-style: italic;
+}
+
+/* Estilos para Python */
+.code-highlighted ::ng-deep .py-keyword {
+    color: #569CD6;
+    font-weight: bold;
+}
+
+.code-highlighted ::ng-deep .py-string {
+    color: #CE9178;
+}
+
+.code-highlighted ::ng-deep .py-number {
+    color: #B5CEA8;
+}
+
+.code-highlighted ::ng-deep .py-comment {
+    color: #6A9955;
+    font-style: italic;
+}
+
 .copy-button {
     background: none;
     border: none;
@@ -88,6 +160,7 @@
     display: flex;
     align-items: center;
     transition: color 0.3s ease;
+    flex-shrink: 0;
 }
 
 .copy-button:hover {

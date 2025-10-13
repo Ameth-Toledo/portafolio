@@ -1,16 +1,25 @@
 <div *ngIf="isModalVisible" class="message-notification-modal">
-    <i class="fas fa-check-circle message-icon"></i>
-    <p class="message-tittle">Comando copiado: {{ comandCopied }}</p>
-  </div>  
-  
-  <div class="card-comentarios">
-    <div class="content-container">
-      <div class="email-container">
-        <span class="email-text">{{ comand }}</span>
-        <button class="copy-button" (click)="copyToClipboard(comand)">
-          <i class="fas fa-copy"></i>
-        </button>
-      </div>
+  <i class="fas fa-check-circle message-icon"></i>
+  <p class="message-tittle">Comando copiado: {{ comandCopied }}</p>
+</div>  
+
+<div class="card-comentarios">
+  <div class="content-container">
+    <div class="email-container">
+      <span 
+        class="email-text" 
+        *ngIf="!language"
+      >{{ comand }}</span>
+      
+      <span 
+        class="email-text code-highlighted" 
+        *ngIf="language"
+        [innerHTML]="highlightedComand"
+      ></span>
+      
+      <button class="copy-button" (click)="copyToClipboard(comand)">
+        <i class="fas fa-copy"></i>
+      </button>
     </div>
   </div>
-  
+</div>

@@ -44,49 +44,59 @@
 </section>
 
 <div class="code-examples-container">
-    <h1 class="tip">Configuración de IP Elastica</h1>
+    <h1 class="tip">Verificación de la Configuración de MySQL</h1>
     <p class="subtitle-buenas-practicas-frontend">
-        A continuación, vamos a crear nuestra <strong>IP elástica</strong> para luego conectarnos a Workbench.
-        En el menú del lado izquierdo nos dirigimos a la sección de <strong>Direcciones IP elásticas</strong>. 
-        Ahí encontraremos todas las IP elásticas que hayamos creado. En mi caso, aparece una llamada 
-        <strong>BD Ejemplo</strong>; a ustedes les aparecerá vacío. 
-        Vamos a crear una nueva dirección IP haciendo clic en el botón 
-        <strong>Asignar dirección IP elástica</strong>.
+        A continuación, vamos a verificar la configuración. Para ello, copiamos nuestra <strong>IP</strong> y abrimos <strong>Workbench</strong> para crear una nueva conexión y comprobar que el acceso remoto funcione correctamente.
     </p>
 
-    <app-images imageSrc="blog/mysql/mysql12.png" imageSrc2="blog/mysql/mysql13.png">
+    <app-images imageSrc="blog/mysql/mysql28.png" imageSrc2="blog/mysql/mysql29.png">
     </app-images>
 
     <p class="subtitle-buenas-practicas-frontend">
-        Se abrirá otra ventana; no modificamos nada, solo daremos clic en el botón <strong>Asignar</strong>. 
-        Luego nos regresará a la vista donde se encuentran las <strong>IP elásticas</strong>.  
-        Ahora vamos a asignarle un nombre para identificar la IP.  
-        Una vez asignado el nombre, haremos clic en el botón verde que dice 
-        <strong>Asociar esta dirección IP elástica</strong>.
+        Ahora vamos a dar clic en el ícono de <strong>+</strong>. Nos pedirá un nombre; aquí puede ser cualquier nombre, ya que es solo el nombre de la conexión. 
+        En el campo <strong>Hostname</strong> pondremos la IP que copiamos de la instancia, y en <strong>Puerto</strong> dejamos el valor <strong>3306</strong>. 
+        En <strong>Username</strong> ingresamos el usuario que creamos; en mi caso es <strong>ameth</strong>. 
+        Una vez llenada la información, damos clic en <strong>OK</strong>. La conexión creada aparecerá en la lista de conexiones.
     </p>
 
-    <app-images imageSrc="blog/mysql/mysql14.png" imageSrc2="blog/mysql/mysql15.png">
+    <app-images imageSrc="blog/mysql/mysql30.png" imageSrc2="blog/mysql/mysql31.png">
     </app-images>
 
     <p class="subtitle-buenas-practicas-frontend">
-        Una vez que hagamos clic en el botón <strong>Asociar la dirección IP elástica</strong>, se abrirá otra ventana. 
-        En la parte que dice <strong>Instancia</strong>, desplegaremos el menú y buscaremos nuestra instancia 
-        donde instalamos <strong>MySQL</strong>.
+        Ahora damos doble clic sobre la conexión creada y nos aparecerá una ventana. Allí vamos a ingresar nuestra contraseña para el usuario creado. 
+        Una vez que ingresamos la contraseña, damos clic en <strong>OK</strong> y esperamos a que la conexión se establezca.
     </p>
 
-    <app-images imageSrc="blog/mysql/mysql16.png" imageSrc2="blog/mysql/mysql17.png">
-    </app-images>
+    <app-images imageSrc="blog/mysql/mysql32.png" imageSrc2="blog/mysql/mysql33.png">
+    </app-images>   
 
     <p class="subtitle-buenas-practicas-frontend">
-        Todo lo demás lo dejamos igual. Ahora sí, simplemente hacemos clic en el botón amarillo que dice <strong>Asociado</strong>. 
-        Luego regresamos a la sección de <strong>Instancias</strong>. y la ip ahora ya cambio.
+        Ahora ya podemos usar nuestra base de datos; en mi caso se llama <strong>ejemplo</strong>. 
+        Ejecutaremos el siguiente comando para seleccionar la base de datos creada en la instancia:
     </p>
 
-    <app-images imageSrc="blog/mysql/mysql18.png" imageSrc2="blog/mysql/mysql19.png">
-    </app-images>
+    <app-comand-copy language="mysql" comand="USE ejemplo;"></app-comand-copy>
 
     <p class="subtitle-buenas-practicas-frontend">
-        Ve a la siguiente página para continuar con el despliegue.
+        Si todo salió bien, debería haber aparecido el mensaje <strong>0 rows affected</strong>, indicando que no hubo errores. 
+        Una vez confirmado que todo funcionó correctamente, ya podemos usar la base de datos libremente: crear tablas, editar o eliminar datos.
+    </p>
+
+    <app-comand-copy language="mysql" comand="CREATE TABLE user (
+    id_user INT NOT NULL AUTO_INCREMENT,
+    nombre VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id_user)
+);
+"></app-comand-copy>
+
+    <app-images imageSrc="blog/mysql/mysql34.png" imageSrc2="blog/mysql/mysql35.png">
+    </app-images>   
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Listo, la base de datos ha sido creada correctamente.
     </p>
 </div>
 
@@ -97,13 +107,6 @@
         <span class="learn-more-icon arrow-left"></span>
       </span>
       <span class="learn-more-text">Anterior</span>
-    </button>
-    
-    <button class="learn-more-btn next-btn" (click)="sendToDeployAWS2($event)">
-      <span class="learn-more-circle" aria-hidden="true">
-        <span class="learn-more-icon arrow-right"></span>
-      </span>
-      <span class="learn-more-text">Siguiente</span>
     </button>
   </div>
 </div>

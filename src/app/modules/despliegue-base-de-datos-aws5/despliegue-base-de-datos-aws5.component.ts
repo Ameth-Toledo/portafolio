@@ -3,17 +3,18 @@ import { Router } from '@angular/router';
 import { AnimationService } from '../../services/animation/animation.service';
 import { ViewportScroller } from '@angular/common';
 import { TecnologiasComponent } from "../../components/tecnologias/tecnologias.component";
+import { ComandCopyComponent } from "../../components/comand-copy/comand-copy.component";
 import { ImagesComponent } from "../../components/images/images.component";
 import { CardTecnologyComponent } from "../../components/card-tecnology/card-tecnology.component";
 
 @Component({
-  selector: 'app-despliegue-base-de-datos-aws2',
+  selector: 'app-despliegue-base-de-datos-aws5',
   standalone: true,
-  imports: [TecnologiasComponent, ImagesComponent, CardTecnologyComponent],
-  templateUrl: './despliegue-base-de-datos-aws2.component.html',
-  styleUrl: './despliegue-base-de-datos-aws2.component.css'
+  imports: [TecnologiasComponent, ComandCopyComponent, ImagesComponent, CardTecnologyComponent],
+  templateUrl: './despliegue-base-de-datos-aws5.component.html',
+  styleUrl: './despliegue-base-de-datos-aws5.component.css'
 })
-export class DespliegueBaseDeDatosAws2Component {
+export class DespliegueBaseDeDatosAws5Component {
 constructor(
     private router: Router,
     private animationService: AnimationService,
@@ -35,14 +36,14 @@ constructor(
 
   sendToDeployAWS2(event: Event) {
     event.preventDefault();
-    this.router.navigate(['despliegue/bd/aws/ec2/id=4']).then(() => {
+    this.router.navigate(['despliegue/bd/aws/ec2/id=7']).then(() => {
       this.viewportScroller.scrollToPosition([0, 0]);
     });
   }
 
   sendToDeployAWS(event: Event) {
     event.preventDefault();
-    this.router.navigate(['despliegue/bd/aws/ec2/id=2']).then(() => {
+    this.router.navigate(['despliegue/bd/aws/ec2/id=5']).then(() => {
       this.viewportScroller.scrollToPosition([0, 0]);
     });
   }
