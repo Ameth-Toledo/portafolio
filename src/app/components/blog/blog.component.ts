@@ -43,9 +43,9 @@ export class BlogComponent {
     });
   }
 
-  sendToPoo(event: Event) {
+  sendToBD(event: Event) {
     event.preventDefault();
-    this.router.navigate(['programacion/orientada/a/objetos']).then(() => {
+    this.router.navigate(['despliegue/bd/aws/ec2']).then(() => {
       this.viewportScroller.scrollToPosition([0, 0]);
     });
   }
