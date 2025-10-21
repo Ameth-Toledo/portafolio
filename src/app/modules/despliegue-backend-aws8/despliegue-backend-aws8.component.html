@@ -44,70 +44,141 @@
 <div class="code-examples-container">
     <h1 class="tip">Creación de servicio para ejecución automatizada</h1>
     <p class="subtitle-buenas-practicas-frontend">
-        Ahora vamos a crear una <strong>IP Elástica</strong>.  
-        Nos dirigimos al menú izquierdo y accedemos a la sección de <strong>Direcciones IP Elásticas</strong>, donde se listarán todas las IPs elásticas existentes.  
-        Hacemos clic en <strong>Asignar dirección IP elástica</strong>, lo que nos llevará a otra ventana donde únicamente debemos hacer clic en <strong>Asignar</strong>.
+        Ahora vamos a configurar el repositorio de <strong>NodeSource</strong> para preparar el entorno necesario.  
+        Una vez completado este paso, procederemos a instalar <strong>Node.js</strong> ejecutando el siguiente comando:
     </p>
 
-    <app-images imageSrc="blog/javalin/javalin35.png" imageSrc2="blog/javalin/javalin36.png">
+    <app-comand-copy comand="curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -"></app-comand-copy>
+    <app-comand-copy comand="sudo apt install nodejs -y"></app-comand-copy>
+
+    <app-images imageSrc="blog/javalin/javalin47.png" imageSrc2="blog/javalin/javalin48.png">
     </app-images>
 
     <p class="subtitle-buenas-practicas-frontend">
-        Una vez creada la <strong>IP Elástica</strong>, vamos a asignarle un nombre.  
-        En mi caso, le pondré <strong>Backend</strong>.  
-        Hacemos clic en <strong>Guardar</strong> y podremos ver la IP creada.  
-        A continuación, hacemos clic en el botón verde que dice <strong>Asociar esta dirección IP Elástica</strong>.
+        Una vez instalado <strong>Node.js</strong> y configurado el repositorio correctamente, verificaremos que la instalación se haya realizado con éxito.  
+        Para ello, ejecutamos los siguientes comandos:
     </p>
 
-    <app-images imageSrc="blog/javalin/javalin37.png" imageSrc2="blog/javalin/javalin38.png"></app-images>
+    <app-comand-copy comand="node --version
+    npm --version"></app-comand-copy>
 
     <p class="subtitle-buenas-practicas-frontend">
-        Se abrirá una nueva ventana y nos desplazamos hacia abajo hasta encontrar la sección de <strong>Instancia</strong>.  
-        Aquí seleccionamos nuestra instancia; en mi caso, es <strong>Backend</strong>.  
-        Una vez seleccionada, hacemos clic en <strong>Asociar</strong> para completar el proceso.
+        Una vez confirmada la instalación, procederemos a instalar <strong>PM2</strong>, un administrador de procesos que nos permitirá mantener la API ejecutándose de forma continua y automática, incluso después de un reinicio del servidor.  
+        Le agregaremos el parámetro <strong>-g</strong> para que se instale de manera global en el sistema.  
+        Ejecutamos el siguiente comando:
     </p>
 
-    <app-images imageSrc="blog/javalin/javalin39.png" imageSrc2="blog/javalin/javalin40.png"></app-images>
+    <app-comand-copy comand="sudo npm install -g pm2"></app-comand-copy>
+
+    <app-images imageSrc="blog/javalin/javalin49.png" imageSrc2="blog/javalin/javalin50.png"></app-images>
 
     <p class="subtitle-buenas-practicas-frontend">
-        Listo, ahora la instancia ya tiene la <strong>IP Elástica</strong> asociada.  
-        Copiamos la IP y regresamos a la terminal del backend.  
-        A continuación, modificaremos el archivo <strong>Main.java</strong> para que la API escuche en la nueva IP.  
+        Ahora vamos a crear un <strong>script</strong> que se encargará de ejecutar nuestra API utilizando el comando <strong>./gradlew run</strong>.  
+        Este script será de tipo <strong>.sh</strong> (Bash), para que <strong>PM2</strong> pueda ejecutarlo sin inconvenientes ni errores.  
+        Para crearlo, ejecutamos el siguiente comando:
+    </p>
+
+    <app-comand-copy comand="nano ~/start-api.sh"></app-comand-copy>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Una vez dentro del editor de texto <strong>nano</strong>, escribimos el siguiente contenido:
+    </p>
+
+    <app-comand-copy comand="#!/bin/bash
+    cd /home/ubuntu/api-users-javalin
+    ./gradlew run"></app-comand-copy>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        <strong>¡Importante!</strong>  
+        En la línea que indica <strong>cd /home/ubuntu/api-users-javalin</strong>, es fundamental asegurarse de que la ruta sea exactamente la misma donde se encuentra alojada tu API.  
+        Si la ruta no es correcta, el proceso de automatización no funcionará correctamente y <strong>PM2</strong> no podrá ejecutar la aplicación.
+    </p>
+
+    <app-images imageSrc="blog/javalin/javalin51.png" imageSrc2="blog/javalin/javalin52.png"></app-images>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Ahora, para que <strong>PM2</strong> pueda ejecutar el script correctamente, es necesario asignarle permisos de ejecución.  
+        Esto permitirá que el sistema reconozca el archivo como un programa ejecutable.  
+        Para hacerlo, ejecutamos el siguiente comando:
+    </p>
+
+    <app-comand-copy comand="chmod +x ~/start-api.sh"></app-comand-copy>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Una vez ejecutado el comando, procederemos a verificar que los permisos se hayan asignado correctamente.  
+        El archivo debe mostrar la letra <strong>x</strong> en los permisos del usuario propietario, del grupo y de otros, lo que indica que tiene permisos de ejecución.  
+        Esto garantiza que <strong>PM2</strong> pueda ejecutar el script sin inconvenientes.  
+        Para verificar los permisos, ejecutamos el siguiente comando:
+    </p>
+
+    <app-comand-copy comand="ls -l ~/start-api.sh"></app-comand-copy>
+
+    <app-images imageSrc="blog/javalin/javalin53.png" imageSrc2="blog/javalin/javalin54.png"></app-images>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Ahora vamos a iniciar la API utilizando el servicio <strong>PM2</strong>, para posteriormente aplicar la configuración de inicio automático.  
+        En el parámetro <strong>--name</strong> deben colocar el nombre de su API o cualquier nombre identificativo; de preferencia uno relacionado con la API para facilitar su reconocimiento.  
+        En mi caso, lo llamaré <strong>api-usuarios</strong>. Para ello, ejecutaremos el siguiente comando:
+    </p>
+
+    <app-comand-copy comand="pm2 start ~/start-api.sh --name api-usuarios"></app-comand-copy>
+
+    <app-images imageSrc="blog/javalin/javalin55.png" imageSrc2="blog/javalin/javalin56.png"></app-images>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Ahora vamos a generar nuestro script de inicio automático.  
+        Al ejecutar este comando, se nos mostrará un <strong>PATH</strong>, el cual será utilizado para la ejecución automática del script con <strong>PM2</strong>.  
         Para ello, ejecutamos el siguiente comando:
     </p>
 
-    <app-comand-copy comand="sudo nano Main.java"></app-comand-copy>
-
-    <app-images imageSrc="blog/javalin/javalin41.png" imageSrc2="blog/javalin/javalin42.png"></app-images>
+    <app-comand-copy comand="pm2 startup"></app-comand-copy>
 
     <p class="subtitle-buenas-practicas-frontend">
-        En todas las líneas donde aparezca <strong>localhost</strong>, las reemplazaremos por la IP creada; en mi caso, es <strong>35.172.85.206</strong>.  
-        Luego, presionamos <strong>Ctrl + X</strong> y, cuando nos pregunte si queremos guardar el archivo con el mismo nombre, presionamos <strong>Enter</strong>.  
-        Después, ejecutamos <strong>./gradlew run</strong> para levantar nuevamente el servidor.  
-        Una vez modificada la IP en el archivo <strong>Main.java</strong>, probaremos la API.  
-        En mi caso, la probaré en <strong>Postman</strong>: copiamos la IP y construimos la URL, que debe quedar así: <strong>http://35.172.85.206:8080</strong>, agregando el endpoint correspondiente, en mi caso <strong>/api/usuarios</strong>.
+        Ahora vamos a guardar la configuración actual del <strong>PATH</strong> para que <strong>PM2</strong> pueda ejecutar correctamente nuestra API de forma automática.  
+        Para ello, ejecutamos el siguiente comando:
     </p>
 
-    <app-images imageSrc="blog/javalin/javalin43.png" imageSrc2="blog/javalin/javalin44.png"></app-images>
+    <app-comand-copy comand="pm2 save"></app-comand-copy>
+
+    <app-images imageSrc="blog/javalin/javalin57.png" imageSrc2="blog/javalin/javalin58.png"></app-images>
 
     <p class="subtitle-buenas-practicas-frontend">
-        Como podemos observar, los métodos HTTP <strong>GET</strong>, <strong>POST</strong>, <strong>PUT</strong> y <strong>DELETE</strong> funcionan correctamente.  
-        Es importante recalcar que cada vez que se reinicie o cierre la instancia, debemos ingresar nuevamente a la carpeta del backend y ejecutar el comando <strong>./gradlew run</strong> para volver a levantar el servidor.  
-        Antes de hacerlo, es recomendable verificar que en el archivo de conexión se encuentre el parámetro <strong>allowPublicKeyRetrieval</strong> inicializado en <strong>true</strong>.  
-        El fragmento de configuración debe verse de la siguiente manera:
+        ¡Listo! Ahora nos queda revisar el estado del servicio para verificar que la configuración haya funcionado correctamente.  
+        Al mostrar el estado, debería aparecer el nombre asignado al servicio; en mi caso es <strong>api-usuarios</strong>.  
+        Además, en el campo <strong>status</strong> debe aparecer <strong>online</strong>, indicando que la API se está ejecutando correctamente.  
+        Para ello, ejecutamos el siguiente comando:
     </p>
 
-    <app-comand-copy comand="jdbc:mysql://%s:%s/%s?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC"></app-comand-copy>
+    <app-comand-copy comand="pm2 status"></app-comand-copy>
 
     <p class="subtitle-buenas-practicas-frontend">
-        El siguiente paso será crear un <strong>servicio</strong> y un <strong>script</strong>.  
-        El propósito del servicio es iniciar automáticamente la API sin necesidad de ejecutar manualmente el comando cada vez que el servidor se reinicie, garantizando así que el proceso sea completamente automatizado.
+        Una vez confirmado que el <strong>status</strong> esté <strong>online</strong>, ahora vamos a revisar los logs para verificar que la API se haya conectado correctamente con la base de datos y que no existan errores de ejecución.  
+        Para ello, ejecutamos el siguiente comando, reemplazando <strong>api-usuarios</strong> por el nombre que asignaron a su servicio; en mi caso, el nombre es <strong>api-usuarios</strong>:
     </p>
 
-    <app-images imageSrc="blog/javalin/javalin45.png" imageSrc2="blog/javalin/javalin46.png"></app-images>
+    <app-comand-copy comand="pm2 logs api-usuarios"></app-comand-copy>
 
     <p class="subtitle-buenas-practicas-frontend">
-        Ve a la siguiente página para continuar con el despliegue.
+        Una vez ejecutado el comando, debería mostrarse un mensaje de éxito indicando que el servidor está corriendo correctamente o que la conexión con la base de datos se realizó exitosamente.  
+        El contenido exacto dependerá de los logs que hayan configurado en su código.
+    </p>
+
+    <app-images imageSrc="blog/javalin/javalin59.png" imageSrc2="blog/javalin/javalin60.png"></app-images>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Ahora solo queda probar la API, ya sea en <strong>Postman</strong> o en <strong>Insomnia</strong>. En mi caso, lo haré en Postman.  
+        Simplemente copiamos la IP del servidor donde se encuentra la API y verificamos los métodos HTTP: <strong>POST</strong>, <strong>GET</strong>, <strong>PUT</strong> y <strong>DELETE</strong>.  
+        En mi caso, probé los cuatro métodos y todos funcionaron correctamente. Esto indica que el despliegue de la API junto con el servicio de <strong>PM2</strong> funcionó exitosamente.  
+        De esta manera, ya no será necesario iniciar la API manualmente; cada vez que se encienda la instancia, la API se ejecutará automáticamente.
+    </p>
+
+    <app-images imageSrc="blog/javalin/javalin61.png" imageSrc2="blog/javalin/javalin62.png"></app-images>
+    <app-images imageSrc="blog/javalin/javalin63.png" imageSrc2="blog/javalin/javalin64.png"></app-images>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        ¡Listo! Tu backend se ha creado y desplegado correctamente.  
+        Si, a pesar de seguir estos pasos, no lograste desplegar tu backend, puedes contactarme a través de mis redes sociales:
+        <app-redes-sociales></app-redes-sociales>
     </p>
 </div>
 

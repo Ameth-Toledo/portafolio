@@ -6,11 +6,12 @@ import { CardTecnologyComponent } from "../../components/card-tecnology/card-tec
 import { ImagesComponent } from "../../components/images/images.component";
 import { TecnologiasComponent } from "../../components/tecnologias/tecnologias.component";
 import { ComandCopyComponent } from "../../components/comand-copy/comand-copy.component";
+import { RedesSocialesComponent } from "../../components/redes-sociales/redes-sociales.component";
 
 @Component({
   selector: 'app-despliegue-backend-aws8',
   standalone: true,
-  imports: [CardTecnologyComponent, ImagesComponent, TecnologiasComponent, ComandCopyComponent],
+  imports: [CardTecnologyComponent, ImagesComponent, TecnologiasComponent, ComandCopyComponent, RedesSocialesComponent],
   templateUrl: './despliegue-backend-aws8.component.html',
   styleUrl: './despliegue-backend-aws8.component.css'
 })

@@ -6,11 +6,12 @@ import { ImagesComponent } from "../../components/images/images.component";
 import { CardTecnologyComponent } from "../../components/card-tecnology/card-tecnology.component";
 import { ComandCopyComponent } from "../../components/comand-copy/comand-copy.component";
 import { ViewportScroller } from '@angular/common';
+import { RedesSocialesComponent } from "../../components/redes-sociales/redes-sociales.component";
 
 @Component({
   selector: 'app-despliegue-frontend-aws-5',
   standalone: true,
-  imports: [TecnologiasComponent, ImagesComponent, CardTecnologyComponent, ComandCopyComponent],
+  imports: [TecnologiasComponent, ImagesComponent, CardTecnologyComponent, ComandCopyComponent, RedesSocialesComponent],
   templateUrl: './despliegue-frontend-aws-5.component.html',
   styleUrl: './despliegue-frontend-aws-5.component.css'
 })
