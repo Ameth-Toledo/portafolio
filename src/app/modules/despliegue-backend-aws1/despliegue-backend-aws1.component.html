@@ -1,0 +1,119 @@
+<section class="welcome-section">
+    <div class="welcome-container">
+        <div class="nav-container">
+            <button class="button" (click)="sendToHome($event)">
+                <div class="button-box">
+                    <span class="button-elem">
+                        <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z">
+                            </path>
+                        </svg>
+                    </span>
+                    <span class="button-elem">
+                        <svg viewBox="0 0 46 40">
+                            <path
+                                d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z">
+                            </path>
+                        </svg>
+                    </span>
+                </div>
+            </button>
+
+            <h1 class="title-front">Despliegue de BackEnd (Api Rest) en AWS EC2 💪🔥</h1>
+        </div>
+
+        <p class="frontend-description">
+            El despliegue de un backend API REST desarrollado en Java con Javalin en un servidor AWS EC2 permite ofrecer
+            servicios web escalables y eficientes en entornos de producción. Este proceso incluye la configuración del
+            entorno de ejecución de Java, la instalación de dependencias necesarias, la exposición de endpoints REST,
+            la gestión de puertos y variables de entorno, así como la optimización del rendimiento y la seguridad del
+            servidor para garantizar una comunicación estable y confiable con las aplicaciones cliente.
+        </p>
+
+        <div class="tech-cards-container">
+            <app-card-tecnology title="Java"></app-card-tecnology>
+            <app-card-tecnology title="Javalin"></app-card-tecnology>
+            <app-card-tecnology title="SpringBoot"></app-card-tecnology>
+            <app-card-tecnology title="Micronaut"></app-card-tecnology>
+            <app-card-tecnology title="Quarkus"></app-card-tecnology>
+        </div>
+    </div>
+</section>
+
+<div class="code-examples-container">
+    <h1 class="tip">Creación de repositorio y subida de archivos a GitHub</h1>
+    <p class="subtitle-buenas-practicas-frontend">
+        A continuación, vamos a crear un nuevo repositorio. Para ello, ingresamos a
+        <a href="https://github.com/" target="_blank"><strong>https://github.com/</strong></a>
+        y creamos una cuenta o iniciamos sesión con una existente.
+        En el menú principal, hacemos clic en el botón verde que dice <strong>“New”</strong>.
+        Se abrirá una nueva ventana donde escribiremos el nombre de nuestro repositorio;
+        en este caso, lo llamaremos <strong>api-user-javalin</strong>.
+        Una vez que hayamos colocado el nombre, damos clic en <strong>“Create repository”</strong>.
+    </p>
+
+    <app-images imageSrc="blog/javalin/javalin3.png" imageSrc2="blog/javalin/javalin4.png">
+    </app-images>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        ¡Listo! Ahora se mostrará una ventana con una serie de comandos que debemos ejecutar para subir nuestro proyecto
+        a <strong>GitHub</strong>.
+        Lo siguiente será regresar a <strong>Visual Studio Code</strong>, abrir una nueva terminal y ejecutar los
+        siguientes comandos:
+    </p>
+
+    <app-comand-copy comand="git init
+    git add .
+    git commit -m 'deploy to git'
+    git branch -M main
+    git remote add origin <url de tu repositorio>"></app-comand-copy>
+
+    <app-images imageSrc="blog/javalin/javalin5.png" imageSrc2="blog/javalin/javalin6.png">
+    </app-images>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Para obtener la URL de tu repositorio, regresa a la página del repositorio en GitHub y copia el comando que dice
+        <strong>git remote add origin &lt;url&gt;</strong>.
+        Luego, continúa con el proceso de subida de archivos: pega el comando en la terminal y, por último, ejecuta el
+        siguiente comando para enviar tu proyecto a GitHub:
+    </p>
+
+    <app-comand-copy comand="git push -u origin main"></app-comand-copy>
+
+
+    <app-images imageSrc="blog/javalin/javalin7.png" imageSrc2="blog/javalin/javalin8.png">
+    </app-images>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Ahora regresamos a nuestro repositorio en GitHub y actualizamos la página; veremos que nuestro proyecto se ha subido correctamente. 
+        Luego, nos dirigimos a la sección de <strong>Commits</strong>, donde podremos visualizar nuestro último cambio realizado.
+    </p>
+
+    <app-images imageSrc="blog/javalin/javalin9.png" imageSrc2="blog/javalin/javalin10.png">
+    </app-images>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Ve a la siguiente página para continuar con el despliegue.
+    </p>
+</div>
+
+<div class="button-outer-container">
+    <div class="button-container">
+        <button class="learn-more-btn prev-btn" (click)="sendToDeployAWS($event)">
+            <span class="learn-more-circle" aria-hidden="true">
+                <span class="learn-more-icon arrow-left"></span>
+            </span>
+            <span class="learn-more-text">Anterior</span>
+        </button>
+
+        <button class="learn-more-btn next-btn" (click)="sendToDeployAWS2($event)">
+            <span class="learn-more-circle" aria-hidden="true">
+                <span class="learn-more-icon arrow-right"></span>
+            </span>
+            <span class="learn-more-text">Siguiente</span>
+        </button>
+    </div>
+</div>
+
+<app-tecnologias></app-tecnologias>

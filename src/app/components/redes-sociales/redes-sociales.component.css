@@ -15,7 +15,9 @@
 .social-icon-3,
 .social-icon-3-3,
 .social-icon-4,
-.social-icon-4-4 {
+.social-icon-4-4,
+.social-icon-5,
+.social-icon-5-5 {
   width: 50px;
   cursor: pointer;
   height: 50px;
@@ -42,7 +44,8 @@
 .social-icon-1 svg,
 .social-icon-2 svg,
 .social-icon-3 svg,
-.social-icon-4 svg {
+.social-icon-4 svg,
+.social-icon-5 svg {
   cursor: pointer;
   opacity: 0;
   transition-duration: 0.5s;
@@ -58,7 +61,8 @@
 .socialcontainer:hover .social-icon-1 svg,
 .socialcontainer:hover .social-icon-2 svg,
 .socialcontainer:hover .social-icon-3 svg,
-.socialcontainer:hover .social-icon-4 svg {
+.socialcontainer:hover .social-icon-4 svg,
+.socialcontainer:hover .social-icon-5 svg {
   opacity: 1;
 }
 .social-icon-2 {
@@ -95,5 +99,15 @@
 }
 
 .socialcontainer:hover .social-icon-4 {
+  transform: translateY(-70px);
+}
+
+.social-icon-5 {
+  transition-duration: 0.4s;
+  transition-timing-function: cubic-bezier(0.46, -0.78, 0.5, 1.56);
+  background: #25d366;
+}
+
+.socialcontainer:hover .social-icon-5 {
   transform: translateY(-70px);
 }

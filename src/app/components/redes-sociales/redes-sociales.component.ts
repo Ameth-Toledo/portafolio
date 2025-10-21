@@ -23,4 +23,8 @@ export class RedesSocialesComponent {
   sendToLinkedin() {
     window.open('https://www.linkedin.com/in/ameth-de-jes%C3%BAs-m%C3%A9ndez-toledo/', '_blank', 'noopener')
   }
+
+  sendToWhatsapp() {
+    window.open('https://wa.me/529613037813', '_blank', 'noopener')
+  }
 }

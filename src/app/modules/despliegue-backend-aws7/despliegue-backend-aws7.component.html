@@ -1,0 +1,133 @@
+<section class="welcome-section">
+    <div class="welcome-container">
+        <div class="nav-container">
+            <button class="button" (click)="sendToHome($event)">
+                <div class="button-box">
+                    <span class="button-elem">
+                        <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z">
+                            </path>
+                        </svg>
+                    </span>
+                    <span class="button-elem">
+                        <svg viewBox="0 0 46 40">
+                            <path
+                                d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z">
+                            </path>
+                        </svg>
+                    </span>
+                </div>
+            </button>
+
+            <h1 class="title-front">Despliegue de BackEnd (Api Rest) en AWS EC2 💪🔥</h1>
+        </div>
+
+        <p class="frontend-description">
+            El despliegue de un backend API REST desarrollado en Java con Javalin en un servidor AWS EC2 permite ofrecer
+            servicios web escalables y eficientes en entornos de producción. Este proceso incluye la configuración del
+            entorno de ejecución de Java, la instalación de dependencias necesarias, la exposición de endpoints REST,
+            la gestión de puertos y variables de entorno, así como la optimización del rendimiento y la seguridad del
+            servidor para garantizar una comunicación estable y confiable con las aplicaciones cliente.
+        </p>
+
+        <div class="tech-cards-container">
+            <app-card-tecnology title="Java"></app-card-tecnology>
+            <app-card-tecnology title="Javalin"></app-card-tecnology>
+            <app-card-tecnology title="SpringBoot"></app-card-tecnology>
+            <app-card-tecnology title="Micronaut"></app-card-tecnology>
+            <app-card-tecnology title="Quarkus"></app-card-tecnology>
+        </div>
+    </div>
+</section>
+
+<div class="code-examples-container">
+    <h1 class="tip">Asociación de IP Elásticas</h1>
+    <p class="subtitle-buenas-practicas-frontend">
+        Ahora vamos a crear una <strong>IP Elástica</strong>.  
+        Nos dirigimos al menú izquierdo y accedemos a la sección de <strong>Direcciones IP Elásticas</strong>, donde se listarán todas las IPs elásticas existentes.  
+        Hacemos clic en <strong>Asignar dirección IP elástica</strong>, lo que nos llevará a otra ventana donde únicamente debemos hacer clic en <strong>Asignar</strong>.
+    </p>
+
+    <app-images imageSrc="blog/javalin/javalin35.png" imageSrc2="blog/javalin/javalin36.png">
+    </app-images>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Una vez creada la <strong>IP Elástica</strong>, vamos a asignarle un nombre.  
+        En mi caso, le pondré <strong>Backend</strong>.  
+        Hacemos clic en <strong>Guardar</strong> y podremos ver la IP creada.  
+        A continuación, hacemos clic en el botón verde que dice <strong>Asociar esta dirección IP Elástica</strong>.
+    </p>
+
+    <app-images imageSrc="blog/javalin/javalin37.png" imageSrc2="blog/javalin/javalin38.png"></app-images>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Se abrirá una nueva ventana y nos desplazamos hacia abajo hasta encontrar la sección de <strong>Instancia</strong>.  
+        Aquí seleccionamos nuestra instancia; en mi caso, es <strong>Backend</strong>.  
+        Una vez seleccionada, hacemos clic en <strong>Asociar</strong> para completar el proceso.
+    </p>
+
+    <app-images imageSrc="blog/javalin/javalin39.png" imageSrc2="blog/javalin/javalin40.png"></app-images>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Listo, ahora la instancia ya tiene la <strong>IP Elástica</strong> asociada.  
+        Copiamos la IP y regresamos a la terminal del backend.  
+        A continuación, modificaremos el archivo <strong>Main.java</strong> para que la API escuche en la nueva IP.  
+        Para ello, ejecutamos el siguiente comando:
+    </p>
+
+    <app-comand-copy comand="sudo nano Main.java"></app-comand-copy>
+
+    <app-images imageSrc="blog/javalin/javalin41.png" imageSrc2="blog/javalin/javalin42.png"></app-images>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        En todas las líneas donde aparezca <strong>localhost</strong>, las reemplazaremos por la IP creada; en mi caso, es <strong>35.172.85.206</strong>.  
+        Luego, presionamos <strong>Ctrl + X</strong> y, cuando nos pregunte si queremos guardar el archivo con el mismo nombre, presionamos <strong>Enter</strong>.  
+        Después, ejecutamos <strong>./gradlew run</strong> para levantar nuevamente el servidor.  
+        Una vez modificada la IP en el archivo <strong>Main.java</strong>, probaremos la API.  
+        En mi caso, la probaré en <strong>Postman</strong>: copiamos la IP y construimos la URL, que debe quedar así: <strong>http://35.172.85.206:8080</strong>, agregando el endpoint correspondiente, en mi caso <strong>/api/usuarios</strong>.
+    </p>
+
+    <app-images imageSrc="blog/javalin/javalin43.png" imageSrc2="blog/javalin/javalin44.png"></app-images>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Como podemos observar, los métodos HTTP <strong>GET</strong>, <strong>POST</strong>, <strong>PUT</strong> y <strong>DELETE</strong> funcionan correctamente.  
+        Es importante recalcar que cada vez que se reinicie o cierre la instancia, debemos ingresar nuevamente a la carpeta del backend y ejecutar el comando <strong>./gradlew run</strong> para volver a levantar el servidor.  
+        Antes de hacerlo, es recomendable verificar que en el archivo de conexión se encuentre el parámetro <strong>allowPublicKeyRetrieval</strong> inicializado en <strong>true</strong>.  
+        El fragmento de configuración debe verse de la siguiente manera:
+    </p>
+
+    <app-comand-copy comand="jdbc:mysql://%s:%s/%s?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC"></app-comand-copy>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        El siguiente paso será instalar <strong>PM2</strong> junto con <strong>Node.js</strong> y <strong>npm</strong>.  
+        PM2 nos permitirá mantener la API ejecutándose de forma continua y configurarla para que se inicie automáticamente cada vez que el servidor se reinicie, evitando tener que ejecutar manualmente el comando.  
+        Además, también se creará un <strong>script</strong> para ejecutar el comando <code>./gradlew run</code>, lo que facilitará la puesta en marcha del proyecto de manera automatizada y eficiente.
+    </p>
+
+    <app-images imageSrc="blog/javalin/javalin45.png" imageSrc2="blog/javalin/javalin46.png"></app-images>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Ve a la siguiente página para continuar con el despliegue.
+    </p>
+</div>
+
+<div class="button-outer-container">
+    <div class="button-container">
+        <button class="learn-more-btn prev-btn" (click)="sendToDeployAWS($event)">
+            <span class="learn-more-circle" aria-hidden="true">
+                <span class="learn-more-icon arrow-left"></span>
+            </span>
+            <span class="learn-more-text">Anterior</span>
+        </button>
+
+        <button class="learn-more-btn next-btn" (click)="sendToDeployAWS2($event)">
+            <span class="learn-more-circle" aria-hidden="true">
+                <span class="learn-more-icon arrow-right"></span>
+            </span>
+            <span class="learn-more-text">Siguiente</span>
+        </button>
+    </div>
+</div>
+
+<app-tecnologias></app-tecnologias>

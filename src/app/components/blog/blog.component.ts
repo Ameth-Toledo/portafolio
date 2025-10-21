@@ -56,4 +56,11 @@ export class BlogComponent {
       this.viewportScroller.scrollToPosition([0, 0]);
     });
   }
+
+  sendToBackendDeploymentJavalin(event: Event) {
+    event.preventDefault();
+    this.router.navigate(['despliegue/backend/aws/ec2']).then(() => {
+      this.viewportScroller.scrollToPosition([0, 0]);
+    })
+  }
 }

@@ -1,0 +1,111 @@
+<section class="welcome-section">
+    <div class="welcome-container">
+        <div class="nav-container">
+            <button class="button" (click)="sendToHome($event)">
+                <div class="button-box">
+                    <span class="button-elem">
+                        <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z">
+                            </path>
+                        </svg>
+                    </span>
+                    <span class="button-elem">
+                        <svg viewBox="0 0 46 40">
+                            <path
+                                d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z">
+                            </path>
+                        </svg>
+                    </span>
+                </div>
+            </button>
+
+            <h1 class="title-front">Despliegue de BackEnd (Api Rest) en AWS EC2 💪🔥</h1>
+        </div>
+
+        <p class="frontend-description">
+            El despliegue de un backend API REST desarrollado en Java con Javalin en un servidor AWS EC2 permite ofrecer
+            servicios web escalables y eficientes en entornos de producción. Este proceso incluye la configuración del
+            entorno de ejecución de Java, la instalación de dependencias necesarias, la exposición de endpoints REST,
+            la gestión de puertos y variables de entorno, así como la optimización del rendimiento y la seguridad del
+            servidor para garantizar una comunicación estable y confiable con las aplicaciones cliente.
+        </p>
+
+        <div class="tech-cards-container">
+            <app-card-tecnology title="Java"></app-card-tecnology>
+            <app-card-tecnology title="Javalin"></app-card-tecnology>
+            <app-card-tecnology title="SpringBoot"></app-card-tecnology>
+            <app-card-tecnology title="Micronaut"></app-card-tecnology>
+            <app-card-tecnology title="Quarkus"></app-card-tecnology>
+        </div>
+    </div>
+</section>
+
+<div class="code-examples-container">
+    <h1 class="tip">Creación de instancia EC2 con IP elástica</h1>
+    <p class="subtitle-buenas-practicas-frontend">
+        El primer paso es dirigirnos al laboratorio de AWS y le damos en iniciar laboratorio de aprendizaje, nos abrirá
+        otra ventana en el navegador, en donde nos saldrán varias opciones como:
+        Start Lab, End Lab etc. Daremos clic sobre <strong>Start Lab</strong> y esperamos a que el estado de AWS se
+        cambie a verde.
+    </p>
+
+    <app-images imageSrc="blog/aws/aws1.png" imageSrc2="blog/aws/aws2.png">
+    </app-images>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Después nos mostrará otra vista en donde tendremos un buscador, ahí vamos a buscar EC2 y damos clic sobre la
+        primera opción, en mi caso aparece como visitados recientemente, damos clic y nos
+        mandará a la sección de instancias, en mi caso tengo creada una llamada RabbitMQ, a ustedes les aparecerá sin
+        instancias.
+    </p>
+
+    <app-images imageSrc="blog/aws/aws3.png" imageSrc2="blog/aws/aws4.png">
+    </app-images>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Ahora haremos clic sobre el botón amarillo que se encuentra del lado derecho que dice lanzar instancia, nos
+        mandará a la sección de configuración, nos va a pedir un nombre de instancia, en mi caso
+        le pondré <strong>BackEnd</strong> aquí el nombre no importa.
+    </p>
+
+    <app-images imageSrc="blog/aws/aws5.png" imageSrc2="blog/javalin/javalin1.png">
+    </app-images>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Ahora vamos a seleccionar el sistema operativo de nuestra máquina, aquí es importante seleccionar
+        <strong>Ubuntu</strong>, ya que si seleccionan otro sistema operativo el despliegue no va a funcionar
+        correctamente, luego de haber seleccionado el sistema operativo nos desplazamos y encontraremos la sección de
+        par de claves, vamos a dar clic sobre continuar sin par de claves.
+    </p>
+
+    <app-images imageSrc="blog/aws/aws7.png" imageSrc2="blog/mysql/mysql2.png">
+    </app-images>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Una vez que hayamos hecho todo lo anterior nos mostrará una ventana indicando que el lanzamiento de la instancia
+        fue correcto, damos clic sobre el botón amarillo que dice ver todas las instancias, nos llevará a otra vista
+        ahí vamos a ver la instancia que acabamos de crear, <strong>debemos esperar hasta que el estado de comprobación
+            cambie a 3/3 comprobaciones</strong> y listo ya quedaría.
+    </p>
+
+    <app-images imageSrc="blog/aws/aws11.png" imageSrc2="blog/javalin/javalin2.png">
+    </app-images>
+
+    <p class="subtitle-buenas-practicas-frontend">
+        Ve a la siguiente página para continuar con el despliegue.
+    </p>
+</div>
+
+<div class="button-outer-container">
+    <div class="button-container">
+        <button class="learn-more-btn next-btn" (click)="sendToDeployAWS2($event)">
+            <span class="learn-more-circle" aria-hidden="true">
+                <span class="learn-more-icon arrow-right"></span>
+            </span>
+            <span class="learn-more-text">Siguiente</span>
+        </button>
+    </div>
+</div>
+
+<app-tecnologias></app-tecnologias>
