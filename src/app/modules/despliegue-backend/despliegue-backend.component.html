@@ -1,0 +1,90 @@
+<section class="welcome-section">
+    <div class="welcome-container">
+        <div class="nav-container">
+            <button class="button" (click)="sendToHome($event)">
+                <div class="button-box">
+                    <span class="button-elem">
+                        <svg viewBox="0 0 46 40" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z">
+                            </path>
+                        </svg>
+                    </span>
+                    <span class="button-elem">
+                        <svg viewBox="0 0 46 40">
+                            <path
+                                d="M46 20.038c0-.7-.3-1.5-.8-2.1l-16-17c-1.1-1-3.2-1.4-4.4-.3-1.2 1.1-1.2 3.3 0 4.4l11.3 11.9H3c-1.7 0-3 1.3-3 3s1.3 3 3 3h33.1l-11.3 11.9c-1 1-1.2 3.3 0 4.4 1.2 1.1 3.3.8 4.4-.3l16-17c.5-.5.8-1.1.8-1.9z">
+                            </path>
+                        </svg>
+                    </span>
+                </div>
+            </button>
+
+            <h1 class="title-front">Despliegue de BackEnd (Api Rest) en AWS EC2 💪🔥</h1>
+        </div>
+
+        <p class="frontend-description">
+            El despliegue de un backend API REST desarrollado en Java con Javalin en un servidor AWS EC2 permite ofrecer servicios web escalables y eficientes en entornos de producción. Este proceso incluye la configuración del entorno de ejecución de Java, la instalación de dependencias necesarias, la exposición de endpoints REST, la gestión de puertos y variables de entorno, así como la optimización del rendimiento y la seguridad del servidor para garantizar una comunicación estable y confiable con las aplicaciones cliente.
+        </p>
+
+        <div class="tech-cards-container">
+            <app-card-tecnology title="Java"></app-card-tecnology>
+            <app-card-tecnology title="Javalin"></app-card-tecnology>
+            <app-card-tecnology title="SpringBoot"></app-card-tecnology>
+            <app-card-tecnology title="Micronaut"></app-card-tecnology>
+            <app-card-tecnology title="Quarkus"></app-card-tecnology>
+        </div>
+    </div>
+</section>
+
+<div class="modules">
+    <div class="modules-container">
+        <h1 class="title">Módulos 💡🚀</h1>
+        
+        <app-card-module 
+          title="Creación de instancia EC2 con IP elástica" 
+          imageSrc="icons/java.svg"
+          route="despliegue/backend/aws/ec2">
+        </app-card-module>
+        <app-card-module 
+          title="Creación de repositorio y subida de archivos a GitHub" 
+          imageSrc="icons/github-black.svg"
+          route="despliegue/backend/aws/ec2/id=2">
+        </app-card-module>
+        <app-card-module 
+          title="Habilitación de puertos" 
+          imageSrc="icons/aws.svg"
+          route="despliegue/backend/aws/ec2/id=3">
+        </app-card-module>
+        <app-card-module 
+          title="Instalación de Java" 
+          imageSrc="icons/java.svg"
+          route="despliegue/backend/aws/ec2/id=4">
+        </app-card-module>
+        <app-card-module 
+          title="Instalación de git y clonación de proyecto" 
+          imageSrc="icons/github-black.svg"
+          route="despliegue/backend/aws/ec2/id=5">
+        </app-card-module>
+        <app-card-module 
+          title="Creacion de variables de entorno" 
+          imageSrc="icons/env.svg"
+          route="despliegue/backend/aws/ec2/id=6">
+        </app-card-module>
+        <app-card-module 
+          title="Construcción de archivo ./gradlew" 
+          imageSrc="icons/gradlew.svg"
+          route="despliegue/backend/aws/ec2/id=7">
+        </app-card-module>
+        <app-card-module 
+          title="Asociación de IP Elásticas" 
+          imageSrc="icons/aws.svg"
+          route="despliegue/backend/aws/ec2/id=8">
+        </app-card-module>
+        <app-card-module 
+          title="Creación de servicio para ejecución automatizada" 
+          imageSrc="icons/nodejs.svg"
+          route="despliegue/backend/aws/ec2/id=9">
+        </app-card-module>
+    </div>
+</div>

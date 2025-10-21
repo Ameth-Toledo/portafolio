@@ -41,6 +41,9 @@ import { DespliegueBackendAws5Component } from './modules/despliegue-backend-aws
 import { DespliegueBackendAws6Component } from './modules/despliegue-backend-aws6/despliegue-backend-aws6.component';
 import { DespliegueBackendAws7Component } from './modules/despliegue-backend-aws7/despliegue-backend-aws7.component';
 import { DespliegueBackendAws8Component } from './modules/despliegue-backend-aws8/despliegue-backend-aws8.component';
+import { DespliegueBaseDeDatosComponent } from './modules/despliegue-base-de-datos/despliegue-base-de-datos.component';
+import { DespliegueBackendComponent } from './modules/despliegue-backend/despliegue-backend.component';
+import { DespliegueFrontendComponent } from './modules/despliegue-frontend/despliegue-frontend.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '', pathMatch: 'full' },
@@ -48,11 +51,16 @@ export const routes: Routes = [
     { path: 'buenas/practicas/de/front', component: BuenasPracticasFrontComponent },
     { path: 'cuando/usar/react/y/cuando/angular', component: FrameworksCuandoUsarComponent },
     { path: 'arquitectura/hexagonal', component: ArquitecturaHexagonalComponent },
+
+    { path: 'despliegue/frontend/aws', component: DespliegueFrontendComponent },
+
     { path: 'despliegue/front/aws/ec2', component: DespliegueFrontendAwsComponent },
     { path: 'despliegue/front/aws/ec2/id=2', component: DespliegueFrontendAws2Component },
     { path: 'despliegue/front/aws/ec2/id=3', component: DespliegueFrontendAws3Component },
     { path: 'despliegue/front/aws/ec2/id=4', component: DespliegueFrontendAws4Component },
     { path: 'despliegue/front/aws/ec2/id=5', component: DespliegueFrontendAws5Component },
+
+    { path: 'despliegue/base-de-datos/aws', component: DespliegueBaseDeDatosComponent },
 
     { path: 'despliegue/bd/aws/ec2', component: DespliegueBaseDeDatosAwsComponent },
     { path: 'despliegue/bd/aws/ec2/id=2', component: DespliegueBaseDeDatosAws1Component },
@@ -60,6 +68,8 @@ export const routes: Routes = [
     { path: 'despliegue/bd/aws/ec2/id=4', component: DespliegueBaseDeDatosAws3Component },
     { path: 'despliegue/bd/aws/ec2/id=5', component: DespliegueBaseDeDatosAws4Component },
     { path: 'despliegue/bd/aws/ec2/id=6', component: DespliegueBaseDeDatosAws5Component },
+
+    { path: 'depliegue/backend/aws', component: DespliegueBackendComponent },
 
     { path: 'despliegue/backend/aws/ec2', component: DespliegueBackendAwsComponent },
     { path: 'despliegue/backend/aws/ec2/id=2', component: DespliegueBackendAws1Component },

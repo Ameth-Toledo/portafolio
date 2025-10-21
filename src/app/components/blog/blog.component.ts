@@ -45,21 +45,21 @@ export class BlogComponent {
 
   sendToBD(event: Event) {
     event.preventDefault();
-    this.router.navigate(['despliegue/bd/aws/ec2']).then(() => {
+    this.router.navigate(['despliegue/base-de-datos/aws']).then(() => {
       this.viewportScroller.scrollToPosition([0, 0]);
     });
   }
 
   sendToDeployAWS(event: Event) {
     event.preventDefault();
-    this.router.navigate(['despliegue/front/aws/ec2']).then(() => {
+    this.router.navigate(['despliegue/frontend/aws']).then(() => {
       this.viewportScroller.scrollToPosition([0, 0]);
     });
   }
 
   sendToBackendDeploymentJavalin(event: Event) {
     event.preventDefault();
-    this.router.navigate(['despliegue/backend/aws/ec2']).then(() => {
+    this.router.navigate(['depliegue/backend/aws']).then(() => {
       this.viewportScroller.scrollToPosition([0, 0]);
     })
   }

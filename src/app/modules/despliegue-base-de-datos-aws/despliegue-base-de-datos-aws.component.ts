@@ -30,7 +30,7 @@ export class DespliegueBaseDeDatosAwsComponent {
 
   sendToHome(event: Event) {
     event.preventDefault();
-    this.router.navigate(['']);
+    this.router.navigate(['despliegue/base-de-datos/aws']);
   }
 
   sendToDeployAWS2(event: Event) {

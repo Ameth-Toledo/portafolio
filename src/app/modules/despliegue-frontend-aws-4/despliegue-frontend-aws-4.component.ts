@@ -31,7 +31,7 @@ constructor (
 
   sendToHome(event: Event) {
     event.preventDefault();
-    this.router.navigate(['']);
+    this.router.navigate(['despliegue/frontend/aws']);
   }
 
   sendToDeployAWS2(event: Event) {
