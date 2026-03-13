@@ -4,11 +4,12 @@ import { AnimationService } from '../../services/animation/animation.service';
 import { CardTecnologyComponent } from "../../components/card-tecnology/card-tecnology.component";
 import { ViewportScroller } from '@angular/common';
 import { CardModuleComponent } from "../../components/card-module/card-module.component";
+import { AdsenseAdComponent } from "../../shared/adsense-ad/adsense-ad.component";
 
 @Component({
   selector: 'app-despliegue-frontend',
   standalone: true,
-  imports: [CardTecnologyComponent, CardModuleComponent],
+  imports: [CardTecnologyComponent, CardModuleComponent, AdsenseAdComponent],
   templateUrl: './despliegue-frontend.component.html',
   styleUrl: './despliegue-frontend.component.css'
 })
