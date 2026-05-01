@@ -93,25 +93,25 @@
     padding: 28px;
 }
 
+.project-title-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
 .project-title {
     font-size: 20px;
     font-weight: 700;
     color: #1a1a1a;
-    margin-bottom: 12px;
-}
-
-.project-desc-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
+    margin: 0;
 }
 
 .project-desc {
     font-size: 15px;
     color: #666;
     line-height: 1.5;
-    margin: 0;
+    margin: 0 0 12px 0;
 }
 
 .tech-icon {

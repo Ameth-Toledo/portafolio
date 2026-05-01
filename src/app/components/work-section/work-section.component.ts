@@ -1,21 +1,17 @@
 import { Component } from '@angular/core';
+import { NPMComponent } from '../svg-npm/svg-npm.component';
 
 @Component({
   selector: 'app-work-section',
   standalone: true,
-  imports: [],
+  imports: [NPMComponent],
   templateUrl: './work-section.component.html',
   styleUrl: './work-section.component.css'
 })
 export class WorkSectionComponent {
-  sendToUnimedProyect(event: Event) {
+  sendToAtoCoreInitRepo(event: Event) {
     event.preventDefault();
-    window.open('https://github.com/FabricioPRZ/UNIMED-SUCHIAPA.git', '_blank')
-  }
-
-  sendToUnimedWeb(event: Event) {
-    event.preventDefault();
-    window.open('https://unimed-build.vercel.app/login', '_blank')
+    window.open('https://github.com/Ameth-Toledo/ato-core-init.git', '_blank')
   }
 
   sendToFreeGarden(event: Event) {
@@ -33,9 +29,14 @@ export class WorkSectionComponent {
     window.open('https://ameth-toledo.github.io/prueba', '_blank')
   }
 
-  sendToApiGo(event: Event) {
+  sendToFermESTRepo(event: Event) {
     event.preventDefault();
-    window.open('https://github.com/Ameth-Toledo/backend-est.git', '_blank')
+    window.open('https://github.com/Ameth-Toledo/fermest.git', '_blank')
+  }
+
+  sendToFermESTWeb(event: Event) {
+    event.preventDefault();
+    window.open('https://fermest-three.vercel.app/', '_blank')
   }
 
   sendToEstSoftware(event: Event) {
@@ -45,11 +46,21 @@ export class WorkSectionComponent {
 
   sendToEstSoftwareWeb(event: Event) {
     event.preventDefault();
-    window.open('https://est-software.vercel.app', '_blank')
+    window.open('https://est-software-eta.vercel.app', '_blank')
   }
 
-  sendToApiPython(event: Event) {
+  sendToNichKaRepo(event: Event) {
     event.preventDefault();
-    window.open('https://github.com/Ameth-Toledo/EST-SOFTWARE-BACK.git', '_blank')
+    window.open('https://github.com/Ameth-Toledo/fermest_web.git', '_blank')
+  }
+
+  sendToNichKaWeb(event: Event) {
+    event.preventDefault();
+    window.open('https://www.nich-ka.space/', '_blank')
+  }
+
+  sendToNpmPackage(event: Event) {
+    event.preventDefault();
+    window.open('https://www.npmjs.com/package/ato-core-init', '_blank')
   }
 }
