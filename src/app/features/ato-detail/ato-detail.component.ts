@@ -2,14 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CardTecnologyComponent } from '../../core/components/card-tecnology/card-tecnology.component';
-import { CardEditorCodeComponent } from '../../core/components/card-editor-code/card-editor-code.component';
 import { TecnologiasComponent } from '../../core/components/tecnologias/tecnologias.component';
+import { TerminalComponent, TerminalCommand } from '../../core/components/terminal/terminal.component';
+import { FileTreeComponent, FileItem } from '../../core/components/file-tree/file-tree.component';
+import { CodeBlockComponent } from '../../core/components/code-block/code-block.component';
 import { AnimationService } from '../../core/services/animation/animation.service';
 
 @Component({
   selector: 'app-ato-detail',
   standalone: true,
-  imports: [CommonModule, CardTecnologyComponent, CardEditorCodeComponent, TecnologiasComponent],
+  imports: [CommonModule, CardTecnologyComponent, TecnologiasComponent, TerminalComponent, FileTreeComponent, CodeBlockComponent],
   templateUrl: './ato-detail.component.html',
   styleUrl: './ato-detail.component.css'
 })
@@ -30,32 +32,60 @@ export class AtoDetailComponent implements OnInit {
     this.router.navigate(['']);
   }
 
-  createCommand = `npx ato-core-init create --db=mysql`;
+  createCommands: TerminalCommand[] = [
+    { command: 'npx ato-core-init create --db=mysql', output: '✓ Proyecto MVC con MySQL creado exitosamente' },
+    { command: 'npx ato-core-init create --db=postgres --architecture=hexagonal', output: '✓ Proyecto Hexagonal con PostgreSQL creado exitosamente' },
+    { command: 'npx ato-core-init create --db=mongo --lang=typescript', output: '✓ Proyecto MVC con MongoDB y TypeScript creado exitosamente' },
+  ];
 
-  hexagonalCommand = `npx ato-core-init create --db=postgres --architecture=hexagonal`;
+  initCommands: TerminalCommand[] = [
+    { command: 'npx ato-core-init init --db=mysql', output: '✓ Configuración de MySQL añadida al proyecto' },
+  ];
 
-  tsCommand = `npx ato-core-init create --db=mongo --lang=typescript`;
+  runCommands: TerminalCommand[] = [
+    { command: 'npm run dev', output: 'Server running on http://localhost:3000' },
+    { command: 'npm run build', output: 'Build completed successfully in 3.2s' },
+  ];
 
-  initCommand = `npx ato-core-init init --db=mysql`;
+  registerCommands: TerminalCommand[] = [
+    {
+      command: 'curl -X POST http://localhost:3000/api/auth/register -H "Content-Type: application/json" -d \'{"name":"John","email":"john@example.com","password":"123456"}\'',
+      output: '{"message":"User registered successfully","user":{"id":1,"name":"John","email":"john@example.com"}}',
+      outputColor: '#7ee787'
+    },
+  ];
 
-  createOptions = `# MVC con MySQL y TypeScript
-npx ato-core-init create --db=mysql --lang=typescript
+  loginCommands: TerminalCommand[] = [
+    {
+      command: 'curl -X POST http://localhost:3000/api/auth/login -H "Content-Type: application/json" -d \'{"email":"john@example.com","password":"123456"}\'',
+      output: '{"message":"Login successful","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."}',
+      outputColor: '#7ee787'
+    },
+  ];
 
-# Hexagonal con PostgreSQL
-npx ato-core-init create --db=postgres --architecture=hexagonal
+  profileCommands: TerminalCommand[] = [
+    {
+      command: 'curl -X GET http://localhost:3000/api/auth/profile -b cookies.txt',
+      output: '{"id":1,"name":"John","email":"john@example.com","created_at":"2024-01-15T10:30:00Z"}',
+      outputColor: '#7ee787'
+    },
+  ];
 
-# MVC con MongoDB y JavaScript
-npx ato-core-init create --db=mongo --lang=javascript`;
+  refreshCommands: TerminalCommand[] = [
+    {
+      command: 'curl -X POST http://localhost:3000/api/auth/refresh -b cookies.txt',
+      output: '{"message":"Token refreshed","token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."}',
+      outputColor: '#7ee787'
+    },
+  ];
 
-  mvcStructure = `src/
-├── controllers/      # Controladores HTTP
-├── models/          # Interfaces/Tipos
-├── repositories/    # Acceso a datos
-├── services/        # Lógica de negocio
-├── routes/          # Rutas Express
-└── core/
-    ├── config/      # Conexión DB
-    └── security/    # Auth, JWT, Hash`;
+  logoutCommands: TerminalCommand[] = [
+    {
+      command: 'curl -X POST http://localhost:3000/api/auth/logout -b cookies.txt',
+      output: '{"message":"Logout successful"}',
+      outputColor: '#7ee787'
+    },
+  ];
 
   endpoints = `POST   /api/auth/register
 POST   /api/auth/login
@@ -67,72 +97,7 @@ GET    /api/users/:id     (protegido)
 PUT    /api/users/:id     (protegido)
 DELETE /api/users/:id     (protegido)`;
 
-  hexStructure = `src/
-└── users/
-    ├── application/          # Casos de uso
-    │   ├── AuthService.ts
-    │   ├── CreateUserUseCase.ts
-    │   ├── GetAllUsersUseCase.ts
-    │   └── ...
-    ├── domain/              # Lógica de negocio
-    │   ├── entities/
-    │   ├── dto/
-    │   ├── utils/
-    │   └── IUserRepository.ts
-    └── infrastructure/      # Adaptadores externos
-        ├── adapters/        # MySQL, PostgreSQL, MongoDB
-        ├── controllers/     # HTTP handlers
-        ├── routes/
-        └── dependencies.ts`;
-
-  mysqlEnv = `DB_HOST=localhost
-DB_USER=root
-DB_PASS=
-DB_NAME=mydb`;
-
-  postgresEnv = `DB_HOST=localhost
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=
-DB_NAME=mydb
-DB_SSL=false`;
-
-  mongoEnv = `MONGO_URI=mongodb://localhost:27017/mydb`;
-
-  registerCurl = `curl -X POST http://localhost:3000/api/auth/register \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "name": "John",
-    "lastname": "Doe",
-    "email": "john@example.com",
-    "password": "123456"
-  }'`;
-
-  loginCurl = `curl -X POST http://localhost:3000/api/auth/login \\
-  -H "Content-Type: application/json" \\
-  -c cookies.txt \\
-  -d '{
-    "email": "john@example.com",
-    "password": "123456"
-  }'`;
-
-  profileCurl = `curl -X GET http://localhost:3000/api/auth/profile \\
-  -b cookies.txt`;
-
-  refreshCurl = `curl -X POST http://localhost:3000/api/auth/refresh \\
-  -b cookies.txt`;
-
-  logoutCurl = `curl -X POST http://localhost:3000/api/auth/logout \\
-  -b cookies.txt`;
-
-  runDev = `# Desarrollo
-npm run dev
-
-# Producción
-npm run build
-npm start`;
-
-  libUsage = `import { initDatabase } from 'ato-core-init';
+  libUsageTs = `import { initDatabase } from 'ato-core-init';
 
 await initDatabase('mysql');`;
 
@@ -153,6 +118,20 @@ await initDatabase('mysql');`;
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );`;
 
+  mysqlEnv = `DB_HOST=localhost
+DB_USER=root
+DB_PASS=
+DB_NAME=mydb`;
+
+  postgresEnv = `DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=
+DB_NAME=mydb
+DB_SSL=false`;
+
+  mongoEnv = `MONGO_URI=mongodb://localhost:27017/mydb`;
+
   cookieConfig = `res.cookie('access_token', token, {
   httpOnly: true,      // No accesible desde JavaScript
   secure: true,        // Solo HTTPS en producción
@@ -169,4 +148,76 @@ router.get('/users', jwtMiddleware, userController.getAll);`;
 
 const hashedPassword = await hashPassword('123456');
 const isValid = await checkPassword(hashedPassword, '123456');`;
+
+  mvcStructure: FileItem[] = [
+    {
+      id: 'src',
+      name: 'src',
+      type: 'folder',
+      children: [
+        { id: 'controllers', name: 'controllers', type: 'folder' },
+        { id: 'models', name: 'models', type: 'folder' },
+        { id: 'repositories', name: 'repositories', type: 'folder' },
+        { id: 'services', name: 'services', type: 'folder' },
+        { id: 'routes', name: 'routes', type: 'folder' },
+        {
+          id: 'core',
+          name: 'core',
+          type: 'folder',
+          children: [
+            { id: 'config', name: 'config', type: 'folder' },
+            { id: 'security', name: 'security', type: 'folder' },
+          ]
+        }
+      ]
+    }
+  ];
+
+  hexStructure: FileItem[] = [
+    {
+      id: 'src',
+      name: 'src',
+      type: 'folder',
+      children: [
+        {
+          id: 'users',
+          name: 'users',
+          type: 'folder',
+          children: [
+            {
+              id: 'application',
+              name: 'application',
+              type: 'folder',
+              children: [
+                { id: 'AuthService.ts', name: 'AuthService.ts', type: 'file' },
+                { id: 'CreateUserUseCase.ts', name: 'CreateUserUseCase.ts', type: 'file' },
+                { id: 'GetAllUsersUseCase.ts', name: 'GetAllUsersUseCase.ts', type: 'file' },
+              ]
+            },
+            {
+              id: 'domain',
+              name: 'domain',
+              type: 'folder',
+              children: [
+                { id: 'entities', name: 'entities', type: 'folder' },
+                { id: 'dto', name: 'dto', type: 'folder' },
+                { id: 'IUserRepository.ts', name: 'IUserRepository.ts', type: 'file' },
+              ]
+            },
+            {
+              id: 'infrastructure',
+              name: 'infrastructure',
+              type: 'folder',
+              children: [
+                { id: 'adapters', name: 'adapters', type: 'folder' },
+                { id: 'controllers', name: 'controllers', type: 'folder' },
+                { id: 'routes', name: 'routes', type: 'folder' },
+                { id: 'dependencies.ts', name: 'dependencies.ts', type: 'file' },
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ];
 }

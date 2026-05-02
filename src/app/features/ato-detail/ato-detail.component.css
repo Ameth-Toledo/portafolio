@@ -20,15 +20,17 @@
 }
 
 .button:before {
-  border: 4px solid #f0eeef;
-  transition: opacity 0.4s cubic-bezier(0.77, 0, 0.175, 1) 80ms,
+  border: 4px solid #ffffff;
+  transition:
+    opacity 0.4s cubic-bezier(0.77, 0, 0.175, 1) 80ms,
     transform 0.5s cubic-bezier(0.455, 0.03, 0.515, 0.955) 80ms;
 }
 
 .button:after {
-  border: 4px solid #96daf0;
+  border: 4px solid #0969da;
   transform: scale(1.3);
-  transition: opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+  transition:
+    opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
     transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   opacity: 0;
 }
@@ -37,7 +39,8 @@
 .button:focus:before {
   opacity: 0;
   transform: scale(0.7);
-  transition: opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+  transition:
+    opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
     transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
@@ -45,7 +48,8 @@
 .button:focus:after {
   opacity: 1;
   transform: scale(1);
-  transition: opacity 0.4s cubic-bezier(0.77, 0, 0.175, 1) 80ms,
+  transition:
+    opacity 0.4s cubic-bezier(0.77, 0, 0.175, 1) 80ms,
     transform 0.5s cubic-bezier(0.455, 0.03, 0.515, 0.955) 80ms;
 }
 
@@ -62,7 +66,7 @@
   height: 20px;
   margin: 17px 18px 0 18px;
   transform: rotate(180deg);
-  fill: #f0eeef;
+  fill: #ffffff;
 }
 
 .button:hover .button-box,
@@ -71,28 +75,10 @@
   transform: translateX(-56px);
 }
 
-.header-alignment {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 20px;
-  margin-bottom: 40px;
-}
-
-.title-front {
-  margin: 0;
-  margin-top: 30px;
-  font-size: 64px;
-  font-weight: 600;
-  color: #FFFFFF;
-  text-align: left; 
-  letter-spacing: -0.5px;
-}
-
 .welcome-section {
-  background: #0a0a0a;
+  background: #0A0A0A;
   width: 100%;
-  padding: 20px 0;
+  padding: 20px 0 60px;
 }
 
 .welcome-container {
@@ -101,8 +87,25 @@
   padding: 0 20px;
 }
 
+.nav-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+}
+
+.title-front {
+  margin: 0;
+  margin-top: 30px;
+  font-size: 64px;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: left;
+  letter-spacing: -0.5px;
+}
+
 .frontend-description {
-  color: #a1a1aa;
+  color: #cccccc;
   font-size: 1.1rem;
   line-height: 1.6;
   margin: 40px 0 0 5px;
@@ -110,18 +113,20 @@
 }
 
 .tech-cards-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-top: 40px;
-    justify-content: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 40px;
+  justify-content: flex-start;
 }
+
 .code-examples-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   margin: 0 auto;
   padding: 20px;
+  max-width: 1200px;
 }
 
 .tip {
@@ -129,15 +134,19 @@
   width: 100%;
   max-width: 1200px;
   font-family: 'Poppins', sans-serif;
+  color: #000000;
+  margin-top: 40px;
+  margin-bottom: 8px;
 }
 
 .subtitle-buenas-practicas-frontend {
   font-size: 1.1rem;
   line-height: 1.6;
   font-family: 'Poppins', sans-serif;
-  margin: 0px 0 0 5px;
+  margin: 0;
   max-width: 1200px;
   text-align: left;
+  color: #333333;
 }
 
 .card-row {
@@ -147,9 +156,55 @@
   margin-top: 20px;
   justify-content: flex-start;
   flex-wrap: wrap;
+  width: 100%;
 }
 
-/* Mobile (up to 767px) */
+.card-row > * {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── Origin Story ── */
+
+.origin-story {
+  width: 100%;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.origin-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 24px;
+  border-left: 2px solid #e0e0e0;
+  padding-left: 0;
+}
+
+.timeline-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 0 14px 24px;
+  position: relative;
+}
+
+.timeline-icon-wrap {
+  flex-shrink: 0;
+  color: #0969da;
+  margin-top: 1px;
+}
+
+.timeline-item p {
+  margin: 0;
+  color: #333333;
+  font-size: 1rem;
+  line-height: 1.6;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ── Responsive ── */
+
 @media (max-width: 767px) {
   .button {
     width: 48px;
@@ -186,13 +241,12 @@
     justify-content: center;
   }
 
-  .header-alignment {
-    gap: 15px;
-    margin-bottom: 30px;
+  .timeline-item {
+    padding: 12px 0 12px 18px;
+    gap: 12px;
   }
 }
 
-/* Tablet (768px to 1023px) */
 @media (min-width: 768px) and (max-width: 1023px) {
   .title-front {
     font-size: 48px;
@@ -209,11 +263,8 @@
   }
 }
 
-/* Small Desktop (1024px to 1279px) */
 @media (min-width: 1024px) and (max-width: 1279px) {
   .title-front {
     font-size: 56px;
   }
 }
-
-/* Large Desktop (1280px and up) - Default styles apply */

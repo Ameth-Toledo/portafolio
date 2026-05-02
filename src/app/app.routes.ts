@@ -31,41 +31,39 @@ import { AtoDetailComponent } from './features/ato-detail/ato-detail.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '', pathMatch: 'full' },
-    { path: '', component: HomeComponent },
-    { path: 'buenas/practicas/de/front', component: BuenasPracticasFrontComponent },
-    { path: 'cuando/usar/react/y/cuando/angular', component: FrameworksCuandoUsarComponent },
-    { path: 'arquitectura/hexagonal', component: ArquitecturaHexagonalComponent },
+    { path: '', component: HomeComponent, title: 'Ameth Toledo' },
 
-    { path: 'despliegue/frontend/aws', component: DespliegueFrontendComponent },
+    { path: 'buenas/practicas/de/front', component: BuenasPracticasFrontComponent, title: 'Buenas Prácticas de Frontend | DevDocs' },
+    { path: 'cuando/usar/react/y/cuando/angular', component: FrameworksCuandoUsarComponent, title: 'React vs Angular | DevDocs' },
+    { path: 'arquitectura/hexagonal', component: ArquitecturaHexagonalComponent, title: 'Arquitectura Hexagonal | DevDocs' },
 
-    { path: 'despliegue/front/aws/ec2', component: DespliegueFrontendAwsComponent },
-    { path: 'despliegue/front/aws/ec2/id=2', component: DespliegueFrontendAws2Component },
-    { path: 'despliegue/front/aws/ec2/id=3', component: DespliegueFrontendAws3Component },
-    { path: 'despliegue/front/aws/ec2/id=4', component: DespliegueFrontendAws4Component },
-    { path: 'despliegue/front/aws/ec2/id=5', component: DespliegueFrontendAws5Component },
+    { path: 'despliegue/frontend/aws', component: DespliegueFrontendComponent, title: 'Despliegue Frontend en AWS | DevDocs' },
+    { path: 'despliegue/front/aws/ec2', component: DespliegueFrontendAwsComponent, title: 'Despliegue Frontend AWS EC2 — Paso 1 | DevDocs' },
+    { path: 'despliegue/front/aws/ec2/id=2', component: DespliegueFrontendAws2Component, title: 'Despliegue Frontend AWS EC2 — Paso 2 | DevDocs' },
+    { path: 'despliegue/front/aws/ec2/id=3', component: DespliegueFrontendAws3Component, title: 'Despliegue Frontend AWS EC2 — Paso 3 | DevDocs' },
+    { path: 'despliegue/front/aws/ec2/id=4', component: DespliegueFrontendAws4Component, title: 'Despliegue Frontend AWS EC2 — Paso 4 | DevDocs' },
+    { path: 'despliegue/front/aws/ec2/id=5', component: DespliegueFrontendAws5Component, title: 'Despliegue Frontend AWS EC2 — Paso 5 | DevDocs' },
 
-    { path: 'despliegue/base-de-datos/aws', component: DespliegueBaseDeDatosComponent },
+    { path: 'despliegue/base-de-datos/aws', component: DespliegueBaseDeDatosComponent, title: 'Despliegue Base de Datos en AWS | DevDocs' },
+    { path: 'despliegue/bd/aws/ec2', component: DespliegueBaseDeDatosAwsComponent, title: 'Despliegue BD AWS EC2 — Paso 1 | DevDocs' },
+    { path: 'despliegue/bd/aws/ec2/id=2', component: DespliegueBaseDeDatosAws1Component, title: 'Despliegue BD AWS EC2 — Paso 2 | DevDocs' },
+    { path: 'despliegue/bd/aws/ec2/id=3', component: DespliegueBaseDeDatosAws2Component, title: 'Despliegue BD AWS EC2 — Paso 3 | DevDocs' },
+    { path: 'despliegue/bd/aws/ec2/id=4', component: DespliegueBaseDeDatosAws3Component, title: 'Despliegue BD AWS EC2 — Paso 4 | DevDocs' },
+    { path: 'despliegue/bd/aws/ec2/id=5', component: DespliegueBaseDeDatosAws4Component, title: 'Despliegue BD AWS EC2 — Paso 5 | DevDocs' },
+    { path: 'despliegue/bd/aws/ec2/id=6', component: DespliegueBaseDeDatosAws5Component, title: 'Despliegue BD AWS EC2 — Paso 6 | DevDocs' },
 
-    { path: 'despliegue/bd/aws/ec2', component: DespliegueBaseDeDatosAwsComponent },
-    { path: 'despliegue/bd/aws/ec2/id=2', component: DespliegueBaseDeDatosAws1Component },
-    { path: 'despliegue/bd/aws/ec2/id=3', component: DespliegueBaseDeDatosAws2Component},
-    { path: 'despliegue/bd/aws/ec2/id=4', component: DespliegueBaseDeDatosAws3Component },
-    { path: 'despliegue/bd/aws/ec2/id=5', component: DespliegueBaseDeDatosAws4Component },
-    { path: 'despliegue/bd/aws/ec2/id=6', component: DespliegueBaseDeDatosAws5Component },
+    { path: 'depliegue/backend/aws', component: DespliegueBackendComponent, title: 'Despliegue Backend en AWS | DevDocs' },
+    { path: 'despliegue/backend/aws/ec2', component: DespliegueBackendAwsComponent, title: 'Despliegue Backend AWS EC2 — Paso 1 | DevDocs' },
+    { path: 'despliegue/backend/aws/ec2/id=2', component: DespliegueBackendAws1Component, title: 'Despliegue Backend AWS EC2 — Paso 2 | DevDocs' },
+    { path: 'despliegue/backend/aws/ec2/id=3', component: DespliegueBackendAws2Component, title: 'Despliegue Backend AWS EC2 — Paso 3 | DevDocs' },
+    { path: 'despliegue/backend/aws/ec2/id=4', component: DespliegueBackendAws3Component, title: 'Despliegue Backend AWS EC2 — Paso 4 | DevDocs' },
+    { path: 'despliegue/backend/aws/ec2/id=5', component: DespliegueBackendAws4Component, title: 'Despliegue Backend AWS EC2 — Paso 5 | DevDocs' },
+    { path: 'despliegue/backend/aws/ec2/id=6', component: DespliegueBackendAws5Component, title: 'Despliegue Backend AWS EC2 — Paso 6 | DevDocs' },
+    { path: 'despliegue/backend/aws/ec2/id=7', component: DespliegueBackendAws6Component, title: 'Despliegue Backend AWS EC2 — Paso 7 | DevDocs' },
+    { path: 'despliegue/backend/aws/ec2/id=8', component: DespliegueBackendAws7Component, title: 'Despliegue Backend AWS EC2 — Paso 8 | DevDocs' },
+    { path: 'despliegue/backend/aws/ec2/id=9', component: DespliegueBackendAws8Component, title: 'Despliegue Backend AWS EC2 — Paso 9 | DevDocs' },
 
-    { path: 'depliegue/backend/aws', component: DespliegueBackendComponent },
+    { path: 'ato/detail', component: AtoDetailComponent, title: 'ATO Core Init — CLI para Node.js | DevDocs' },
 
-    { path: 'despliegue/backend/aws/ec2', component: DespliegueBackendAwsComponent },
-    { path: 'despliegue/backend/aws/ec2/id=2', component: DespliegueBackendAws1Component },
-    { path: 'despliegue/backend/aws/ec2/id=3', component: DespliegueBackendAws2Component },
-    { path: 'despliegue/backend/aws/ec2/id=4', component: DespliegueBackendAws3Component },
-    { path: 'despliegue/backend/aws/ec2/id=5', component: DespliegueBackendAws4Component },
-    { path: 'despliegue/backend/aws/ec2/id=6', component: DespliegueBackendAws5Component },
-    { path: 'despliegue/backend/aws/ec2/id=7', component: DespliegueBackendAws6Component },
-    { path: 'despliegue/backend/aws/ec2/id=8', component: DespliegueBackendAws7Component },
-    { path: 'despliegue/backend/aws/ec2/id=9', component: DespliegueBackendAws8Component },
-
-    { path: 'ato/detail', component: AtoDetailComponent, title: 'Detalle del ATO' },
-
-    { path: '**', component: NotfoundComponent }
+    { path: '**', component: NotfoundComponent, title: 'Página no encontrada | DevDocs' }
 ];

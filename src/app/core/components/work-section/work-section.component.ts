@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { NPMComponent } from '../svg-npm/svg-npm.component';
+import { Router } from '@angular/router';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-work-section',
@@ -9,6 +11,11 @@ import { NPMComponent } from '../svg-npm/svg-npm.component';
   styleUrl: './work-section.component.css'
 })
 export class WorkSectionComponent {
+  constructor(
+    private router: Router,
+    private viewportScroller: ViewportScroller
+  ) {}
+
   sendToAtoCoreInitRepo(event: Event) {
     event.preventDefault();
     window.open('https://github.com/Ameth-Toledo/ato-core-init.git', '_blank')
@@ -62,5 +69,12 @@ export class WorkSectionComponent {
   sendToNpmPackage(event: Event) {
     event.preventDefault();
     window.open('https://www.npmjs.com/package/ato-core-init', '_blank')
+  }
+
+  sendToNpmPackageAtoCoreInit(event: Event) {
+    event.preventDefault();
+    this.router.navigate(['ato/detail']).then(() => {
+      this.viewportScroller.scrollToPosition([0, 0]);
+    });
   }
 }

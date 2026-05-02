@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ViewportScroller } from '@angular/common';
-import { ButtonNextComponent } from "../button-next/button-next.component";
 
 @Component({
   selector: 'app-blog',
   standalone: true,
-  imports: [ButtonNextComponent],
+  imports: [],
   templateUrl: './blog.component.html',
   styleUrl: './blog.component.css'
 })

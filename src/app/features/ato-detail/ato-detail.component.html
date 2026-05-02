@@ -20,8 +20,8 @@
     </div>
 
     <p class="frontend-description">
-      CLI tool para generar proyectos Node.js con arquitectura MVC o Hexagonal, 
-      configuración de base de datos y autenticación JWT lista para usar. 
+      CLI tool para generar proyectos Node.js con arquitectura MVC o Hexagonal,
+      configuración de base de datos y autenticación JWT lista para usar.
       TypeScript, JavaScript, MySQL, PostgreSQL, MongoDB y más.
     </p>
 
@@ -38,215 +38,166 @@
 </section>
 
 <div class="code-examples-container">
-  <h1 class="tip">🚀 Inicio rápido</h1>
+
+  <div class="origin-story">
+    <h1 class="tip" style="margin-top: 20px;">¿Por qué existe esto?</h1>
+    <p class="subtitle-buenas-practicas-frontend">
+      Un día estaba programando una API REST y me di cuenta de que pasaba más tiempo configurando
+      la conexión a la base de datos, definiendo la arquitectura y levantando la autenticación,
+      que escribiendo lógica real. Proyecto tras proyecto, siempre lo mismo: misma estructura de carpetas,
+      mismo boilerplate, mismo setup de JWT, middlewares, cookies y bcrypt — antes de escribir
+      una sola línea de negocio.
+    </p>
+    <p class="subtitle-buenas-practicas-frontend" style="margin-top: 16px;">
+      Entonces pensé en desarrollar una CLI que automatizara todo eso. Un solo comando que genere
+      la estructura, configure la base de datos, levante la autenticación y deje todo listo para
+      empezar a trabajar en lo que realmente importa.
+    </p>
+
+    <div class="origin-timeline">
+      <div class="timeline-item">
+        <div class="timeline-icon-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+        <p>Configurar la conexión a la base de datos manualmente en cada proyecto nuevo.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-icon-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+        <p>Decidir y montar la arquitectura desde cero — MVC, hexagonal, carpetas, archivos base.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-icon-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+        <p>Implementar JWT, HttpOnly cookies, bcrypt y middlewares de auth antes de tocar el negocio.</p>
+      </div>
+    </div>
+  </div>
+
+  <h1 class="tip">Inicio rápido</h1>
   <p class="subtitle-buenas-practicas-frontend">
     Crear proyecto completo con un solo comando. Elige tu base de datos y arquitectura preferida.
   </p>
 
   <div class="card-row">
-    <app-card-editor-code 
-      [code]="createCommand" 
-      tecnologyImg="icons/node.svg"
-      filename="Proyecto MVC con MySQL">
-    </app-card-editor-code>
-    
-    <app-card-editor-code 
-      [code]="hexagonalCommand"
-      tecnologyImg="icons/node.svg" 
-      filename="Hexagonal con PostgreSQL">
-    </app-card-editor-code>
+    <app-terminal title="Crear proyecto MVC" [commands]="createCommands"></app-terminal>
+    <app-terminal title="Crear proyecto Hexagonal" [commands]="createCommands.slice(1, 2)"></app-terminal>
   </div>
 
-  <h1 class="tip">📋 Comandos</h1>
+  <h1 class="tip">Comandos</h1>
   <p class="subtitle-buenas-practicas-frontend">
     <strong>create</strong> - Proyecto completo con estructura, autenticación y CRUD.<br>
     <strong>init</strong> - Solo configuración de base de datos en un proyecto existente.
   </p>
 
   <div class="card-row">
-    <app-card-editor-code
-      [code]="createOptions"
-      tecnologyImg="icons/node.svg"
-      filename="Ejemplos de create"> 
-    </app-card-editor-code>
-
-    <app-card-editor-code
-      [code]="initCommand"
-      tecnologyImg="icons/node.svg"
-      filename="Solo configuración de DB"> 
-    </app-card-editor-code>
+    <app-terminal title="Opciones de create" [commands]="createCommands"></app-terminal>
+    <app-terminal title="Comando init" [commands]="initCommands"></app-terminal>
   </div>
 
-  <h1 class="tip">🏗️ Arquitectura MVC</h1>
+  <h1 class="tip">Arquitectura MVC</h1>
   <p class="subtitle-buenas-practicas-frontend">
-    Estructura simple y directa para proyectos tradicionales con controllers, models, repositories, services, routes y core.
+    Estructura simple y directa para proyectos tradicionales con controllers, models,
+    repositories, services, routes y core.
   </p>
 
   <div class="card-row">
-    <app-card-editor-code
-      [code]="mvcStructure"
-      tecnologyImg="icons/node.svg"
-      filename="Estructura MVC"> 
-    </app-card-editor-code>
-
-    <app-card-editor-code
-      [code]="endpoints"
-      tecnologyImg="icons/node.svg"
-      filename="Endpoints generados"> 
-    </app-card-editor-code>
+    <app-file-tree title="Estructura MVC" [items]="mvcStructure"></app-file-tree>
+    <app-code-block filename="Endpoints generados" language="plaintext" [code]="endpoints"></app-code-block>
   </div>
 
-  <h1 class="tip">🏗️ Arquitectura Hexagonal</h1>
+  <h1 class="tip">Arquitectura Hexagonal</h1>
   <p class="subtitle-buenas-practicas-frontend">
-    Arquitectura limpia con separación por dominio: application (casos de uso), domain (lógica de negocio) e infrastructure (adaptadores externos).
+    Arquitectura limpia con separación por dominio: application (casos de uso),
+    domain (lógica de negocio) e infrastructure (adaptadores externos).
   </p>
 
   <div class="card-row">
-    <app-card-editor-code
-      [code]="hexStructure"
-      tecnologyImg="icons/node.svg"
-      filename="Estructura Hexagonal"> 
-    </app-card-editor-code>
+    <app-file-tree title="Estructura Hexagonal" [items]="hexStructure"></app-file-tree>
   </div>
 
-  <h1 class="tip">🗄️ Bases de datos</h1>
+  <h1 class="tip">Bases de datos</h1>
   <p class="subtitle-buenas-practicas-frontend">
     Configuración de variables de entorno para cada base de datos soportada.
   </p>
 
   <div class="card-row">
-    <app-card-editor-code
-      [code]="mysqlEnv"
-      tecnologyImg="icons/mysql.svg"
-      filename=".env MySQL"> 
-    </app-card-editor-code>
-
-    <app-card-editor-code
-      [code]="postgresEnv"
-      tecnologyImg="icons/postgresql.svg"
-      filename=".env PostgreSQL"> 
-    </app-card-editor-code>
+    <app-code-block filename=".env MySQL" language="env" [code]="mysqlEnv"></app-code-block>
+    <app-code-block filename=".env PostgreSQL" language="env" [code]="postgresEnv"></app-code-block>
   </div>
 
   <div class="card-row">
-    <app-card-editor-code
-      [code]="mongoEnv"
-      tecnologyImg="icons/mongodb.svg"
-      filename=".env MongoDB"> 
-    </app-card-editor-code>
+    <app-code-block filename=".env MongoDB" language="env" [code]="mongoEnv"></app-code-block>
   </div>
 
-  <h1 class="tip">🔐 Autenticación</h1>
+  <h1 class="tip">Autenticación</h1>
   <p class="subtitle-buenas-practicas-frontend">
-    El proyecto incluye autenticación JWT completa con HttpOnly cookies. Registrar, login, perfil, refresh token y logout.
+    El proyecto incluye autenticación JWT completa con HttpOnly cookies.
+    Registrar, login, perfil, refresh token y logout.
   </p>
 
   <div class="card-row">
-    <app-card-editor-code
-      [code]="registerCurl"
-      tecnologyImg="icons/node.svg"
-      filename="Registrar usuario"> 
-    </app-card-editor-code>
-
-    <app-card-editor-code
-      [code]="loginCurl"
-      tecnologyImg="icons/node.svg"
-      filename="Login"> 
-    </app-card-editor-code>
+    <app-terminal title="Registrar usuario" [commands]="registerCommands"></app-terminal>
+    <app-terminal title="Login" [commands]="loginCommands"></app-terminal>
   </div>
 
   <div class="card-row">
-    <app-card-editor-code
-      [code]="profileCurl"
-      tecnologyImg="icons/node.svg"
-      filename="Obtener perfil"> 
-    </app-card-editor-code>
-
-    <app-card-editor-code
-      [code]="refreshCurl"
-      tecnologyImg="icons/node.svg"
-      filename="Refresh token"> 
-    </app-card-editor-code>
+    <app-terminal title="Obtener perfil" [commands]="profileCommands"></app-terminal>
+    <app-terminal title="Refresh token" [commands]="refreshCommands"></app-terminal>
   </div>
 
   <div class="card-row">
-    <app-card-editor-code
-      [code]="logoutCurl"
-      tecnologyImg="icons/node.svg"
-      filename="Logout"> 
-    </app-card-editor-code>
+    <app-terminal title="Logout" [commands]="logoutCommands"></app-terminal>
   </div>
 
-  <h1 class="tip">🚀 Ejecutar el proyecto</h1>
+  <h1 class="tip">Ejecutar el proyecto</h1>
   <p class="subtitle-buenas-practicas-frontend">
     Comandos para ejecutar en modo desarrollo o producción con TypeScript.
   </p>
 
   <div class="card-row">
-    <app-card-editor-code
-      [code]="runDev"
-      tecnologyImg="icons/node.svg"
-      filename="npm scripts"> 
-    </app-card-editor-code>
+    <app-terminal title="npm scripts" [commands]="runCommands"></app-terminal>
   </div>
 
-  <h1 class="tip">📦 Uso como librería</h1>
+  <h1 class="tip">Uso como librería</h1>
   <p class="subtitle-buenas-practicas-frontend">
     Instala y usa directamente en tu proyecto con TypeScript o JavaScript.
   </p>
 
   <div class="card-row">
-    <app-card-editor-code
-      [code]="libUsage"
-      tecnologyImg="icons/typescript.svg"
-      filename="TypeScript"> 
-    </app-card-editor-code>
-
-    <app-card-editor-code
-      [code]="libUsageJs"
-      tecnologyImg="icons/javascript.svg"
-      filename="JavaScript"> 
-    </app-card-editor-code>
+    <app-code-block filename="TypeScript" language="typescript" [code]="libUsageTs"></app-code-block>
+    <app-code-block filename="JavaScript" language="javascript" [code]="libUsageJs"></app-code-block>
   </div>
 
-  <h1 class="tip">📝 Schema de base de datos</h1>
+  <h1 class="tip">Schema de base de datos</h1>
   <p class="subtitle-buenas-practicas-frontend">
     El proyecto genera automáticamente un archivo schema.sql con la estructura de la tabla users.
   </p>
 
   <div class="card-row">
-    <app-card-editor-code
-      [code]="schemaSql"
-      tecnologyImg="icons/mysql.svg"
-      filename="schema.sql"> 
-    </app-card-editor-code>
+    <app-code-block filename="schema.sql" language="sql" [code]="schemaSql"></app-code-block>
   </div>
 
-  <h1 class="tip">🔒 Seguridad</h1>
+  <h1 class="tip">Seguridad</h1>
   <p class="subtitle-buenas-practicas-frontend">
     HttpOnly Cookies, middleware JWT y hash de passwords con bcrypt para máxima seguridad.
   </p>
 
   <div class="card-row">
-    <app-card-editor-code
-      [code]="cookieConfig"
-      tecnologyImg="icons/node.svg"
-      filename="HttpOnly Cookies"> 
-    </app-card-editor-code>
-
-    <app-card-editor-code
-      [code]="jwtMiddleware"
-      tecnologyImg="icons/typescript.svg"
-      filename="Middleware JWT"> 
-    </app-card-editor-code>
+    <app-code-block filename="HttpOnly Cookies" language="javascript" [code]="cookieConfig"></app-code-block>
+    <app-code-block filename="Middleware JWT" language="typescript" [code]="jwtMiddleware"></app-code-block>
   </div>
 
   <div class="card-row">
-    <app-card-editor-code
-      [code]="hashExample"
-      tecnologyImg="icons/typescript.svg"
-      filename="Hash de passwords"> 
-    </app-card-editor-code>
+    <app-code-block filename="Hash de passwords" language="typescript" [code]="hashExample"></app-code-block>
   </div>
 
 </div>
