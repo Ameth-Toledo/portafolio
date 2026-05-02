@@ -6,8 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "vercel-build": "npm install --legacy-peer-deps && ng build --aot=false --build-optimizer=false --optimization=false"
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {
@@ -15,13 +14,11 @@
     "@angular/common": "^18.2.0",
     "@angular/compiler": "^18.2.0",
     "@angular/core": "^18.2.0",
-    "@angular/fire": "^17.0.1",
     "@angular/forms": "^18.2.0",
     "@angular/platform-browser": "^18.2.0",
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",
     "@types/gsap": "^1.20.2",
-    "firebase": "^10.7.1",
     "gsap": "^3.13.0",
     "highlight.js": "^11.11.1",
     "rxjs": "~7.8.0",

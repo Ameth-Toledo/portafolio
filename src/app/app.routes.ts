@@ -1,49 +1,33 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './modules/home/home.component';
-import { BuenasPracticasFrontComponent } from './modules/buenas-practicas-front/buenas-practicas-front.component';
-import { FrameworksCuandoUsarComponent } from './modules/frameworks-cuando-usar/frameworks-cuando-usar.component';
-import { ArquitecturaHexagonalComponent } from './modules/arquitectura-hexagonal/arquitectura-hexagonal.component';
-import { NotfoundComponent } from './modules/notfound/notfound.component';
-import { DespliegueFrontendAwsComponent } from './modules/despliegue-frontend-aws/despliegue-frontend-aws.component';
-import { DespliegueFrontendAws2Component } from './modules/despliegue-frontend-aws-2/despliegue-frontend-aws-2.component';
-import { DespliegueFrontendAws3Component } from './modules/despliegue-frontend-aws-3/despliegue-frontend-aws-3.component';
-import { DespliegueFrontendAws4Component } from './modules/despliegue-frontend-aws-4/despliegue-frontend-aws-4.component';
-import { DespliegueFrontendAws5Component } from './modules/despliegue-frontend-aws-5/despliegue-frontend-aws-5.component';
-import { CoursesComponent } from './modules/courses/courses.component';
-import { ModulosComponent } from './modules/modulos/modulos.component';
-import { ModuleDetailComponent } from './modules/module-detail/module-detail.component';
-import { LoginComponent } from './modules/login/login.component';
-import { RegisterComponent } from './modules/register/register.component';
-import { UserGuard } from './guards/auth.guard';
-import { DashboardComponent } from './modules/dashboard/dashboard.component';
-import { ComentariosComponent } from './modules/comentarios/comentarios.component';
-import { CursosDashboardComponent } from './modules/cursos-dashboard/cursos-dashboard.component';
-import { ModulesDashboardComponent } from './modules/modules-dashboard/modules-dashboard.component';
-import { InicioDashboardComponent } from './modules/inicio-dashboard/inicio-dashboard.component';
-import { ProfileComponent } from './modules/profile/profile.component';
-import { PerfilComponent } from './modules/perfil/perfil.component';
-import { ModuleDetailDashboardComponent } from './modules/module-detail-dashboard/module-detail-dashboard.component';
-import { UsuariosComponent } from './modules/usuarios/usuarios.component';
-import { DonacionesComponent } from './modules/donaciones/donaciones.component';
-import { LikesComponent } from './modules/likes/likes.component';
-import { DespliegueBaseDeDatosAwsComponent } from './modules/despliegue-base-de-datos-aws/despliegue-base-de-datos-aws.component';
-import { DespliegueBaseDeDatosAws1Component } from './modules/despliegue-base-de-datos-aws1/despliegue-base-de-datos-aws1.component';
-import { DespliegueBaseDeDatosAws2Component } from './modules/despliegue-base-de-datos-aws2/despliegue-base-de-datos-aws2.component';
-import { DespliegueBaseDeDatosAws3Component } from './modules/despliegue-base-de-datos-aws3/despliegue-base-de-datos-aws3.component';
-import { DespliegueBaseDeDatosAws4Component } from './modules/despliegue-base-de-datos-aws4/despliegue-base-de-datos-aws4.component';
-import { DespliegueBaseDeDatosAws5Component } from './modules/despliegue-base-de-datos-aws5/despliegue-base-de-datos-aws5.component';
-import { DespliegueBackendAwsComponent } from './modules/despliegue-backend-aws/despliegue-backend-aws.component';
-import { DespliegueBackendAws1Component } from './modules/despliegue-backend-aws1/despliegue-backend-aws1.component';
-import { DespliegueBackendAws2Component } from './modules/despliegue-backend-aws2/despliegue-backend-aws2.component';
-import { DespliegueBackendAws3Component } from './modules/despliegue-backend-aws3/despliegue-backend-aws3.component';
-import { DespliegueBackendAws4Component } from './modules/despliegue-backend-aws4/despliegue-backend-aws4.component';
-import { DespliegueBackendAws5Component } from './modules/despliegue-backend-aws5/despliegue-backend-aws5.component';
-import { DespliegueBackendAws6Component } from './modules/despliegue-backend-aws6/despliegue-backend-aws6.component';
-import { DespliegueBackendAws7Component } from './modules/despliegue-backend-aws7/despliegue-backend-aws7.component';
-import { DespliegueBackendAws8Component } from './modules/despliegue-backend-aws8/despliegue-backend-aws8.component';
-import { DespliegueBaseDeDatosComponent } from './modules/despliegue-base-de-datos/despliegue-base-de-datos.component';
-import { DespliegueBackendComponent } from './modules/despliegue-backend/despliegue-backend.component';
-import { DespliegueFrontendComponent } from './modules/despliegue-frontend/despliegue-frontend.component';
+import { HomeComponent } from './features/home/home.component';
+import { BuenasPracticasFrontComponent } from './features/buenas-practicas-front/buenas-practicas-front.component';
+import { FrameworksCuandoUsarComponent } from './features/frameworks-cuando-usar/frameworks-cuando-usar.component';
+import { ArquitecturaHexagonalComponent } from './features/arquitectura-hexagonal/arquitectura-hexagonal.component';
+import { NotfoundComponent } from './features/notfound/notfound.component';
+import { DespliegueFrontendAwsComponent } from './features/despliegue-frontend-aws/despliegue-frontend-aws.component';
+import { DespliegueFrontendAws2Component } from './features/despliegue-frontend-aws-2/despliegue-frontend-aws-2.component';
+import { DespliegueFrontendAws3Component } from './features/despliegue-frontend-aws-3/despliegue-frontend-aws-3.component';
+import { DespliegueFrontendAws4Component } from './features/despliegue-frontend-aws-4/despliegue-frontend-aws-4.component';
+import { DespliegueFrontendAws5Component } from './features/despliegue-frontend-aws-5/despliegue-frontend-aws-5.component';
+import { DespliegueBaseDeDatosAwsComponent } from './features/despliegue-base-de-datos-aws/despliegue-base-de-datos-aws.component';
+import { DespliegueBaseDeDatosAws1Component } from './features/despliegue-base-de-datos-aws1/despliegue-base-de-datos-aws1.component';
+import { DespliegueBaseDeDatosAws2Component } from './features/despliegue-base-de-datos-aws2/despliegue-base-de-datos-aws2.component';
+import { DespliegueBaseDeDatosAws3Component } from './features/despliegue-base-de-datos-aws3/despliegue-base-de-datos-aws3.component';
+import { DespliegueBaseDeDatosAws4Component } from './features/despliegue-base-de-datos-aws4/despliegue-base-de-datos-aws4.component';
+import { DespliegueBaseDeDatosAws5Component } from './features/despliegue-base-de-datos-aws5/despliegue-base-de-datos-aws5.component';
+import { DespliegueBackendAwsComponent } from './features/despliegue-backend-aws/despliegue-backend-aws.component';
+import { DespliegueBackendAws1Component } from './features/despliegue-backend-aws1/despliegue-backend-aws1.component';
+import { DespliegueBackendAws2Component } from './features/despliegue-backend-aws2/despliegue-backend-aws2.component';
+import { DespliegueBackendAws3Component } from './features/despliegue-backend-aws3/despliegue-backend-aws3.component';
+import { DespliegueBackendAws4Component } from './features/despliegue-backend-aws4/despliegue-backend-aws4.component';
+import { DespliegueBackendAws5Component } from './features/despliegue-backend-aws5/despliegue-backend-aws5.component';
+import { DespliegueBackendAws6Component } from './features/despliegue-backend-aws6/despliegue-backend-aws6.component';
+import { DespliegueBackendAws7Component } from './features/despliegue-backend-aws7/despliegue-backend-aws7.component';
+import { DespliegueBackendAws8Component } from './features/despliegue-backend-aws8/despliegue-backend-aws8.component';
+import { DespliegueBaseDeDatosComponent } from './features/despliegue-base-de-datos/despliegue-base-de-datos.component';
+import { DespliegueBackendComponent } from './features/despliegue-backend/despliegue-backend.component';
+import { DespliegueFrontendComponent } from './features/despliegue-frontend/despliegue-frontend.component';
+import { AtoDetailComponent } from './features/ato-detail/ato-detail.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '', pathMatch: 'full' },
@@ -81,22 +65,7 @@ export const routes: Routes = [
     { path: 'despliegue/backend/aws/ec2/id=8', component: DespliegueBackendAws7Component },
     { path: 'despliegue/backend/aws/ec2/id=9', component: DespliegueBackendAws8Component },
 
-    { path: 'blog', component: CoursesComponent },
-    { path: 'modulos', component: ModulosComponent, canActivate: [UserGuard] },
-    { path: 'modulo/detail', component: ModuleDetailComponent, canActivate: [UserGuard] },
-    { path: 'login', component: LoginComponent },
-    { path: 'register', component: RegisterComponent },
-    { path: 'perfil', component: PerfilComponent },
-    { path: 'dashboard', component: DashboardComponent, children: [
-        { path: 'comentarios', component: ComentariosComponent },
-        { path: 'cursos', component: CursosDashboardComponent },
-        { path: 'modules', component: ModulesDashboardComponent },
-        { path: 'module/detail', component: ModuleDetailDashboardComponent },
-        { path: 'inicio', component: InicioDashboardComponent },
-        { path: 'profile', component: ProfileComponent },
-        { path: 'users', component: UsuariosComponent },
-        { path: 'donaciones', component: DonacionesComponent },
-        { path: 'likes', component: LikesComponent },
-    ] },
+    { path: 'ato/detail', component: AtoDetailComponent, title: 'Detalle del ATO' },
+
     { path: '**', component: NotfoundComponent }
 ];
