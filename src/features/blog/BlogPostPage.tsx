@@ -74,7 +74,7 @@ export function BlogPostPage() {
               {post.category}
             </p>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight mb-6">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight mb-6 font-poppins">
               {post.title}
             </h1>
 
@@ -111,13 +111,13 @@ export function BlogPostPage() {
       {/* Modules */}
       <div className="px-6 sm:px-12 lg:px-24 py-14">
       <div className="max-w-5xl mx-auto">
-        <h2 className="text-2xl font-black tracking-tight mb-8 text-foreground">Módulos 💡🚀</h2>
+        <h2 className="text-2xl font-black tracking-tight mb-8 text-foreground font-poppins">Módulos 💡🚀</h2>
 
         <div className="flex flex-col gap-3">
           {post.modules.map((mod, i) => (
             <div key={i} className="flex items-center gap-4 bg-secondary/50 border border-border text-foreground rounded-2xl px-5 py-4">
               <ModuleIconEl icon={mod.icon} />
-              <span className="flex-1 text-sm font-medium">{mod.title}</span>
+              <span className="flex-1 text-sm font-medium font-poppins">{mod.title}</span>
               {mod.link ? (
                 <button
                   onClick={() => mod.link!.startsWith('/') ? navigate(mod.link!) : window.open(mod.link, '_blank')}

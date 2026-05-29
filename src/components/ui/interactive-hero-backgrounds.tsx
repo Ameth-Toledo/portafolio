@@ -503,23 +503,23 @@ export const InteractiveHero: React.FC<InteractiveHeroProps> = ({
                             style={{ color: "#C3E41D", fontFamily: "'Fira Code', monospace" }}
                         />
                     </div>
-                    <p className="mt-2 sm:mt-4 text-sm sm:text-base md:text-lg font-medium text-muted-foreground tracking-widest uppercase">
+                    <p className="mt-2 sm:mt-4 text-sm sm:text-base md:text-lg font-medium text-muted-foreground tracking-widest uppercase font-poppins">
                         {heroTitle}
                     </p>
-                    <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-muted-foreground max-w-md">
+                    <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-muted-foreground max-w-md font-poppins">
                         {heroDescription}
                     </p>
                     <div className="mt-5 sm:mt-8 flex flex-row flex-wrap items-center gap-3">
                         <a
                             ref={contactBtnRef}
                             href="#contacto"
-                            className="bg-primary text-primary-foreground hover:bg-primary/90 px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold text-sm transition-colors"
+                            className="bg-primary text-primary-foreground hover:bg-primary/90 px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold text-sm transition-colors cursor-pointer font-poppins"
                         >
                             Contáctame
                         </a>
                         <a
                             href="#proyectos"
-                            className="bg-secondary/50 hover:bg-secondary text-foreground border border-border px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold text-sm transition-colors"
+                            className="bg-secondary/50 hover:bg-secondary text-foreground border border-border px-6 sm:px-8 py-2.5 sm:py-3 rounded-full font-semibold text-sm transition-colors cursor-pointer font-poppins"
                         >
                             Ver Proyectos
                         </a>
@@ -528,12 +528,12 @@ export const InteractiveHero: React.FC<InteractiveHeroProps> = ({
 
                 {/* Profile photo — hidden on very small portrait screens */}
                 <div className="hidden sm:flex flex-shrink-0 items-center justify-center
-                                w-32 md:w-44 lg:w-52 xl:w-64
+                                w-48 md:w-60 lg:w-80 xl:w-96
                                 mb-2 md:mb-0 md:mr-4 lg:mr-10">
                     <div className="relative w-full">
-                        {/* Rotating conic-gradient border — same mechanic as InfoCard */}
+                        {/* Rotating conic-gradient border — circular */}
                         <div
-                            className="w-full rounded-[1em] p-[2px] shadow-2xl"
+                            className="w-full aspect-square rounded-full p-[3px] shadow-2xl"
                             style={{
                                 backgroundImage: `linear-gradient(#0d0d0d, #0d0d0d), conic-gradient(from var(--photo-rot, 0deg), #C3E41D 0deg, #C3E41D 80deg, #2a2a2a 80deg, #2a2a2a 360deg)`,
                                 backgroundOrigin: 'border-box',
@@ -552,25 +552,12 @@ export const InteractiveHero: React.FC<InteractiveHeroProps> = ({
                                 (e.currentTarget as HTMLDivElement).style.setProperty('--photo-rot', '0deg');
                             }}
                         >
-                            {/* Terminal window inner */}
-                            <div className="rounded-[calc(1em-2px)] overflow-hidden w-full bg-zinc-950">
-                                {/* Title bar */}
-                                <div className="bg-zinc-900 px-3 py-2 flex items-center gap-2 border-b border-white/5">
-                                    <div className="flex gap-1.5">
-                                        <span className="w-2 h-2 rounded-full bg-red-500/70" />
-                                        <span className="w-2 h-2 rounded-full bg-yellow-500/70" />
-                                        <span className="w-2 h-2 rounded-full bg-green-500/70" />
-                                    </div>
-                                    <span className="text-[10px] font-mono text-zinc-500 truncate">~/ameth/profile.png</span>
-                                </div>
-                                {/* Photo */}
-                                <div className="aspect-[3/4] overflow-hidden">
-                                    <img
-                                        src="/assets/profile.png"
-                                        alt="Ameth Toledo"
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
+                            <div className="rounded-full overflow-hidden w-full aspect-square">
+                                <img
+                                    src="/assets/profile.png"
+                                    alt="Ameth Toledo"
+                                    className="w-full h-full object-cover scale-[1.0] translate-y-[2%]"
+                                />
                             </div>
                         </div>
 

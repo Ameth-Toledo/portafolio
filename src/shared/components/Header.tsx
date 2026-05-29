@@ -39,16 +39,16 @@ function Header() {
         {/* Logo */}
         <button onClick={() => handleNav('#inicio')} className="flex items-center gap-2 shrink-0">
           <img src="/assets/logo.png" alt="Logo" className="h-8 w-auto object-contain" />
-          <span className="font-bold text-lg text-foreground tracking-tight">Ameth Toledo</span>
+          <span className="font-bold text-lg text-foreground tracking-tight font-poppins">Ameth Toledo</span>
         </button>
 
         {/* Nav — desktop */}
-        <nav className="hidden md:flex items-center gap-1 text-sm font-medium text-muted-foreground">
+        <nav className="hidden md:flex items-center gap-1 text-sm font-medium text-muted-foreground font-poppins">
           {navItems.map(({ label, href }) => (
             <button
               key={href}
               onClick={() => handleNav(href)}
-              className="hover:text-foreground px-3 py-1.5 transition-colors rounded-lg"
+              className="hover:text-foreground px-3 py-1.5 transition-colors rounded-lg cursor-pointer"
             >
               {label}
             </button>
@@ -57,6 +57,14 @@ function Header() {
 
         {/* Actions */}
         <div className="flex items-center gap-2 shrink-0">
+          <a
+            href="/assets/pdf/CV-AmethToledo.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden sm:flex items-center gap-1.5 bg-[#C3E41D] hover:bg-[#b0d018] text-black text-xs font-medium px-4 py-2 rounded-xl transition-colors cursor-pointer font-poppins"
+          >
+            Ver CV
+          </a>
           <button
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
             className="p-2 rounded-full hover:bg-white/10 transition-colors"
@@ -81,12 +89,12 @@ function Header() {
       {/* Mobile menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-[calc(100%+8px)] left-4 right-4 rounded-2xl border border-white/10 bg-background/70 backdrop-blur-md shadow-xl p-4">
-          <nav className="flex flex-col gap-1 text-muted-foreground font-medium">
+          <nav className="flex flex-col gap-1 text-muted-foreground font-medium font-poppins">
             {navItems.map(({ label, href }) => (
               <button
                 key={href}
                 onClick={() => handleNav(href)}
-                className="hover:text-foreground px-3 py-2.5 text-sm transition-colors rounded-xl text-left"
+                className="hover:text-foreground px-3 py-2.5 text-sm transition-colors rounded-xl text-left cursor-pointer"
               >
                 {label}
               </button>
