@@ -28,11 +28,11 @@ function LandingPage() {
 
   return (
     <>
-      <div id="inicio" className="relative h-screen w-full">
+      <div id="inicio" className="relative min-h-svh w-full">
         <InteractiveHero
           showInternalHeader={false}
           heroTitle="FullStack Developer"
-          heroDescription="Desarrollador FullStack especializado en Angular, con experiencia en React y Vue. Backend en Go, Java, TypeScript y Python. Bases de datos relacionales: MySQL y PostgreSQL."
+          heroDescription="Desarrollador FullStack especializado en Angular, con experiencia en React y Vue. Desarrollo móvil con Kotlin y Flutter. Backend en Go, Java, TypeScript y Python. Bases de datos relacionales: MySQL y PostgreSQL."
           ballpitConfig={{
             count: 260,
             minSize: 0.35,

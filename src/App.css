@@ -85,3 +85,19 @@
 
 .animate-accordion-down { animation: accordion-down 0.2s ease-out; }
 .animate-accordion-up { animation: accordion-up 0.2s ease-out; }
+
+.hero-portrait-frame {
+  box-shadow: 0 24px 64px -32px rgb(0 0 0 / 0.3);
+}
+
+.hero-portrait-halo {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 35%, rgb(195 228 29 / 0.22), transparent 65%);
+}
+
+.hero-portrait-image {
+  /* Compensate for the empty space above the portrait in the source image. */
+  bottom: -9%;
+  height: auto;
+}

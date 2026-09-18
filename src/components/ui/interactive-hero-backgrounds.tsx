@@ -7,7 +7,7 @@ import {
 } from "three";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { useTheme } from "next-themes";
-import { Menu, Sun, Moon, Target } from 'lucide-react';
+import { Menu, Sun, Moon, Target, ArrowUpRight, MapPin } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import { BlurText } from "@/components/ui/portfolio-hero";
 
@@ -448,8 +448,8 @@ export const InteractiveHero: React.FC<InteractiveHeroProps> = ({
     }, [config]);
 
     return (
-        <div className={cn("relative w-full h-screen overflow-hidden bg-background", className)}>
-            <canvas ref={canvasRef} className="absolute inset-0 w-full h-full z-0" />
+        <div className={cn("relative w-full min-h-svh overflow-hidden bg-background", className)}>
+            <canvas ref={canvasRef} aria-hidden="true" className="absolute inset-0 w-full h-full z-0 opacity-30 dark:opacity-40" />
             <canvas ref={arrowCanvasRef} className="fixed inset-0 pointer-events-none z-[60]" />
 
             {showInternalHeader && <header className="relative z-10 w-full max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
@@ -479,8 +479,8 @@ export const InteractiveHero: React.FC<InteractiveHeroProps> = ({
             </header>}
 
             <main className={cn(
-                "relative z-10 flex flex-col md:flex-row items-center md:justify-between gap-4 md:gap-8 px-6 sm:px-10 lg:px-16",
-                showInternalHeader ? "h-[calc(100%-100px)]" : "h-full pt-14 md:pt-16"
+                "relative z-10 mx-auto grid w-full max-w-[1440px] items-center gap-12 px-6 sm:px-10 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.65fr)] lg:gap-12 lg:px-16",
+                showInternalHeader ? "min-h-[calc(100svh-100px)] py-12" : "min-h-svh pb-12 pt-32 sm:pb-16 sm:pt-36"
             )}>
                 <div className="flex-1 min-w-0 w-full">
                     <div>
@@ -489,7 +489,7 @@ export const InteractiveHero: React.FC<InteractiveHeroProps> = ({
                             delay={100}
                             animateBy="letters"
                             direction="top"
-                            className="font-bold text-[52px] sm:text-[90px] md:text-[120px] lg:text-[160px] xl:text-[200px] leading-[0.85] tracking-tighter uppercase"
+                            className="font-bold text-[clamp(3.25rem,11vw,7.5rem)] xl:text-[clamp(7.5rem,10vw,9rem)] leading-[0.85] tracking-tighter uppercase"
                             style={{ color: "#C3E41D", fontFamily: "'Fira Code', monospace" }}
                         />
                     </div>
@@ -499,7 +499,7 @@ export const InteractiveHero: React.FC<InteractiveHeroProps> = ({
                             delay={100}
                             animateBy="letters"
                             direction="top"
-                            className="font-bold text-[52px] sm:text-[90px] md:text-[120px] lg:text-[160px] xl:text-[200px] leading-[0.85] tracking-tighter uppercase"
+                            className="font-bold text-[clamp(3.25rem,11vw,7.5rem)] xl:text-[clamp(7.5rem,10vw,9rem)] leading-[0.85] tracking-tighter uppercase"
                             style={{ color: "#C3E41D", fontFamily: "'Fira Code', monospace" }}
                         />
                     </div>
@@ -526,62 +526,53 @@ export const InteractiveHero: React.FC<InteractiveHeroProps> = ({
                     </div>
                 </div>
 
-                {/* Profile photo — hidden on very small portrait screens */}
-                <div className="hidden sm:flex flex-shrink-0 items-center justify-center
-                                w-48 md:w-60 lg:w-80 xl:w-96
-                                mb-2 md:mb-0 md:mr-4 lg:mr-10">
-                    <div className="relative w-full">
-                        {/* Rotating conic-gradient border — circular */}
-                        <div
-                            className="w-full aspect-square rounded-full p-[3px] shadow-2xl"
-                            style={{
-                                backgroundImage: `linear-gradient(#0d0d0d, #0d0d0d), conic-gradient(from var(--photo-rot, 0deg), #C3E41D 0deg, #C3E41D 80deg, #2a2a2a 80deg, #2a2a2a 360deg)`,
-                                backgroundOrigin: 'border-box',
-                                backgroundClip: 'padding-box, border-box',
-                            } as React.CSSProperties}
-                            onMouseMove={(e) => {
-                                const el = e.currentTarget as HTMLDivElement;
-                                const rect = el.getBoundingClientRect();
-                                const angle = Math.atan2(
-                                    e.clientY - rect.top  - rect.height / 2,
-                                    e.clientX - rect.left - rect.width  / 2
-                                );
-                                el.style.setProperty('--photo-rot', `${angle}rad`);
-                            }}
-                            onMouseLeave={(e) => {
-                                (e.currentTarget as HTMLDivElement).style.setProperty('--photo-rot', '0deg');
-                            }}
-                        >
-                            <div className="rounded-full overflow-hidden w-full aspect-square">
-                                <img
-                                    src="/assets/profile.png"
-                                    alt="Ameth Toledo"
-                                    className="w-full h-full object-cover scale-[1.0] translate-y-[2%]"
-                                />
+                <figure className="hero-portrait mx-auto w-full max-w-[280px] sm:max-w-[340px] lg:max-w-[380px]">
+                    <div className="hero-portrait-frame relative isolate aspect-[4/5] overflow-hidden rounded-[2rem] border border-border bg-secondary">
+                        <div className="hero-portrait-halo" aria-hidden="true" />
+                        <span className="absolute left-5 top-5 z-20 inline-flex items-center gap-2 rounded-full border border-border bg-background/95 px-3 py-2 text-[11px] font-medium text-foreground shadow-sm font-poppins">
+                            <span className="size-1.5 rounded-full bg-[#657800] dark:bg-[#C3E41D]" aria-hidden="true" />
+                            Disponible para proyectos
+                        </span>
+                        <img
+                            src="/assets/profile.png"
+                            alt="Retrato de Ameth Toledo, desarrollador FullStack"
+                            width={719}
+                            height={1280}
+                            fetchPriority="high"
+                            decoding="async"
+                            className="hero-portrait-image absolute z-10 w-full max-w-none"
+                        />
+                        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-1/3 bg-gradient-to-t from-black/75 to-transparent" aria-hidden="true" />
+                        <div className="absolute inset-x-0 bottom-0 z-20 flex items-end justify-between gap-3 p-5 sm:p-6 text-white">
+                            <div>
+                                <p className="text-lg font-semibold tracking-tight font-poppins">Ameth Toledo</p>
+                                <p className="mt-1 flex items-center gap-1.5 text-xs text-white/85 font-poppins">
+                                    <MapPin className="size-3.5" aria-hidden="true" />
+                                    Chiapas, México
+                                </p>
                             </div>
+                            <span className="font-mono text-xs text-[#C3E41D]" aria-hidden="true">&lt;/&gt;</span>
                         </div>
-
-                        {/* Disponible badge */}
-                        <div className="mt-3 mx-auto w-fit bg-zinc-900 border border-white/10 px-3 py-1.5 rounded-full flex items-center gap-2 shadow-xl">
-                            <span className="w-2 h-2 rounded-full bg-[#C3E41D] animate-pulse" />
-                            <span className="text-[11px] font-mono text-zinc-300">disponible</span>
-                        </div>
-
-                        {/* Certificate chip */}
+                    </div>
+                    <figcaption className="mt-4">
                         <a
                             href="/assets/pdf/UI-UXCertificado.pdf"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="absolute -top-3 -left-14 bg-zinc-900 border border-[#C3E41D]/30 hover:border-[#C3E41D]/70 px-3 py-2 rounded-xl flex items-center gap-2 shadow-xl transition-colors group"
+                            aria-label="Ver certificado de UI/UX en Coursera (abre en otra pestaña)"
+                            className="group flex min-h-16 items-center gap-3 rounded-2xl border border-border bg-background/95 px-4 py-3 text-foreground transition-colors hover:bg-secondary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
                         >
-                            <Target className="w-4 h-4 text-[#C3E41D] group-hover:rotate-12 transition-transform" />
-                            <div>
-                                <p className="text-[10px] font-mono font-bold text-[#C3E41D]">UI/UX</p>
-                                <p className="text-[10px] font-mono text-zinc-500">Coursera</p>
-                            </div>
+                            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-[#C3E41D]/15 text-[#657800] dark:text-[#C3E41D]">
+                                <Target className="size-5" aria-hidden="true" />
+                            </span>
+                            <span className="flex-1 font-poppins">
+                                <span className="block text-sm font-medium">Diseño UI/UX</span>
+                                <span className="mt-0.5 block text-xs text-muted-foreground">Certificado · Coursera</span>
+                            </span>
+                            <ArrowUpRight className="size-4 text-muted-foreground transition-colors group-hover:text-foreground" aria-hidden="true" />
                         </a>
-                    </div>
-                </div>
+                    </figcaption>
+                </figure>
             </main>
 
             {isMobileMenuOpen && (

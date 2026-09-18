@@ -2,6 +2,7 @@ import * as React from "react";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { FaWhatsapp } from "react-icons/fa";
 import { cn } from "@/lib/utils";
 
 if (typeof window !== "undefined") {
@@ -266,6 +267,18 @@ export function CinematicFooter() {
                 >
                   <span className="text-muted-foreground group-hover:text-foreground transition-colors"><LinkedInIcon /></span>
                   LinkedIn
+                </MagneticButton>
+
+                <MagneticButton
+                  as="a"
+                  href="https://wa.me/529613037813"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Contactar a Ameth por WhatsApp (abre en otra pestaña)"
+                  className="footer-glass-pill px-10 py-5 rounded-full text-foreground font-bold text-sm md:text-base flex items-center gap-3 group focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+                >
+                  <span className="text-muted-foreground group-hover:text-foreground transition-colors"><FaWhatsapp className="w-5 h-5" aria-hidden="true" /></span>
+                  WhatsApp
                 </MagneticButton>
               </div>
 
